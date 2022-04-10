@@ -1,0 +1,23 @@
+﻿[
+  {
+    "translate": "a",
+    "original": "あ",
+    "column": 0,
+    "row": 0,
+    "subset": "basic"
+  },
+  {
+    "translate": "i",
+    "original": "い",
+    "column": 1,
+    "row": 0,
+    "subset": "basic"
+  },
+  {
+    "translate": "u",
+    "original": "う",
+    "column": 2,
+    "row": 0,
+    "subset": "basic"
+  }
+]

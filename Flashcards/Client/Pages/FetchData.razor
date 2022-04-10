@@ -1,0 +1,118 @@
+﻿@page "/fetchdata"
+@using Flashcards.Shared
+@inject HttpClient Http
+@inject DataSynchronizer DataSynchronizer
+@implements IDisposable
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button @onclick="AddForecast">Add</button>
+
+}
+
+@code {
+    //private WeatherForecast[]? forecasts;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    //}
+
+    ClientSideDbContext? db;
+
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            db = await DataSynchronizer.GetPreparedDbContextAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
+        LoadForecasts();
+
+        var x = db.Courses.ToArray();
+
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+    void LoadForecasts()
+    {
+        forecasts = db.Forecasts
+        .Select(r => new WeatherForecast
+            {
+                Date = r.Date,
+                TemperatureC = r.TemperatureC,
+                Summary = r.Summary,
+            }).ToArray();
+    }
+
+    async Task AddForecast()
+    {
+        var last = db.Forecasts.OrderBy(r => r.Date).Last();
+
+        var forecast = new Forecast
+            {
+                Date = last.Date.AddDays(1),
+                TemperatureC = last.TemperatureC + 1,
+                Summary = "Unknown",
+            };
+        await db.Forecasts.AddAsync(forecast);
+        await db.SaveChangesAsync();
+
+        LoadForecasts();
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+    public void Dispose()
+    {
+        db?.Dispose();
+    }
+
+}

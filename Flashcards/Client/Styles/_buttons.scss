@@ -1,0 +1,72 @@
+﻿@import 'shared';
+
+.button-nav__wrapper {
+    border: none;
+    border-radius: 50%;
+    background-color: $color-white;
+    box-shadow: 0 2px 4px 2px $color-shadow-light;
+    width: 6rem;
+    height: 6rem;
+    margin: 1rem;
+
+    &--previous {
+        svg {
+            transform-origin: center;
+            transform: rotate(180deg);
+        }
+    }
+
+    svg {
+        stroke: $color-secondary;
+        height: 5rem;
+    }
+
+    &:hover {
+        background-color: $color-light;
+
+        svg {
+            stroke: $color-black;
+        }
+    }
+}
+
+.button-result__wrapper {
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px 2px $color-shadow-light;
+    width: 6rem;
+    height: 6rem;
+    margin: 1rem;
+
+    &--good {
+        background-color: $color-good-light;
+
+        path {
+            fill: $color-good;
+        }
+
+        &:hover {
+            background-color: $color-good;
+
+            path {
+                fill: $color-good-light;
+            }
+        }
+    }
+
+    &--bad {
+        background-color: $color-bad-light;
+
+        path {
+            fill: $color-bad;
+        }
+
+        &:hover {
+            background-color: $color-bad;
+
+            path {
+                fill: $color-bad-light;
+            }
+        }
+    }
+}

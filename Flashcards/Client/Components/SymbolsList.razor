@@ -1,0 +1,83 @@
+﻿
+<div class="@cssWrapper" style="@styleWrapper">
+
+    @if (Symbols is not null)
+    {
+        @if (ShowSelectAll)
+        {
+            <button class="symbols-list__select-button symbols-list__select-button--all" @onclick="AllButtonClick">
+                @for (int column = 0; column < columns; column++)
+                {
+                    <SvgIcon SvgUrl="/assets/next-ico.svg" />
+                }
+            </button>
+        }
+
+        @for (int row = 0; row < rows; row++)
+        {
+            @if (ShowSelectRow)
+            {
+                int r = row;
+                <button class="symbols-list__select-button symbols-list__select-button--row" style="@GetSelectRowStyle(r)"
+            @onclick="()=>RowButtonClick(r)">
+                    <SvgIcon SvgUrl="/assets/next-ico.svg" />
+                </button>
+            }
+
+            @for (int column = 0; column < columns; column++)
+            {
+                var symbol = @GetSymbol(row, column);
+                if (symbol is not null)
+                {
+                    <SymbolToggle Symbol="@symbol" OnEnableChanged="SymbolEnabledChanged" />
+                }
+            }
+        }
+    }
+
+</div>
+
+@code {
+    [Parameter] public List<ToggleableSymbolViewModel>? Symbols { get; set; }
+    [Parameter] public EventCallback<ToggleableSymbolViewModel[]> OnSymbolEnableChanged { get; set; }
+    [Parameter] public bool ShowSelectAll { get; set; }
+    [Parameter] public bool ShowSelectRow { get; set; }
+
+    int rows => Symbols is not null ? Symbols.Select(r => r.Row).Max() + 1 : 0;
+    int columns => Symbols is not null ? Symbols.Select(r => r.Column).Max() + 1 : 0;
+
+    string cssWrapper => $"symbols-list__wrapper {(rows > 1 ? "symbols-list__wrapper--grid" : "")}";
+    string styleWrapper => rows > 1
+        ? $"grid-template-rows: auto repeat({rows},1fr); grid-template-columns: auto repeat({columns},1fr)"
+        : "";
+
+    string GetSelectRowStyle(int row) => $"grid-row:{row + 2};";
+
+    ToggleableSymbolViewModel? GetSymbol(int row, int column)
+        => Symbols?.Where(r => r.Row == row && r.Column == column).FirstOrDefault();
+
+    async Task AllButtonClick()
+    {
+        if (Symbols is null)
+            return;
+
+        var enable = Symbols.Any(r => !r.IsEnabled);
+        var changed = Symbols.Where(r => r.IsEnabled != enable).ToArray();
+
+        await OnSymbolEnableChanged.InvokeAsync(changed);
+    }
+
+    async Task RowButtonClick(int row)
+    {
+        var symbols = Symbols?.Where(r => r.Row == row).ToList() ?? new();
+        var enable = symbols.Any(r => !r.IsEnabled);
+        var changed = symbols.Where(r => r.IsEnabled != enable).ToArray();
+
+        await OnSymbolEnableChanged.InvokeAsync(changed);
+    }
+
+    async Task SymbolEnabledChanged(ToggleableSymbolViewModel symbol)
+    {
+        await OnSymbolEnableChanged.InvokeAsync(new ToggleableSymbolViewModel[] { symbol });
+    }
+}

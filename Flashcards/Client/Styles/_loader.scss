@@ -1,0 +1,53 @@
+﻿@import 'shared';
+
+.loader__wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-light;
+    opacity: .9;
+    animation-name: fadein;
+    animation-duration: .5s;
+
+    &--immediate {
+        animation: none;
+    }
+}
+
+.loader__spinner {
+    width: 40%;
+    height: 40%;
+    animation: spin 1s infinite;
+}
+
+.loader__spinner-path {
+    fill: $color-secondary;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    to {
+        opacity: .9;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

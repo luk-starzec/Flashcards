@@ -1,0 +1,28 @@
+﻿
+<div class="@css" style="@style">
+
+    <div class="symbol-toggle__original" @onclick="OnClick">
+        @Symbol.Original
+    </div>
+
+    <div class="symbol-toggle__translate">
+        @Symbol.Translate
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public ToggleableSymbolViewModel Symbol { get; set; }
+    [Parameter] public EventCallback<ToggleableSymbolViewModel> OnEnableChanged { get; set; }
+
+    string css => Symbol.IsEnabled
+        ? "symbol-toggle__wrapper symbol-toggle__wrapper--enabled"
+        : "symbol-toggle__wrapper";
+
+    int row => Symbol.Row;
+    int column => Symbol.Column;
+
+    string style => $"grid-row:{row + 2}; grid-column:{column + 2}";
+
+    async Task OnClick() => await OnEnableChanged.InvokeAsync(Symbol);
+}

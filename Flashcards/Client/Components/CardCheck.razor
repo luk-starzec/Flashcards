@@ -1,0 +1,35 @@
+﻿
+<div class="card-check__wrapper">
+
+    <div class="@css" @onclick="OnClick">
+
+        @if (AnswerVisible)
+        {
+            @Answer
+        }
+        else
+        {
+            <span>?</span>
+        }
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public string Answer { get; set; } = string.Empty;
+    [Parameter] public bool IsOriginal { get; set; }
+    [Parameter] public bool AnswerVisible { get; set; }
+    [Parameter] public EventCallback<bool> AnswerVisibleChanged { get; set; }
+
+    string cssText => "card-check__text";
+
+    string cssTextVisible => IsOriginal ? "card-check__answer--original" : "";
+    string css => AnswerVisible ? $"card-check__answer {cssTextVisible}" : "card-check__answer card-check__answer--hidden";
+
+    async Task OnClick()
+    {
+        AnswerVisible = true;
+        await AnswerVisibleChanged.InvokeAsync(AnswerVisible);
+    }
+}

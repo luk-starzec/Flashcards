@@ -1,0 +1,22 @@
+﻿
+<div class="learn-settings__wrapper">
+
+    <h3>LearnSettings</h3>
+
+    <SymbolsList Symbols="@toggleableSymbols" OnSymbolEnableChanged="HandleSymbolEnableChanged" ShowSelectRow="true" />
+
+</div>
+
+@code {
+    [Parameter] public List<SymbolViewModel> Symbols { get; set; }
+    [Parameter] public EventCallback<SymbolViewModel[]> OnSymbolLearnedChanged { get; set; }
+
+    List<ToggleableSymbolViewModel> toggleableSymbols => SymbolConverter.LearnToToggleableSymbol(Symbols);
+
+    async Task HandleSymbolEnableChanged(ToggleableSymbolViewModel[] symbols)
+    {
+        var s = Symbols.Where(r => symbols.Any(rr => rr.Original == r.Original)).ToArray();
+        await OnSymbolLearnedChanged.InvokeAsync(s);
+    }
+
+}

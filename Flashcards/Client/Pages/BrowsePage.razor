@@ -1,0 +1,69 @@
+﻿@page "/browse"
+@inject ICourseService courseService
+
+<PageTitle>Browse</PageTitle>
+
+<div class="browse-page__wrapper">
+
+    @if (symbols is not null)
+    {
+
+        <CardBrowse Symbol="@symbols[index]" />
+
+        @if (prevVisible)
+        {
+            <ButtonNav OnClick="PrevClick" />
+        }
+
+        @if (nextVisible)
+        {
+            <ButtonNav IsNext="true" OnClick="NextClick" />
+        }
+    }
+
+</div>
+
+@code {
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; }
+
+    List<SymbolViewModel>? symbols;
+    CourseViewModel? activeCourse;
+
+    int index = 0;
+    bool nextVisible => symbols is not null && index < symbols.Count - 1;
+    bool prevVisible => index > 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loaderHelper.ShowLoader(true);
+
+        activeCourse = await courseService.GetActiveCourseAsync();
+
+        symbols = await courseService.GetActiveCourseSymbolsAsync();
+
+        var firstNotLearned = symbols.FirstOrDefault(r => !r.Learned);
+        index = firstNotLearned is not null ? symbols.IndexOf(firstNotLearned) : 0;
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task NextClick()
+    {
+        if (symbols is null || activeCourse is null)
+            return;
+
+        var symbol = symbols[index];
+        if (!symbol.Learned)
+        {
+            loaderHelper.ShowLoader();
+            await courseService.SetSymbolLeadnedAsync(activeCourse.Name, new string[] { symbol.Original });
+            loaderHelper.HideLoader();
+        }
+        index++;
+    }
+
+    void PrevClick()
+    {
+        index--;
+    }
+}

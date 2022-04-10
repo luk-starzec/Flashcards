@@ -1,0 +1,24 @@
+﻿
+<div class="quiz-settings__wrapper">
+
+    <h3>QuizSettings</h3>
+
+    <SymbolsList Symbols="@toggleableSymbols" OnSymbolEnableChanged="HandleSymbolEnableChanged" ShowSelectAll="true" ShowSelectRow="true" />
+
+</div>
+
+
+@code {
+    [Parameter] public List<SymbolViewModel> Symbols { get; set; }
+    [Parameter] public CourseViewModel ActiveCourse { get; set; }
+    [Parameter] public EventCallback<SymbolViewModel[]> OnSymbolQuizExcludedChanged { get; set; }
+
+    List<ToggleableSymbolViewModel> toggleableSymbols => SymbolConverter.QuizToToggleableSymbol(Symbols);
+
+    async Task HandleSymbolEnableChanged(ToggleableSymbolViewModel[] symbols)
+    {
+        var s = Symbols.Where(r => symbols.Any(rr => rr.Original == r.Original)).ToArray();
+        await OnSymbolQuizExcludedChanged.InvokeAsync(s);
+    }
+}
+

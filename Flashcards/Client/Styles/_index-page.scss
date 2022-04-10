@@ -1,0 +1,32 @@
+﻿@import 'shared';
+
+.index-page__wrapper {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem;
+    gap: 4rem;
+    height: 100vh;
+    max-height: 800px;
+}
+
+.index-page__button {
+    background-color: $color-dark;
+    color: $color-white;
+    min-width: 10ch;
+    padding: 1rem 2rem;
+    border-radius: .5rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:last-child {
+        align-self: end;
+    }
+
+    &:hover {
+        background-color: $color-black;
+        color: $color-white;
+    }
+}

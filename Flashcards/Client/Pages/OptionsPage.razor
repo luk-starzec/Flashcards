@@ -1,0 +1,208 @@
+﻿@page "/options"
+@inject ICourseService courseService
+
+<PageTitle>Options</PageTitle>
+
+<div class="options-page__wrapper">
+
+    <h3 class="options-page__header">
+        Options
+    </h3>
+
+    <ul class="options-page__list">
+
+        <li class="options-page__list-item">
+
+            <button class="@GetSectionCss(OptionsPageSectionEnum.SelectCourse)"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.SelectCourse)">
+
+                <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+                <span>Select set</span>
+
+            </button>
+
+            @if (IsSectionVisible(OptionsPageSectionEnum.SelectCourse))
+            {
+                <SelectCourse Courses="@courses" OnCourseActivate="HandleCourseActivate" OnCourseDownload="HandleCourseDownload" />
+            }
+        </li>
+
+        <li class="options-page__list-item">
+
+            <button class="@GetSectionCss(OptionsPageSectionEnum.LearnSettings)" disabled="@noActiveCourse"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.LearnSettings)">
+
+                <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+                <span>Learn settings</span>
+
+            </button>
+
+            @if (IsSectionVisible(OptionsPageSectionEnum.LearnSettings))
+            {
+                <LearnSettings Symbols="@symbols" OnSymbolLearnedChanged="HandleSymbolLearnedChanged" />
+            }
+        </li>
+
+        <li class="options-page__list-item">
+
+            <button class="@GetSectionCss(OptionsPageSectionEnum.QuizSettings)" disabled="@noActiveCourse"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.QuizSettings)">
+
+                <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+                <span>Quiz settings</span>
+
+            </button>
+
+            @if (IsSectionVisible(OptionsPageSectionEnum.QuizSettings))
+            {
+                <QuizSettings Symbols="@symbols" OnSymbolQuizExcludedChanged="HandleSymbolQuizExcludedChanged" />
+
+            }
+        </li>
+
+    </ul>
+
+</div>
+
+
+
+@code {
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; }
+
+    List<CourseViewModel>? courses;
+    List<SymbolViewModel>? symbols;
+
+    OptionsPageSectionEnum currentSection;
+
+    bool IsSectionVisible(OptionsPageSectionEnum section) => section == currentSection;
+
+    string GetSectionCss(OptionsPageSectionEnum section)
+        => $"options-page__section-header {(currentSection == section ? "options-page__section-header--active" : "")}";
+
+    bool noActiveCourse => ActiveCourse is null;
+
+    CourseViewModel? ActiveCourse => courses?.FirstOrDefault(r => r.IsActive);
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        loaderHelper.ShowLoader(true);
+
+        var course = await courseService.GetActiveCourseAsync();
+        if (course is not null)
+            courses = new List<CourseViewModel> { course };
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task SectionClick(OptionsPageSectionEnum section)
+    {
+        if (currentSection == section)
+        {
+            currentSection = OptionsPageSectionEnum.None;
+            return;
+        }
+
+        switch (section)
+        {
+            case OptionsPageSectionEnum.SelectCourse:
+                await LoadCourses();
+                break;
+            case OptionsPageSectionEnum.LearnSettings:
+                await LoadSymbols();
+                break;
+            case OptionsPageSectionEnum.QuizSettings:
+                await LoadSymbols();
+                break;
+        }
+        currentSection = section;
+    }
+
+    async Task LoadCourses()
+    {
+        loaderHelper.ShowLoader();
+
+        courses = await courseService.GetCoursesAsync();
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task LoadSymbols()
+    {
+        loaderHelper.ShowLoader();
+
+        var active = ActiveCourse;
+        if (active is null)
+            return;
+
+        symbols = await courseService.GetSymbolsAsync(active.Name);
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task HandleCourseDownload(CourseViewModel course)
+    {
+        loaderHelper.ShowLoader();
+
+        await courseService.DownloadCourseAsync(course);
+
+        course.IsDownloaded = true;
+
+        if (ActiveCourse is null)
+            await HandleCourseActivate(course);
+
+        loaderHelper.HideLoader();
+
+    }
+
+    async Task HandleCourseActivate(CourseViewModel course)
+    {
+        loaderHelper.ShowLoader();
+
+        await courseService.SetActiveCourseAsync(course.Name);
+
+        var active = ActiveCourse;
+        if (active is not null)
+            active.IsActive = false;
+
+        course.IsActive = true;
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task HandleSymbolQuizExcludedChanged(SymbolViewModel[] symbols)
+    {
+        loaderHelper.ShowLoader();
+
+        var courseName = ActiveCourse?.Name ?? string.Empty;
+        var excluded = !symbols.First().QuizExcluded;
+        var originals = symbols.Select(r => r.Original).ToArray();
+
+        await courseService.SetSymbolQuizExcludedAsync(courseName, originals, excluded);
+
+        foreach (var symbol in symbols)
+            symbol.QuizExcluded = excluded;
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task HandleSymbolLearnedChanged(SymbolViewModel[] symbols)
+    {
+        loaderHelper.ShowLoader();
+
+        var courseName = ActiveCourse?.Name ?? string.Empty;
+        var learned = !symbols.First().Learned;
+        var originals = symbols.Select(r => r.Original).ToArray();
+
+        await courseService.SetSymbolLeadnedAsync(courseName, originals, learned);
+
+        foreach (var symbol in symbols)
+            symbol.Learned = learned;
+
+        loaderHelper.HideLoader();
+    }
+
+}

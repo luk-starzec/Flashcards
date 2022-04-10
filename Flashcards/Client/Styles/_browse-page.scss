@@ -1,0 +1,36 @@
+﻿@import 'shared';
+@import 'buttons';
+@import 'cards';
+
+.browse-page__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+        "card card" "prev next";
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+    height: 100vh;
+
+    @media (orientation: landscape) {
+        grid-template-columns: minmax(8rem,auto) 1fr minmax(8rem,auto);
+        grid-template-rows: 1fr;
+        grid-template-areas:
+            "prev card next";
+    }
+}
+
+.card-browse__wrapper {
+    grid-area: card;
+}
+
+.button-nav__wrapper--previous {
+    grid-area: prev;
+    align-self: end;
+}
+
+.button-nav__wrapper--next {
+    grid-area: next;
+    align-self: end;
+}

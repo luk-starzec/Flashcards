@@ -1,0 +1,19 @@
+﻿
+<button class="@css" title="@title" @onclick="HandleClick">
+
+    <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+</button>
+
+@code {
+    [Parameter] public bool IsNext { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    string css => IsNext
+        ? "button-nav__wrapper button-nav__wrapper--next"
+        : "button-nav__wrapper button-nav__wrapper--previous";
+
+    string title => IsNext ? "next" : "previous";
+
+    async Task HandleClick() => await OnClick.InvokeAsync();
+}

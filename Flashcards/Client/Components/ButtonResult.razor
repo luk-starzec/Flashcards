@@ -1,0 +1,23 @@
+﻿
+
+<button class="@css" title="@title" @onclick="HandleClick">
+
+    <SvgIcon SvgUrl=@($"/assets/{icon}") />
+
+</button>
+
+@code {
+    [Parameter] public bool Good { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    string css => Good
+        ? "button-result__wrapper button-result__wrapper--good"
+        : "button-result__wrapper button-result__wrapper--bad";
+
+    string title => Good ? "good" : "bad";
+
+    string icon => Good ? "good-ico.svg" : "bad-ico.svg";
+
+    async Task HandleClick() => await OnClick.InvokeAsync();
+
+}

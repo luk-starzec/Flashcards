@@ -1,0 +1,30 @@
+﻿@page "/results/{SessionId}"
+@inject ICheckService checkService
+
+<h3>Results Page</h3>
+
+SessionId: @SessionId
+
+@if (cards is not null)
+{
+    @foreach (var card in cards)
+    {
+        <div>
+            <span>@card.Original </span>
+            <span>(@card.Translate): </span>
+            <span>@card.Result</span>
+        </div>
+    }
+}
+
+@code {
+    [Parameter] public string SessionId { get; set; }
+
+    List<CardCheckViewModel> cards;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var session = await checkService.GetSessionAsync(SessionId);
+        cards = session.Cards;
+    }
+}

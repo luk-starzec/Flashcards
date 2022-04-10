@@ -1,0 +1,61 @@
+﻿
+<div class="select-course__wrapper">
+
+    @if (Courses is not null)
+    {
+        <ul class="select-course__list">
+
+            @foreach (var course in Courses.OrderByDescending(x => x.IsDownloaded).ThenBy(x => x.Title))
+            {
+                <li class="select-course__list-item">
+
+                    <button class="@GetButtonCss(course)" @onclick="()=>HandleCourseClick(course)">
+
+                        <SvgIcon SvgUrl="@GetButtonIcon(course)" />
+
+                        <span>@course.Title</span>
+
+                    </button>
+
+                </li>
+            }
+
+        </ul>
+    }
+
+</div>
+
+@code {
+    [Parameter] public List<CourseViewModel>? Courses { get; set; }
+    [Parameter] public EventCallback<CourseViewModel> OnCourseActivate { get; set; }
+    [Parameter] public EventCallback<CourseViewModel> OnCourseDownload { get; set; }
+
+    string GetButtonCss(CourseViewModel course)
+        => course.IsDownloaded
+            ? $"select-course__button {(course.IsActive ? "select-course__button--active" : "")}"
+            : "select-course__button select-course__button--download";
+
+    string GetButtonIcon(CourseViewModel course)
+        => course.IsActive
+            ? "/assets/radio-check-ico.svg"
+            : course.IsDownloaded ? "/assets/radio-blank-ico.svg" : "/assets/download-ico.svg";
+
+    async Task HandleCourseClick(CourseViewModel course)
+    {
+        if (course.IsDownloaded)
+            await ActivateCourse(course);
+        else
+            await DownloadCourse(course);
+    }
+
+    async Task ActivateCourse(CourseViewModel course)
+    {
+        if (!course.IsActive)
+            await OnCourseActivate.InvokeAsync(course);
+    }
+
+    async Task DownloadCourse(CourseViewModel course)
+    {
+        await OnCourseDownload.InvokeAsync(course);
+    }
+}

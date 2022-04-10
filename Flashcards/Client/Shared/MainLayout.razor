@@ -1,0 +1,39 @@
+﻿@inherits LayoutComponentBase
+@implements IDisposable
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <CascadingValue Value="@loaderHelper">
+            @Body
+
+            @if (loaderHelper.IsLoaderVisible)
+            {
+                <Loader />
+            }
+        </CascadingValue>
+    </main>
+</div>
+
+@code {
+    LoaderHelper loaderHelper;
+
+    protected override void OnInitialized()
+    {
+        loaderHelper = new LoaderHelper();
+        loaderHelper.VisibilityChanged += LoaderVisibilityChanged;
+    }
+
+    public void Dispose()
+    {
+        loaderHelper.VisibilityChanged -= LoaderVisibilityChanged;
+    }
+
+    void LoaderVisibilityChanged()
+    {
+        StateHasChanged();
+    }
+}

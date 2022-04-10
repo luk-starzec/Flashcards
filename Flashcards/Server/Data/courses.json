@@ -1,0 +1,17 @@
+[
+  {
+    "name": "hiragana",
+    "title": "Hiragana",
+    "version": 1
+  },
+  {
+    "name": "katakana",
+    "title": "Katakana",
+    "version": 1
+  },
+  {
+    "name": "hangul",
+    "title": "Hangul",
+    "version": 1
+  }
+]

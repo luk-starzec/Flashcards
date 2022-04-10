@@ -1,0 +1,83 @@
+﻿@import 'shared';
+
+.card-browse__wrapper {
+    position: relative;
+    height: 25rem;
+    width: 19rem;
+    border-radius: 1rem;
+    box-shadow: 0 .25rem .5rem $color-shadow;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    color: $color-black;
+
+    @media (orientation: landscape) {
+        height: 19rem;
+        width: 25rem;
+    }
+}
+
+.card-browse__translate {
+    font-size: 4rem;
+    position: absolute;
+    top: 0;
+    right: 1.5rem;
+}
+
+.card-browse__original {
+    border-radius: 50%;
+    background-color: $color-light;
+    width: 12rem;
+    height: 12rem;
+    margin-top: 2rem;
+    font-size: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (orientation: landscape) {
+}
+
+@media (orientation: portrait) {
+}
+
+
+.card-check__wrapper {
+    position: relative;
+    height: 25rem;
+    width: 19rem;
+    border-radius: 1rem;
+    box-shadow: 0 .25rem .5rem $color-shadow;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    color: $color-black;
+
+    @media (orientation: landscape) {
+        height: 19rem;
+        width: 25rem;
+    }
+}
+
+.card-check__answer {
+    border-radius: 50%;
+    width: 12rem;
+    height: 12rem;
+    margin-top: 2rem;
+    font-size: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-black;
+
+    &--hidden {
+        background-color: $color-dark;
+        color: $color-white;
+        cursor: pointer;
+    }
+
+    &--original {
+        background-color: $color-light;
+    }
+}

@@ -1,0 +1,29 @@
+﻿@page "/"
+
+<PageTitle>Main menu</PageTitle>
+
+<div class="index-page__wrapper">
+
+    <a href="/browse" class="index-page__button">
+        browse
+    </a>
+
+    <a href="/check" class="index-page__button">
+        check
+    </a>
+
+    <a href="/options" class="index-page__button">
+        options
+    </a>
+
+
+@*    <button @onclick="()=>LoaderHelper.ShowLoader()">show</button>
+    <button @onclick="LoaderHelper.HideLoader">hide</button>
+*@
+
+</div>
+
+@code {
+    [CascadingParameter] LoaderHelper LoaderHelper { get; set; }
+
+}
