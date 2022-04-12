@@ -1,14 +1,14 @@
-﻿@page "/browse"
+﻿@page "/learn"
 @inject ICourseService courseService
 
-<PageTitle>Browse</PageTitle>
+<PageTitle>Learn</PageTitle>
 
-<div class="browse-page__wrapper">
+<div class="learn-page__wrapper">
 
     @if (symbols is not null)
     {
 
-        <CardBrowse Symbol="@symbols[index]" />
+        <LearnCard Symbol="@symbols[index]" />
 
         @if (prevVisible)
         {

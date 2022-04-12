@@ -1,20 +1,20 @@
 ﻿namespace Flashcards.Client.ViewModels;
 
-public class CardCheckViewModel
+public class QuizCardViewModel
 {
     public string Original { get; set; } = default!;
     public string Translate { get; set; } = default!;
-    public bool CheckOriginal { get; set; }
+    public bool QuestionOriginal { get; set; }
     public bool? Result { get; set; }
 
-    public CardCheckViewModel()
+    public QuizCardViewModel()
     { }
 
-    public CardCheckViewModel(string original, string translate, bool checkOriginal)
+    public QuizCardViewModel(string original, string translate, bool questionOriginal)
     {
         Original = original;
         Translate = translate;
-        CheckOriginal = checkOriginal;
+        QuestionOriginal = questionOriginal;
     }
 
 }

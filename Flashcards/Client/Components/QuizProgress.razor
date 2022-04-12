@@ -1,0 +1,34 @@
+﻿
+<div class="quiz-progress__wrapper">
+
+    <div class="quiz-progress__info-wrapper">
+
+        <div class="quiz-progress__info quiz-progress__info--value">
+            @Value
+        </div>
+
+        <div class="quiz-progress__info">
+            /
+        </div>
+
+        <div class="quiz-progress__info quiz-progress__info--max-value">
+            @MaxValue
+        </div>
+
+    </div>
+
+    <div class="quiz-progress__bar-wrapper">
+
+        <div class="quiz-progress__bar" style="@styleBar"></div>
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public int Value { get; set; }
+    [Parameter] public int MaxValue { get; set; }
+
+    int percent => MaxValue == 0 ? 0 : (int)(Value / (float)MaxValue * 100f);
+    string styleBar => $"width: {percent}%";
+}

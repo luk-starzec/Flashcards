@@ -2,7 +2,7 @@
 @import 'buttons';
 @import 'cards';
 
-.browse-page__wrapper {
+.learn-page__wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr auto;
@@ -11,17 +11,17 @@
     gap: 1rem;
     justify-items: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
 
     @media (orientation: landscape) {
-        grid-template-columns: minmax(8rem,auto) 1fr minmax(8rem,auto);
+        grid-template-columns: minmax(7rem,auto) 1fr minmax(7rem,auto);
         grid-template-rows: 1fr;
         grid-template-areas:
             "prev card next";
     }
 }
 
-.card-browse__wrapper {
+.learn-card__wrapper {
     grid-area: card;
 }
 

@@ -1,0 +1,85 @@
+﻿@page "/quiz"
+@inject IQuizService quizService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Check</PageTitle>
+
+<div class="quiz-page__wrapper">
+
+    @if (quiz is not null)
+    {
+        <div class="quiz-page__progress">
+
+            <QuizProgress Value="@(index+1)" MaxValue="@cards.Count" />
+
+        </div>
+
+        <div class="quiz-page__question">
+            @question
+        </div>
+
+        <QuizCard Answer="@answer" AnswerOriginal="@(!card.QuestionOriginal)" @bind-AnswerVisible="answerVisble" />
+
+        @if (answerVisble)
+        {
+            <ButtonResult OnClick="HandleBadClick" />
+            <ButtonResult Good="true" OnClick="HandleGoodClick" />
+        }
+    }
+
+</div>
+
+@code {
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; }
+
+    QuizViewModel? quiz;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loaderHelper.ShowLoader(true);
+
+        quiz = await quizService.PrepareQuizAsync();
+
+        loaderHelper.HideLoader();
+    }
+
+    List<QuizCardViewModel> cards => quiz?.Cards ?? new();
+    int index = 0;
+    QuizCardViewModel card => cards[index];
+
+    bool answerVisble;
+
+    string question => card.QuestionOriginal ? card.Original : card.Translate;
+    string answer => card.QuestionOriginal ? card.Translate : card.Original;
+
+    void HandleAnswerClick()
+    {
+        answerVisble = true;
+    }
+
+    async Task HandleGoodClick()
+    {
+        card.Result = true;
+        await ShowNext();
+    }
+
+    async Task HandleBadClick()
+    {
+        card.Result = false;
+        await ShowNext();
+    }
+
+    async Task ShowNext()
+    {
+        await quizService.SubmitResultAsync(quiz.QuizId, card);
+        if (index < cards.Count - 1)
+        {
+            answerVisble = false;
+            index++;
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/results/{quiz.QuizId}");
+        }
+    }
+}

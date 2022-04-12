@@ -16,7 +16,7 @@ builder.Services.AddDbContextFactory<ClientSideDbContext>(
     options => options.UseSqlite($"Filename={DataSynchronizer.SqliteDbFilename}"));
 builder.Services.AddScoped<DataSynchronizer>();
 
-builder.Services.AddSingleton<ICheckService, CheckService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 
 await builder.Build().RunAsync();

@@ -1,12 +1,10 @@
 ﻿@inherits LayoutComponentBase
 @implements IDisposable
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div class="layout__wrapper">
 
     <main>
+
         <CascadingValue Value="@loaderHelper">
             @Body
 

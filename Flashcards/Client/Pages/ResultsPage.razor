@@ -1,9 +1,9 @@
-﻿@page "/results/{SessionId}"
-@inject ICheckService checkService
+﻿@page "/results/{QuizId}"
+@inject IQuizService quizService
 
 <h3>Results Page</h3>
 
-SessionId: @SessionId
+QuizId: @QuizId
 
 @if (cards is not null)
 {
@@ -17,14 +17,16 @@ SessionId: @SessionId
     }
 }
 
-@code {
-    [Parameter] public string SessionId { get; set; }
+<a href="/">Main menu</a>
 
-    List<CardCheckViewModel> cards;
+@code {
+    [Parameter] public string QuizId { get; set; }
+
+    List<QuizCardViewModel> cards;
 
     protected override async Task OnInitializedAsync()
     {
-        var session = await checkService.GetSessionAsync(SessionId);
+        var session = await quizService.GetQuizAsync(QuizId);
         cards = session.Cards;
     }
 }

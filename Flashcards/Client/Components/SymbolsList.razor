@@ -8,7 +8,9 @@
             <button class="symbols-list__select-button symbols-list__select-button--all" @onclick="AllButtonClick">
                 @for (int column = 0; column < columns; column++)
                 {
-                    <SvgIcon SvgUrl="/assets/next-ico.svg" />
+                    <div>
+                        <SvgIcon SvgUrl="/assets/next-ico.svg" />
+                    </div>
                 }
             </button>
         }

@@ -37,7 +37,7 @@
 
     string GetButtonIcon(CourseViewModel course)
         => course.IsActive
-            ? "/assets/radio-check-ico.svg"
+            ? "/assets/radio-checked-ico.svg"
             : course.IsDownloaded ? "/assets/radio-blank-ico.svg" : "/assets/download-ico.svg";
 
     async Task HandleCourseClick(CourseViewModel course)

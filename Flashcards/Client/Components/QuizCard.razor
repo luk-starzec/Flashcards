@@ -1,5 +1,5 @@
 ﻿
-<div class="card-check__wrapper">
+<div class="quiz-card__wrapper">
 
     <div class="@css" @onclick="OnClick">
 
@@ -18,14 +18,14 @@
 
 @code {
     [Parameter] public string Answer { get; set; } = string.Empty;
-    [Parameter] public bool IsOriginal { get; set; }
+    [Parameter] public bool AnswerOriginal { get; set; }
     [Parameter] public bool AnswerVisible { get; set; }
     [Parameter] public EventCallback<bool> AnswerVisibleChanged { get; set; }
 
-    string cssText => "card-check__text";
+    string cssText => "quiz-card__text";
 
-    string cssTextVisible => IsOriginal ? "card-check__answer--original" : "";
-    string css => AnswerVisible ? $"card-check__answer {cssTextVisible}" : "card-check__answer card-check__answer--hidden";
+    string cssTextVisible => AnswerOriginal ? "quiz-card__answer--original" : "";
+    string css => AnswerVisible ? $"quiz-card__answer {cssTextVisible}" : "quiz-card__answer quiz-card__answer--hidden";
 
     async Task OnClick()
     {

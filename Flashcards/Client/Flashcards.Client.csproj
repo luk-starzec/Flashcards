@@ -17,6 +17,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="wwwroot\assets\close-ico.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\Shared\Flashcards.Shared.csproj" />
 	</ItemGroup>
 

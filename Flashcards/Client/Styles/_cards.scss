@@ -1,6 +1,6 @@
 ﻿@import 'shared';
 
-.card-browse__wrapper {
+.learn-card__wrapper {
     position: relative;
     height: 25rem;
     width: 19rem;
@@ -12,19 +12,19 @@
     color: $color-black;
 
     @media (orientation: landscape) {
-        height: 19rem;
-        width: 25rem;
+        height: min(19rem, 70vmin);
+        width: min(25rem, 50vw);
     }
 }
 
-.card-browse__translate {
+.learn-card__translate {
     font-size: 4rem;
     position: absolute;
     top: 0;
     right: 1.5rem;
 }
 
-.card-browse__original {
+.learn-card__original {
     border-radius: 50%;
     background-color: $color-light;
     width: 12rem;
@@ -43,10 +43,10 @@
 }
 
 
-.card-check__wrapper {
+.quiz-card__wrapper {
     position: relative;
-    height: 25rem;
-    width: 19rem;
+    height: min(25rem, 80vw);
+    width: min(19rem, 65vmin);
     border-radius: 1rem;
     box-shadow: 0 .25rem .5rem $color-shadow;
     display: grid;
@@ -55,12 +55,12 @@
     color: $color-black;
 
     @media (orientation: landscape) {
-        height: 19rem;
-        width: 25rem;
+        height: min(19rem, 70vmin);
+        width: min(25rem, 50vw);
     }
 }
 
-.card-check__answer {
+.quiz-card__answer {
     border-radius: 50%;
     width: 12rem;
     height: 12rem;

@@ -1,13 +1,23 @@
 ﻿@page "/options"
 @inject ICourseService courseService
+@inject IQuizService quizService
+@inject NavigationManager navigationManager
 
 <PageTitle>Options</PageTitle>
 
 <div class="options-page__wrapper">
 
-    <h3 class="options-page__header">
-        Options
-    </h3>
+    <div class="options-page__header">
+
+        <h3>
+            Options
+        </h3>
+
+        <button class="options-page__close-button" @onclick="HandleCloseClick">
+            <SvgIcon SvgUrl="assets/close-ico.svg" />
+        </button>
+
+    </div>
 
     <ul class="options-page__list">
 
@@ -56,10 +66,10 @@
 
             </button>
 
-            @if (IsSectionVisible(OptionsPageSectionEnum.QuizSettings))
+            @if (IsSectionVisible(OptionsPageSectionEnum.QuizSettings) && symbols is not null && quizSettings is not null)
             {
-                <QuizSettings Symbols="@symbols" OnSymbolQuizExcludedChanged="HandleSymbolQuizExcludedChanged" />
-
+                <QuizSettings Settings="@quizSettings" Symbols="@symbols"
+                          OnSymbolQuizExcludedChanged="HandleSymbolQuizExcludedChanged" OnSettingsChanged="HandleQuizSettingsChanged" />
             }
         </li>
 
@@ -74,6 +84,7 @@
 
     List<CourseViewModel>? courses;
     List<SymbolViewModel>? symbols;
+    QuizSettingsViewModel? quizSettings;
 
     OptionsPageSectionEnum currentSection;
 
@@ -116,6 +127,7 @@
                 break;
             case OptionsPageSectionEnum.QuizSettings:
                 await LoadSymbols();
+                await LoadQuizSettings();
                 break;
         }
         currentSection = section;
@@ -139,6 +151,15 @@
             return;
 
         symbols = await courseService.GetSymbolsAsync(active.Name);
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task LoadQuizSettings()
+    {
+        loaderHelper.ShowLoader();
+
+        quizSettings = await quizService.GetSettingsAsync();
 
         loaderHelper.HideLoader();
     }
@@ -205,4 +226,17 @@
         loaderHelper.HideLoader();
     }
 
+    async Task HandleQuizSettingsChanged(QuizSettingsViewModel quizSettings)
+    {
+        loaderHelper.ShowLoader();
+
+        await quizService.SetSettingsAsync(quizSettings);
+
+        loaderHelper.HideLoader();
+    }
+
+    void HandleCloseClick()
+    {
+        navigationManager.NavigateTo("/");
+    }
 }

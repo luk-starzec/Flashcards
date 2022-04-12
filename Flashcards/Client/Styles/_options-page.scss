@@ -4,11 +4,38 @@
 }
 
 .options-page__header {
-    margin: 0;
     padding: 1rem;
-    text-align: center;
     color: $color-secondary;
-    font-size: 2rem;
+    display: flex;
+    align-items: center;
+
+    h3 {
+        margin: 0 -2.5rem 0 0;
+        font-size: 2rem;
+        text-align: center;
+        flex-grow: 1;
+    }
+}
+
+.options-page__close-button {
+    border: none;
+    margin-right: 1rem;
+    background-color: $color-white;
+
+    svg {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+    path {
+        fill: $color-secondary;
+    }
+
+    &:hover {
+        path {
+            fill: $color-dark;
+        }
+    }
 }
 
 .options-page__list {
@@ -79,7 +106,6 @@
     svg {
         width: 1rem;
         height: 1rem;
-        margin-bottom: 1.5rem;
     }
 
     &:hover {
@@ -89,21 +115,28 @@
 
     &--row {
         grid-column: 1;
-        height: 5rem;
+        height: 3.5rem;
+        border-radius: 0 .5rem .5rem 0;
     }
 
     &--all {
         grid-column: 2/-1;
-        width: 100%;
+        width: calc(100% - .5rem);
         height: 2rem;
         display: flex;
         gap: 1rem;
         align-items: center;
+        border-radius: 0 0 .5rem .5rem;
+
+        div {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         svg {
             transform: rotate(90deg);
-            flex-grow: 1;
-            margin: 0;
         }
     }
 }
@@ -201,4 +234,79 @@
             fill: $color-secondary;
         }
     }
+}
+
+.quiz-settings__wrapper {
+    font-size: 1.75rem;
+    color: $color-dark;
+}
+
+.quiz-settings__section {
+    border-bottom: 1px solid $color-secondary;
+    text-align: center;
+
+    &--cards {
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-template-columns: 1fr 1fr 1fr;
+
+        span {
+            grid-column: 1/-1;
+        }
+    }
+}
+
+.quiz-settings__checkbox {
+    display: grid;
+    grid-template-columns: 3fr 4fr;
+    align-items: center;
+    width: 100%;
+    padding: .5rem 2rem;
+    border: none;
+    color: $color-dark;
+    background-color: $color-white;
+
+    svg {
+        height: 1.5rem;
+        justify-self: end;
+        margin-right: 2rem;
+    }
+
+    path {
+        fill: $color-dark;
+    }
+
+    span {
+        justify-self: start;
+    }
+
+    &:hover {
+        background-color: $color-light;
+    }
+
+    &--active{
+        font-weight: bold;
+    }
+}
+
+.quiz-settings__button {
+    margin: .5rem 2rem 1rem 2rem;
+    border: none;
+    border-radius: .5rem;
+    color: $color-dark;
+    background-color: $color-light;
+
+    &--active {
+        background-color: $color-dark;
+        color: $color-white;
+    }
+
+    &:hover {
+        background-color: $color-secondary;
+    }
+}
+
+.quiz-settings__exclude-header {
+    display: block;
+    margin-block: .5rem .25rem;
 }
