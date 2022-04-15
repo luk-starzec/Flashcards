@@ -1,0 +1,44 @@
+﻿
+<div class="quiz-score__wrapper">
+
+    <div class="quiz-score__number">
+        @number
+    </div>
+
+    <div class="quiz-score__stars">
+
+        @for (int i = 0; i < 3; i++)
+        {
+            int index = i;
+            <SvgIcon SvgUrl="@GetStarIcon(index)" />
+        }
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public int Total { get; set; }
+    [Parameter] public int Good { get; set; }
+
+    string number => $"{Good}/{Total}";
+    int stars => CalculateStars();
+
+    string GetStarIcon(int index) => stars > index ? "/assets/star-ico.svg" : "/assets/star-blank-ico.svg";
+
+    int CalculateStars()
+    {
+        if (Total == 0)
+            return 0;
+
+        var percent = Good / (decimal)Total * 100m;
+
+        if (percent >= 90)
+            return 3;
+        if (percent >= 60)
+            return 2;
+        if (percent >= 30)
+            return 1;
+
+        return 0;
+    }
+}

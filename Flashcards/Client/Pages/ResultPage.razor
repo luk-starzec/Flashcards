@@ -1,0 +1,68 @@
+﻿@page "/result/{QuizId}"
+@inject IQuizService quizService
+
+<div class="result-page__wrapper">
+
+    <QuizScore Total="@totalCards" Good="@goodCards" />
+
+    <a href="/quiz" class="result-page__button result-page__button--restart">
+        <SvgIcon SvgUrl="/assets/restart-ico.svg" />
+    </a>
+
+    <a href="/" class="result-page__button result-page__button--close">
+        <SvgIcon SvgUrl="/assets/close-ico.svg" />
+    </a>
+
+    <div class="result-page__details-wrapper">
+
+        <button class="@cssDetailsHeader" @onclick="()=>detailsVisible=!detailsVisible">
+
+            <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+            <span>Details</span>
+
+        </button>
+
+        @if (detailsVisible)
+        {
+            @if (cards is not null)
+            {
+                @foreach (var card in cards)
+                {
+                    @*                    <div>
+                        <span>@card.Original </span>
+                        <span>(@card.Translate): </span>
+                        <span>@card.Result</span>
+                        </div>
+                    *@
+                    <ResultItem Card="@card" />
+                }
+            }
+
+        }
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public string QuizId { get; set; }
+
+    List<QuizCardViewModel>? cards;
+
+    int totalCards => cards?.Count ?? 0;
+    int goodCards => cards?.Where(r => r.Result == true).Count() ?? 0;
+
+    bool detailsVisible;
+
+    string cssDetailsHeader => detailsVisible
+        ? "result-page__details-header result-page__details-header--active"
+        : "result-page__details-header";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var session = await quizService.GetQuizAsync(QuizId);
+        cards = session.Cards;
+    }
+
+}

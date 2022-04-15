@@ -28,7 +28,7 @@
 
                 <SvgIcon SvgUrl="/assets/next-ico.svg" />
 
-                <span>Select set</span>
+                <span>Select course</span>
 
             </button>
 
@@ -73,6 +73,23 @@
             }
         </li>
 
+        <li class="options-page__list-item">
+
+            <button class="@GetSectionCss(OptionsPageSectionEnum.Language)"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.Language)">
+
+                <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+                <span>Language</span>
+
+            </button>
+
+            @if (IsSectionVisible(OptionsPageSectionEnum.Language))
+            {
+                <SelectLanguage Language="@currentLanguage" OnLanguageSelected="HandleLanguageSelected" />
+            }
+        </li>
+
     </ul>
 
 </div>
@@ -97,6 +114,7 @@
 
     CourseViewModel? ActiveCourse => courses?.FirstOrDefault(r => r.IsActive);
 
+    LanguageEnum currentLanguage = LanguageEnum.English;
 
     protected override async Task OnInitializedAsync()
     {
@@ -128,6 +146,9 @@
             case OptionsPageSectionEnum.QuizSettings:
                 await LoadSymbols();
                 await LoadQuizSettings();
+                break;
+            case OptionsPageSectionEnum.Language:
+                // TODO
                 break;
         }
         currentSection = section;
@@ -231,6 +252,16 @@
         loaderHelper.ShowLoader();
 
         await quizService.SetSettingsAsync(quizSettings);
+
+        loaderHelper.HideLoader();
+    }
+
+    void HandleLanguageSelected(LanguageEnum language)
+    {
+        loaderHelper.ShowLoader();
+
+        // TODO
+        currentLanguage = language;
 
         loaderHelper.HideLoader();
     }

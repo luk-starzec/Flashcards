@@ -19,7 +19,6 @@
 
 .options-page__close-button {
     border: none;
-    margin-right: 1rem;
     background-color: $color-white;
 
     svg {
@@ -89,6 +88,7 @@
 
 .symbols-list__wrapper {
     display: flex;
+    margin-bottom: 1rem;
 
     &--grid {
         display: grid;
@@ -254,6 +254,10 @@
             grid-column: 1/-1;
         }
     }
+
+    &:last-child {
+        border-bottom: none;
+    }
 }
 
 .quiz-settings__checkbox {
@@ -284,7 +288,7 @@
         background-color: $color-light;
     }
 
-    &--active{
+    &--active {
         font-weight: bold;
     }
 }
@@ -309,4 +313,44 @@
 .quiz-settings__exclude-header {
     display: block;
     margin-block: .5rem .25rem;
+}
+
+.select-language__list {
+    margin: 0;
+    padding: 0;
+    font-size: 2rem;
+}
+
+.select-language__list-item {
+    list-style: none;
+    border-bottom: 1px solid $color-secondary;
+}
+
+.select-language__button {
+    display: grid;
+    grid-template-columns: 4fr 5fr;
+    align-items: center;
+    width: 100%;
+    padding: .5rem 2rem;
+    border: none;
+    color: $color-dark;
+    background-color: $color-white;
+
+    svg {
+        margin-right: 2.5rem;
+        height: 1.5rem;
+        justify-self: end;
+    }
+
+    span {
+        justify-self: start;
+    }
+
+    path {
+        fill: $color-dark;
+    }
+
+    &--active {
+        font-weight: bold;
+    }
 }

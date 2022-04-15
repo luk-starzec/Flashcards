@@ -3,6 +3,7 @@
 @import 'cards';
 
 .learn-page__wrapper {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr auto;
@@ -14,10 +15,29 @@
     height: 100%;
 
     @media (orientation: landscape) {
-        grid-template-columns: minmax(7rem,auto) 1fr minmax(7rem,auto);
+        grid-template-columns: minmax(auto, 7rem) 1fr minmax(auto, 7rem);
         grid-template-rows: 1fr;
         grid-template-areas:
             "prev card next";
+    }
+}
+
+.result-page__close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+
+    svg {
+        height: 2rem;
+        width: 2rem;
+        fill: $color-secondary;
+    }
+
+    &:hover {
+        svg {
+            fill: $color-dark;
+        }
     }
 }
 

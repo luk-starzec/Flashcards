@@ -45,10 +45,16 @@
     max-width: 25rem;
     align-self: start;
     padding-inline: 1rem;
+    margin-top: .5rem;
 
     @media (orientation: landscape) {
-        margin-top: 2rem;
+        margin-top: 1rem;
         padding-right: 0rem;
+    }
+
+    @media (max-width: 400px) {
+        width: calc(100% - 5rem);
+        margin-right: 1rem;
     }
 }
 
@@ -57,10 +63,56 @@
     color: $color-black;
     font-size: 4rem;
     align-self: end;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--original {
+        background-color: $color-light;
+    }
 
     @media (orientation: landscape) {
         align-self: start;
-        margin-right: 20%;
+        justify-self: center;
+        margin-right: 2vw;
+        margin-top: 2rem;
+    }
+}
+
+.quiz-page__close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: none;
+    background: none;
+
+    svg {
+        height: 2rem;
+        width: 2rem;
+        fill: $color-secondary;
+    }
+
+    &:hover {
+        svg {
+            fill: $color-dark;
+        }
+    }
+
+    @media (orientation: landscape) {
+        top: .5rem;
+        right: .5rem;
+    }
+
+    @media (max-height: 400px), (max-width: 400px) {
+        top: .25rem;
+        right: .25rem;
+
+        svg {
+            fill: $color-light;
+        }
     }
 }
 

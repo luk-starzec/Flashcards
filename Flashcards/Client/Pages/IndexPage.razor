@@ -4,26 +4,38 @@
 
 <div class="index-page__wrapper">
 
-    <a href="/learn" class="index-page__button">
+    <dic class="index-page__logo">
+        <SvgIcon SvgUrl="/assets/logo.svg" />
+    </dic>
+
+    <button class="index-page__theme-toggle" @onclick="ThemeToggleClick">
+        <SvgIcon SvgUrl="@iconTheme" />
+    </button>
+
+    <a href="/learn" class="index-page__button index-page__button--learn">
         learn
     </a>
 
-    <a href="/quiz" class="index-page__button">
+    <a href="/quiz" class="index-page__button index-page__button--quiz">
         quiz
     </a>
 
-    <a href="/options" class="index-page__button">
+    <a href="/options" class="index-page__button index-page__button--options">
         options
     </a>
 
-
-@*    <button @onclick="()=>LoaderHelper.ShowLoader()">show</button>
-    <button @onclick="LoaderHelper.HideLoader">hide</button>
-*@
 
 </div>
 
 @code {
     [CascadingParameter] LoaderHelper LoaderHelper { get; set; }
 
+    bool darkMode;
+    string iconTheme => darkMode ? "/assets/sun-ico.svg" : "/assets/moon-ico.svg";
+
+    void ThemeToggleClick()
+    {
+        // TODO
+        darkMode = !darkMode;
+    }
 }

@@ -1,0 +1,28 @@
+﻿
+<div class="result-item__wrapper">
+
+    <div class="result-item__icon">
+        @if (Card.Result == false)
+        {
+            <SvgIcon SvgUrl="/assets/bad-ico.svg" />
+        }
+    </div>
+
+    <div class="@cssText">
+        <span>@text1</span>
+        <span> 🠖 </span>
+        <span>@text2</span>
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public QuizCardViewModel Card { get; set; }
+
+    string cssText => Card.Result == true
+        ? "result-item__text"
+        : "result-item__text result-item__text--bad";
+
+    string text1 => Card.QuestionOriginal ? Card.Original : Card.Translate;
+    string text2 => Card.QuestionOriginal ? Card.Translate : Card.Original;
+}

@@ -2,7 +2,7 @@
 @inject IQuizService quizService
 @inject NavigationManager NavigationManager
 
-<PageTitle>Check</PageTitle>
+<PageTitle>Quiz</PageTitle>
 
 <div class="quiz-page__wrapper">
 
@@ -14,7 +14,7 @@
 
         </div>
 
-        <div class="quiz-page__question">
+        <div class="@cssQuestion">
             @question
         </div>
 
@@ -29,10 +29,29 @@
 
 </div>
 
+<button class="quiz-page__close-button" @onclick="HandleCloseClick">
+
+    <SvgIcon SvgUrl="/assets/close-ico.svg" />
+
+</button>
+
 @code {
     [CascadingParameter] LoaderHelper loaderHelper { get; set; }
 
     QuizViewModel? quiz;
+
+    List<QuizCardViewModel> cards => quiz?.Cards ?? new();
+    int index = 0;
+    QuizCardViewModel card => cards[index];
+
+    bool answerVisble;
+
+    string question => card.QuestionOriginal ? card.Original : card.Translate;
+    string answer => card.QuestionOriginal ? card.Translate : card.Original;
+
+    string cssQuestion => card?.QuestionOriginal == true
+        ? "quiz-page__question quiz-page__question--original"
+        : "quiz-page__question";
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,14 +62,12 @@
         loaderHelper.HideLoader();
     }
 
-    List<QuizCardViewModel> cards => quiz?.Cards ?? new();
-    int index = 0;
-    QuizCardViewModel card => cards[index];
+    void HandleCloseClick()
+    {
+        // TODO confirm
+        NavigationManager.NavigateTo($"/");
 
-    bool answerVisble;
-
-    string question => card.QuestionOriginal ? card.Original : card.Translate;
-    string answer => card.QuestionOriginal ? card.Translate : card.Original;
+    }
 
     void HandleAnswerClick()
     {
@@ -79,7 +96,7 @@
         }
         else
         {
-            NavigationManager.NavigateTo($"/results/{quiz.QuizId}");
+            NavigationManager.NavigateTo($"/result/{quiz.QuizId}");
         }
     }
 }

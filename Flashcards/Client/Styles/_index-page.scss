@@ -2,31 +2,90 @@
 
 .index-page__wrapper {
     display: grid;
-    grid-template-rows: auto auto 1fr;
-    align-items: center;
-    justify-content: center;
-    padding: 8rem;
+    grid-template-rows: auto 1fr 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+        "logo theme" "learn learn""quiz quiz" "options options";
+    padding: 2rem;
     gap: 4rem;
-    height: 100vh;
-    max-height: 800px;
+    height: 100%;
+
+    @media (max-height: 400px) {
+        grid-template-rows: auto 1fr 1fr;
+        grid-template-areas:
+            "logo theme" "learn ." "quiz options";
+        row-gap: 2rem;
+    }
+}
+
+.index-page__logo {
+    grid-area: logo;
+
+    svg {
+        width: 5rem;
+        height: 5rem;
+    }
+}
+
+.index-page__theme-toggle {
+    grid-area: theme;
+    justify-self: end;
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    border-radius: 50%;
+    background-color: $color-secondary;
+    box-shadow: 0 2px 4px 2px $color-shadow-light;
+
+    svg {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    path {
+        fill: $color-white;
+    }
+
+    ellipse {
+        fill: $color-white;
+    }
+
+    &:hover {
+        background-color: $color-dark;
+    }
 }
 
 .index-page__button {
+    grid-column: 1/-1;
+    justify-self: center;
     background-color: $color-dark;
     color: $color-white;
-    min-width: 10ch;
+    width: clamp(7ch, 80%, 30rem);
     padding: 1rem 2rem;
     border-radius: .5rem;
+    font-size: 2rem;
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+    box-shadow: 0 .25rem .5rem $color-shadow;
 
-    &:last-child {
+    &--learn {
+        grid-area: learn;
+        align-self: end;
+    }
+
+    &--quiz {
+        grid-area: quiz;
+        align-self: start;
+    }
+
+    &--options {
+        grid-area: options;
         align-self: end;
     }
 
     &:hover {
-        background-color: $color-black;
-        color: $color-white;
+        background-color: $color-secondary;
+        color: $color-black;
     }
 }

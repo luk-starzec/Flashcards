@@ -4,5 +4,6 @@ public enum OptionsPageSectionEnum
     None,
     SelectCourse,
     LearnSettings,
-    QuizSettings
+    QuizSettings,
+    Language
 }

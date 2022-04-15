@@ -3,6 +3,7 @@
 @import 'index-page';
 @import 'learn-page';
 @import 'quiz-page';
+@import 'result-page';
 @import 'options-page';
 @import 'loader';
 
@@ -13,8 +14,8 @@ body {
 }
 
 main {
-    position: relative;
-    margin-inline: auto;
+/*    position: relative;
+*/    margin-inline: auto;
     background-color: $color-white;
     max-width: 800px;
     width: 100%;

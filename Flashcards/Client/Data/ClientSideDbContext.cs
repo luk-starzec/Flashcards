@@ -7,7 +7,7 @@ internal class ClientSideDbContext : DbContext
     public DbSet<Forecast> Forecasts { get; set; } = default!;
     public DbSet<Course> Courses { get; set; } = default!;
     public DbSet<Symbol> Symbols { get; set; } = default!;
-    public DbSet<QuizOptions> QuizOptions { get; set; } = default!;
+    public DbSet<ApplicationSettings> ApplicationSettings { get; set; } = default!;
 
     public ClientSideDbContext(DbContextOptions<ClientSideDbContext> options)
         : base(options)
@@ -35,10 +35,10 @@ internal class ClientSideDbContext : DbContext
             entity.HasKey(e => new { e.CourseName, e.Original });
         });
 
-        modelBuilder.Entity<QuizOptions>(entity =>
+        modelBuilder.Entity<ApplicationSettings>(entity =>
         {
-            entity.ToTable("QuizOptions");
-            entity.HasKey(e => e.Id);
+            entity.ToTable("ApplicationSettings");
+            entity.HasKey(e => e.Name);
         });
 
         modelBuilder.Entity<Forecast>().HasData(InitForecasts());

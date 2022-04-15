@@ -101,11 +101,15 @@ internal class CourseService : ICourseService
 
             var symbols = await db.Symbols
                 .Include(r => r.Course)
-                .Where(r => r.Course.IsActive)
                 .Select(r => SymbolConverter.RowToSymbol(r))
                 .ToListAsync();
 
-            return symbols;
+            var sorted = symbols
+                .OrderBy(r => r.Row)
+                .ThenBy(r => r.Column)
+                .ToList();
+
+            return sorted;
         }
         catch (Exception)
         {
@@ -171,8 +175,6 @@ internal class CourseService : ICourseService
     {
         try
         {
-            //var symbols = await _httpClient.GetFromJsonAsync<List<SymbolOptionsModel>>($"api/course/{courseName}/symbols") ?? new();
-
             using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
 
             var symbols = await db.Symbols.Where(r => r.CourseName == courseName).ToArrayAsync();

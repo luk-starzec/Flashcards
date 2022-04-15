@@ -1,0 +1,55 @@
+﻿
+<div class="select-language__wrapper">
+
+    <ul class="select-language__list">
+
+        @foreach (LanguageEnum language in Enum.GetValues(typeof(LanguageEnum)))
+        {
+            <li class="select-language__list-item">
+
+                <button class="@GetButtonCss(language)" @onclick="()=>HandleClick(language)">
+
+                    <SvgIcon SvgUrl="@GetButtonIcon(language)" />
+
+                    <span>@GetButtonText(language)</span>
+
+                </button>
+
+            </li>
+        }
+
+    </ul>
+
+</div>
+
+@code {
+    [Parameter] public LanguageEnum Language { get; set; }
+    [Parameter] public EventCallback<LanguageEnum> OnLanguageSelected { get; set; }
+
+    string GetButtonCss(LanguageEnum language)
+        => language == Language
+            ? $"select-language__button select-language__button--active"
+            : "select-language__button";
+
+    string GetButtonIcon(LanguageEnum language)
+        => language == Language
+            ? "/assets/radio-checked-ico.svg"
+            : "/assets/radio-blank-ico.svg";
+
+    string GetButtonText(LanguageEnum language)
+    {
+        switch (language)
+        {
+            case LanguageEnum.English:
+                return "English";
+            case LanguageEnum.Polish:
+                return "Polski";
+            default:
+                return "";
+        }
+    }
+    async Task HandleClick(LanguageEnum language)
+    {
+        await OnLanguageSelected.InvokeAsync(language);
+    }
+}

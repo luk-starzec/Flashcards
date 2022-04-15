@@ -2,21 +2,16 @@
 using Flashcards.Client.Helpers;
 using Flashcards.Client.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Flashcards.Client.Services;
 
 internal class QuizService : IQuizService
 {
+    private const string QUIZ_SETTINGS_NAME = "QuizSettings";
     private readonly DataSynchronizer _dataSynchronizer;
     private readonly ICourseService _courseService;
     private readonly Random rnd = new Random();
-
-    List<QuizCardViewModel> testCards = new()
-    {
-        new QuizCardViewModel("AA", "aa", true),
-        new QuizCardViewModel("BB", "bb", true),
-        new QuizCardViewModel("CC", "cc", true),
-    };
 
     Dictionary<string, QuizViewModel> sessions = new();
 
@@ -37,24 +32,27 @@ internal class QuizService : IQuizService
     {
         using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
 
-        var row = await db.QuizOptions.FirstOrDefaultAsync();
+        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == QUIZ_SETTINGS_NAME);
 
-        return row is not null ? new QuizSettingsViewModel(row) : new();
+        if (row?.JsonValue is null)
+            return new();
+
+        var settings = JsonSerializer.Deserialize<QuizSettingsViewModel>(row.JsonValue) ?? new();
+        return settings;
     }
 
     public async Task SetSettingsAsync(QuizSettingsViewModel settings)
     {
         using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
 
-        var row = await db.QuizOptions.FirstOrDefaultAsync();
+        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == QUIZ_SETTINGS_NAME);
         if (row is null)
         {
-            row = new();
-            db.QuizOptions.Add(row);
+            row = new() { Name = QUIZ_SETTINGS_NAME };
+            db.ApplicationSettings.Add(row);
         }
-        row.QuizMode = (int)settings.QuizMode;
-        row.CardCount = settings.CardCount;
-        row.OnlyLearned = settings.OnlyLearned;
+        var json = JsonSerializer.Serialize(settings);
+        row.JsonValue = json;
 
         await db.SaveChangesAsync();
     }
