@@ -1,9 +1,9 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&family=Noto+Sans:wght@100;300;400;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
 .index-page__wrapper {
   display: grid;
   grid-template-rows: auto 1fr 1fr 1fr;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas: "logo theme" "learn learn" "quiz quiz" "options options";
+  grid-template-areas: "logo theme" "learn learn" "quiz quiz" "settings settings";
   padding: 2rem;
   gap: 4rem;
   height: 100%;
@@ -11,7 +11,7 @@
 @media (max-height: 400px) {
   .index-page__wrapper {
     grid-template-rows: auto 1fr 1fr;
-    grid-template-areas: "logo theme" "learn ." "quiz options";
+    grid-template-areas: "logo theme" "learn ." "quiz settings";
     row-gap: 2rem;
   }
 }
@@ -70,8 +70,8 @@
   grid-area: quiz;
   align-self: start;
 }
-.index-page__button--options {
-  grid-area: options;
+.index-page__button--settings {
+  grid-area: settings;
   align-self: end;
 }
 .index-page__button:hover {
@@ -743,44 +743,44 @@
   justify-self: start;
 }
 
-.options-page__header {
+.settings-page__header {
   padding: 1rem;
   color: #adc7eb;
   display: flex;
   align-items: center;
 }
-.options-page__header h3 {
+.settings-page__header h3 {
   margin: 0 -2.5rem 0 0;
   font-size: 2rem;
   text-align: center;
   flex-grow: 1;
 }
 
-.options-page__close-button {
+.settings-page__close-button {
   border: none;
   background-color: white;
 }
-.options-page__close-button svg {
+.settings-page__close-button svg {
   height: 1.5rem;
   width: 1.5rem;
 }
-.options-page__close-button path {
+.settings-page__close-button path {
   fill: #adc7eb;
 }
-.options-page__close-button:hover path {
+.settings-page__close-button:hover path {
   fill: #1f457a;
 }
 
-.options-page__list {
+.settings-page__list {
   margin: 0;
   padding: 0;
 }
 
-.options-page__list-item {
+.settings-page__list-item {
   list-style: none;
 }
 
-.options-page__section-header {
+.settings-page__section-header {
   display: flex;
   align-items: center;
   width: 100%;
@@ -793,24 +793,24 @@
   stroke: #1f457a;
   font-size: 2rem;
 }
-.options-page__section-header svg {
+.settings-page__section-header svg {
   width: 2rem;
   height: 2rem;
   margin-inline: 1rem;
 }
-.options-page__section-header span {
+.settings-page__section-header span {
   flex-grow: 1;
   margin-right: 4rem;
 }
-.options-page__section-header--active {
+.settings-page__section-header--active {
   background-color: #1f457a;
   color: white;
   stroke: white;
 }
-.options-page__section-header--active svg {
+.settings-page__section-header--active svg {
   transform: rotate(90deg);
 }
-.options-page__section-header:disabled {
+.settings-page__section-header:disabled {
   color: #adc7eb;
   stroke: #adc7eb;
 }
@@ -942,28 +942,28 @@
   fill: #adc7eb;
 }
 
-.quiz-settings__wrapper {
+.quiz-options__wrapper {
   font-size: 1.75rem;
   color: #1f457a;
 }
 
-.quiz-settings__section {
+.quiz-options__section {
   border-bottom: 1px solid #adc7eb;
   text-align: center;
 }
-.quiz-settings__section--cards {
+.quiz-options__section--cards {
   display: grid;
   grid-template-rows: auto auto;
   grid-template-columns: 1fr 1fr 1fr;
 }
-.quiz-settings__section--cards span {
+.quiz-options__section--cards span {
   grid-column: 1/-1;
 }
-.quiz-settings__section:last-child {
+.quiz-options__section:last-child {
   border-bottom: none;
 }
 
-.quiz-settings__checkbox {
+.quiz-options__checkbox {
   display: grid;
   grid-template-columns: 3fr 4fr;
   align-items: center;
@@ -973,40 +973,40 @@
   color: #1f457a;
   background-color: white;
 }
-.quiz-settings__checkbox svg {
+.quiz-options__checkbox svg {
   height: 1.5rem;
   justify-self: end;
   margin-right: 2rem;
 }
-.quiz-settings__checkbox path {
+.quiz-options__checkbox path {
   fill: #1f457a;
 }
-.quiz-settings__checkbox span {
+.quiz-options__checkbox span {
   justify-self: start;
 }
-.quiz-settings__checkbox:hover {
+.quiz-options__checkbox:hover {
   background-color: #f3f7fc;
 }
-.quiz-settings__checkbox--active {
+.quiz-options__checkbox--active {
   font-weight: bold;
 }
 
-.quiz-settings__button {
+.quiz-options__button {
   margin: 0.5rem 2rem 1rem 2rem;
   border: none;
   border-radius: 0.5rem;
   color: #1f457a;
   background-color: #f3f7fc;
 }
-.quiz-settings__button--active {
+.quiz-options__button--active {
   background-color: #1f457a;
   color: white;
 }
-.quiz-settings__button:hover {
+.quiz-options__button:hover {
   background-color: #adc7eb;
 }
 
-.quiz-settings__exclude-header {
+.quiz-options__exclude-header {
   display: block;
   margin-block: 0.5rem 0.25rem;
 }
@@ -1093,6 +1093,59 @@
     transform: rotate(360deg);
   }
 }
+.confirm-dialog__mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f3f7fc;
+  opacity: 0.95;
+}
+
+.confirm-dialog__wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  min-width: 30ch;
+  padding: 1.5rem 2rem;
+  border-radius: 0.5rem;
+  font-family: "Noto Sans";
+  background-color: white;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.confirm-dialog__message {
+  grid-column: 1/-1;
+  text-align: center;
+  color: #1f457a;
+}
+
+.confirm-dialog__button {
+  border: none;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.15);
+}
+.confirm-dialog__button--confirm {
+  grid-column: 1;
+  background-color: #1f457a;
+  color: white;
+}
+.confirm-dialog__button--cancel {
+  grid-column: 2;
+  background-color: #adc7eb;
+  color: #1f457a;
+}
+.confirm-dialog__button:hover {
+  background-color: #142e52;
+  color: white;
+}
+
 body {
   background-color: white;
   font-family: "Noto Sans JP", sans-serif;
@@ -1100,8 +1153,6 @@ body {
 }
 
 main {
-  /*    position: relative;
-  */
   margin-inline: auto;
   background-color: white;
   max-width: 800px;

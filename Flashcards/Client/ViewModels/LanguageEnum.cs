@@ -2,7 +2,7 @@
 {
     public enum LanguageEnum
     {
-        English,
-        Polish
+        English = 1,
+        Polish = 2
     }
 }

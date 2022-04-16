@@ -1,34 +1,36 @@
-﻿@page "/options"
+﻿@page "/settings"
 @inject ICourseService courseService
 @inject IQuizService quizService
+@inject ILanguageService languageService;
 @inject NavigationManager navigationManager
+@inject IStringLocalizer<Resource> localizer
 
-<PageTitle>Options</PageTitle>
+<PageTitle>@localizer["Res_Settings"]</PageTitle>
 
-<div class="options-page__wrapper">
+<div class="settings-page__wrapper">
 
-    <div class="options-page__header">
+    <div class="settings-page__header">
 
         <h3>
-            Options
+            @localizer["Res_Settings"]
         </h3>
 
-        <button class="options-page__close-button" @onclick="HandleCloseClick">
+        <button class="settings-page__close-button" @onclick="HandleCloseClick">
             <SvgIcon SvgUrl="assets/close-ico.svg" />
         </button>
 
     </div>
 
-    <ul class="options-page__list">
+    <ul class="settings-page__list">
 
-        <li class="options-page__list-item">
+        <li class="settings-page__list-item">
 
             <button class="@GetSectionCss(OptionsPageSectionEnum.SelectCourse)"
                     @onclick="()=>SectionClick(OptionsPageSectionEnum.SelectCourse)">
 
                 <SvgIcon SvgUrl="/assets/next-ico.svg" />
 
-                <span>Select course</span>
+                <span>@localizer["Res_SelectCourse"]</span>
 
             </button>
 
@@ -38,55 +40,55 @@
             }
         </li>
 
-        <li class="options-page__list-item">
+        <li class="settings-page__list-item">
 
-            <button class="@GetSectionCss(OptionsPageSectionEnum.LearnSettings)" disabled="@noActiveCourse"
-                    @onclick="()=>SectionClick(OptionsPageSectionEnum.LearnSettings)">
-
-                <SvgIcon SvgUrl="/assets/next-ico.svg" />
-
-                <span>Learn settings</span>
-
-            </button>
-
-            @if (IsSectionVisible(OptionsPageSectionEnum.LearnSettings))
-            {
-                <LearnSettings Symbols="@symbols" OnSymbolLearnedChanged="HandleSymbolLearnedChanged" />
-            }
-        </li>
-
-        <li class="options-page__list-item">
-
-            <button class="@GetSectionCss(OptionsPageSectionEnum.QuizSettings)" disabled="@noActiveCourse"
-                    @onclick="()=>SectionClick(OptionsPageSectionEnum.QuizSettings)">
+            <button class="@GetSectionCss(OptionsPageSectionEnum.LearnOptions)" disabled="@noActiveCourse"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.LearnOptions)">
 
                 <SvgIcon SvgUrl="/assets/next-ico.svg" />
 
-                <span>Quiz settings</span>
+                <span>@localizer["Res_LearnOptions"]</span>
 
             </button>
 
-            @if (IsSectionVisible(OptionsPageSectionEnum.QuizSettings) && symbols is not null && quizSettings is not null)
+            @if (IsSectionVisible(OptionsPageSectionEnum.LearnOptions))
             {
-                <QuizSettings Settings="@quizSettings" Symbols="@symbols"
-                          OnSymbolQuizExcludedChanged="HandleSymbolQuizExcludedChanged" OnSettingsChanged="HandleQuizSettingsChanged" />
+                <LearnOptions Symbols="@symbols" OnSymbolLearnedChanged="HandleSymbolLearnedChanged" />
             }
         </li>
 
-        <li class="options-page__list-item">
+        <li class="settings-page__list-item">
+
+            <button class="@GetSectionCss(OptionsPageSectionEnum.QuizOptions)" disabled="@noActiveCourse"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.QuizOptions)">
+
+                <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+                <span>@localizer["Res_QuizOptions"]</span>
+
+            </button>
+
+            @if (IsSectionVisible(OptionsPageSectionEnum.QuizOptions) && symbols is not null && quizOptions is not null)
+            {
+                <QuizOptions Options="@quizOptions" Symbols="@symbols"
+                          OnSymbolQuizExcludedChanged="HandleSymbolQuizExcludedChanged" OnOptionsChanged="HandleQuizOptionsChanged" />
+            }
+        </li>
+
+        <li class="settings-page__list-item">
 
             <button class="@GetSectionCss(OptionsPageSectionEnum.Language)"
                     @onclick="()=>SectionClick(OptionsPageSectionEnum.Language)">
 
                 <SvgIcon SvgUrl="/assets/next-ico.svg" />
 
-                <span>Language</span>
+                <span>@localizer["Res_Language"]</span>
 
             </button>
 
-            @if (IsSectionVisible(OptionsPageSectionEnum.Language))
+            @if (IsSectionVisible(OptionsPageSectionEnum.Language) && languages is not null)
             {
-                <SelectLanguage Language="@currentLanguage" OnLanguageSelected="HandleLanguageSelected" />
+                <SelectLanguage Language="@currentLanguage" Languages="@languages" OnLanguageSelected="HandleLanguageSelected" />
             }
         </li>
 
@@ -95,26 +97,26 @@
 </div>
 
 
-
 @code {
     [CascadingParameter] LoaderHelper loaderHelper { get; set; }
 
     List<CourseViewModel>? courses;
     List<SymbolViewModel>? symbols;
-    QuizSettingsViewModel? quizSettings;
+    QuizOptionsViewModel? quizOptions;
+    List<LanguageEnum>? languages;
 
     OptionsPageSectionEnum currentSection;
 
     bool IsSectionVisible(OptionsPageSectionEnum section) => section == currentSection;
 
     string GetSectionCss(OptionsPageSectionEnum section)
-        => $"options-page__section-header {(currentSection == section ? "options-page__section-header--active" : "")}";
+        => $"settings-page__section-header {(currentSection == section ? "settings-page__section-header--active" : "")}";
 
     bool noActiveCourse => ActiveCourse is null;
 
     CourseViewModel? ActiveCourse => courses?.FirstOrDefault(r => r.IsActive);
 
-    LanguageEnum currentLanguage = LanguageEnum.English;
+    LanguageEnum currentLanguage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -140,15 +142,15 @@
             case OptionsPageSectionEnum.SelectCourse:
                 await LoadCourses();
                 break;
-            case OptionsPageSectionEnum.LearnSettings:
+            case OptionsPageSectionEnum.LearnOptions:
                 await LoadSymbols();
                 break;
-            case OptionsPageSectionEnum.QuizSettings:
+            case OptionsPageSectionEnum.QuizOptions:
                 await LoadSymbols();
                 await LoadQuizSettings();
                 break;
             case OptionsPageSectionEnum.Language:
-                // TODO
+                await LoadLanguage();
                 break;
         }
         currentSection = section;
@@ -180,7 +182,17 @@
     {
         loaderHelper.ShowLoader();
 
-        quizSettings = await quizService.GetSettingsAsync();
+        quizOptions = await quizService.GetOptionsAsync();
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task LoadLanguage()
+    {
+        loaderHelper.ShowLoader();
+
+        languages = languageService.GetLanguages();
+        currentLanguage = await languageService.GetLanguageAsync();
 
         loaderHelper.HideLoader();
     }
@@ -247,22 +259,23 @@
         loaderHelper.HideLoader();
     }
 
-    async Task HandleQuizSettingsChanged(QuizSettingsViewModel quizSettings)
+    async Task HandleQuizOptionsChanged(QuizOptionsViewModel quizOptions)
     {
         loaderHelper.ShowLoader();
 
-        await quizService.SetSettingsAsync(quizSettings);
+        await quizService.SetOptionsAsync(quizOptions);
 
         loaderHelper.HideLoader();
     }
 
-    void HandleLanguageSelected(LanguageEnum language)
+    async Task HandleLanguageSelected(LanguageEnum language)
     {
         loaderHelper.ShowLoader();
 
-        // TODO
+        await languageService.SetLanguageAsync(language);
         currentLanguage = language;
 
+        //navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
         loaderHelper.HideLoader();
     }
 

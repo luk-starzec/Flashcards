@@ -3,6 +3,6 @@
     public class ApplicationSettings
     {
         public string Name { get; set; } = default!;
-        public string? JsonValue { get; set; }
+        public string? Data { get; set; }
     }
 }

@@ -1,7 +1,8 @@
-﻿
-<div class="learn-settings__wrapper">
+﻿@inject IStringLocalizer<Resource> localizer
 
-    <h3>LearnSettings</h3>
+<div class="learn-options__wrapper">
+
+    <h3>@localizer["Res_Learned"]</h3>
 
     <SymbolsList Symbols="@toggleableSymbols" OnSymbolEnableChanged="HandleSymbolEnableChanged" ShowSelectRow="true" />
 

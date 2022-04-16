@@ -1,6 +1,7 @@
 ﻿@page "/"
+@inject IStringLocalizer<Resource> localizer
 
-<PageTitle>Main menu</PageTitle>
+<PageTitle>@localizer["Res_MainPage"]</PageTitle>
 
 <div class="index-page__wrapper">
 
@@ -13,15 +14,15 @@
     </button>
 
     <a href="/learn" class="index-page__button index-page__button--learn">
-        learn
+        @localizer["Res_Learn"]
     </a>
 
     <a href="/quiz" class="index-page__button index-page__button--quiz">
-        quiz
+        @localizer["Res_Quiz"]
     </a>
 
-    <a href="/options" class="index-page__button index-page__button--options">
-        options
+    <a href="/settings" class="index-page__button index-page__button--settings">
+        @localizer["Res_Settings"]
     </a>
 
 

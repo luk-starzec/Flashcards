@@ -28,20 +28,20 @@ internal class QuizService : IQuizService
         return Task.FromResult(session);
     }
 
-    public async Task<QuizSettingsViewModel> GetSettingsAsync()
+    public async Task<QuizOptionsViewModel> GetOptionsAsync()
     {
         using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
 
         var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == QUIZ_SETTINGS_NAME);
 
-        if (row?.JsonValue is null)
+        if (row?.Data is null)
             return new();
 
-        var settings = JsonSerializer.Deserialize<QuizSettingsViewModel>(row.JsonValue) ?? new();
-        return settings;
+        var options = JsonSerializer.Deserialize<QuizOptionsViewModel>(row.Data) ?? new();
+        return options;
     }
 
-    public async Task SetSettingsAsync(QuizSettingsViewModel settings)
+    public async Task SetOptionsAsync(QuizOptionsViewModel options)
     {
         using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
 
@@ -51,15 +51,15 @@ internal class QuizService : IQuizService
             row = new() { Name = QUIZ_SETTINGS_NAME };
             db.ApplicationSettings.Add(row);
         }
-        var json = JsonSerializer.Serialize(settings);
-        row.JsonValue = json;
+        var json = JsonSerializer.Serialize(options);
+        row.Data = json;
 
         await db.SaveChangesAsync();
     }
 
     public async Task<QuizViewModel> PrepareQuizAsync()
     {
-        var settings = await GetSettingsAsync();
+        var settings = await GetOptionsAsync();
 
         var symbols = await _courseService.GetActiveCourseSymbolsAsync();
         var availableSymbols = symbols.Where(r => !r.QuizExcluded).ToList();

@@ -1,7 +1,8 @@
 ﻿@page "/learn"
 @inject ICourseService courseService
+@inject IStringLocalizer<Resource> localizer
 
-<PageTitle>Learn</PageTitle>
+<PageTitle>@localizer["Res_Learn"]</PageTitle>
 
 <div class="learn-page__wrapper">
 

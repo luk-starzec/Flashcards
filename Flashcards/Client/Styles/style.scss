@@ -1,11 +1,12 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&family=Noto+Sans:wght@100;300;400;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 
 @import 'index-page';
 @import 'learn-page';
 @import 'quiz-page';
 @import 'result-page';
-@import 'options-page';
+@import 'settings-page';
 @import 'loader';
+@import 'confirm-dialog';
 
 body {
     background-color: white;
@@ -14,8 +15,7 @@ body {
 }
 
 main {
-/*    position: relative;
-*/    margin-inline: auto;
+    margin-inline: auto;
     background-color: $color-white;
     max-width: 800px;
     width: 100%;

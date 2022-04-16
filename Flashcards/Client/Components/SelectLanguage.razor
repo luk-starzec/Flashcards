@@ -3,7 +3,7 @@
 
     <ul class="select-language__list">
 
-        @foreach (LanguageEnum language in Enum.GetValues(typeof(LanguageEnum)))
+        @foreach (var language in Languages)
         {
             <li class="select-language__list-item">
 
@@ -23,6 +23,7 @@
 </div>
 
 @code {
+    [Parameter] public List<LanguageEnum> Languages { get; set; }
     [Parameter] public LanguageEnum Language { get; set; }
     [Parameter] public EventCallback<LanguageEnum> OnLanguageSelected { get; set; }
 

@@ -1,0 +1,32 @@
+﻿
+<div class="confirm-dialog__wrapper">
+
+    <div class="confirm-dialog__message">
+        @Message
+    </div>
+
+    <button class="confirm-dialog__button confirm-dialog__button--confirm" @onclick="ConfirmClick">
+        @Confirm
+    </button>
+
+    <button class="confirm-dialog__button confirm-dialog__button--cancel" @onclick="CancelClick">
+        @Cancel
+    </button>
+
+</div>
+
+<div class="confirm-dialog__mask">
+</div>
+
+
+@code {
+    [Parameter] public string Message { get; set; }
+    [Parameter] public string Confirm { get; set; }
+    [Parameter] public string Cancel { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    async Task ConfirmClick() => await OnConfirm.InvokeAsync();
+    async Task CancelClick() => await OnCancel.InvokeAsync();
+
+}

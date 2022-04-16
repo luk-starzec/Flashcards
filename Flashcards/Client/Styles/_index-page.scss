@@ -5,7 +5,7 @@
     grid-template-rows: auto 1fr 1fr 1fr;
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
-        "logo theme" "learn learn""quiz quiz" "options options";
+        "logo theme" "learn learn""quiz quiz" "settings settings";
     padding: 2rem;
     gap: 4rem;
     height: 100%;
@@ -13,7 +13,7 @@
     @media (max-height: 400px) {
         grid-template-rows: auto 1fr 1fr;
         grid-template-areas:
-            "logo theme" "learn ." "quiz options";
+            "logo theme" "learn ." "quiz settings";
         row-gap: 2rem;
     }
 }
@@ -79,8 +79,8 @@
         align-self: start;
     }
 
-    &--options {
-        grid-area: options;
+    &--settings {
+        grid-area: settings;
         align-self: end;
     }
 

@@ -1,5 +1,6 @@
 ﻿@page "/result/{QuizId}"
 @inject IQuizService quizService
+@inject IStringLocalizer<Resource> localizer
 
 <div class="result-page__wrapper">
 
@@ -19,26 +20,16 @@
 
             <SvgIcon SvgUrl="/assets/next-ico.svg" />
 
-            <span>Details</span>
+            <span>@localizer["Res_Details"]</span>
 
         </button>
 
-        @if (detailsVisible)
+        @if (detailsVisible && cards is not null)
         {
-            @if (cards is not null)
+            @foreach (var card in cards)
             {
-                @foreach (var card in cards)
-                {
-                    @*                    <div>
-                        <span>@card.Original </span>
-                        <span>(@card.Translate): </span>
-                        <span>@card.Result</span>
-                        </div>
-                    *@
-                    <ResultItem Card="@card" />
-                }
+                <ResultItem Card="@card" />
             }
-
         }
 
     </div>

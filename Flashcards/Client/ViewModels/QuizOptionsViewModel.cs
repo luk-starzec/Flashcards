@@ -1,8 +1,6 @@
-﻿using Flashcards.Client.Data;
+﻿namespace Flashcards.Client.ViewModels;
 
-namespace Flashcards.Client.ViewModels;
-
-public class QuizSettingsViewModel
+public class QuizOptionsViewModel
 {
     public QuizModeEnum QuizMode { get; set; } = QuizModeEnum.Both;
     public int CardCount { get; set; } = 10;

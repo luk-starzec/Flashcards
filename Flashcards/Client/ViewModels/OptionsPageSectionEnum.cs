@@ -3,7 +3,7 @@ public enum OptionsPageSectionEnum
 {
     None,
     SelectCourse,
-    LearnSettings,
-    QuizSettings,
+    LearnOptions,
+    QuizOptions,
     Language
 }

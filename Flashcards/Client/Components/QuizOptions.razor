@@ -1,7 +1,8 @@
-﻿
-<div class="quiz-settings__wrapper">
+﻿@inject IStringLocalizer<Resource> localizer
 
-    <section class="quiz-settings__section">
+<div class="quiz-options__wrapper">
+
+    <section class="quiz-options__section">
 
         @foreach (QuizModeEnum e in Enum.GetValues(typeof(QuizModeEnum)))
         {
@@ -14,9 +15,9 @@
         }
     </section>
 
-    <section class="quiz-settings__section quiz-settings__section--cards">
+    <section class="quiz-options__section quiz-options__section--cards">
 
-        <span>How many cards</span>
+        <span>@localizer["Res_HowManyCards"]</span>
 
         @foreach (var count in cardCountList)
         {
@@ -28,19 +29,19 @@
 
     </section>
 
-    <section class="quiz-settings__section">
+    <section class="quiz-options__section">
 
-        <button class="quiz-settings__checkbox" @onclick="HandleOnlyLearnedClick">
+        <button class="quiz-options__checkbox" @onclick="HandleOnlyLearnedClick">
             <SvgIcon SvgUrl="@iconOnlyLearned" />
-            <span>Use only learned</span>
+            <span>@localizer["Res_UseOnlyLearned"]</span>
         </button>
 
     </section>
 
-    <section class="quiz-settings__section">
+    <section class="quiz-options__section">
 
-        <span class="quiz-settings__exclude-header">
-            Exclude from quiz
+        <span class="quiz-options__exclude-header">
+            @localizer["Res_ExcludeFromQuiz"]
         </span>
 
         <SymbolsList Symbols="@toggleableSymbols" OnSymbolEnableChanged="HandleSymbolEnableChanged" ShowSelectAll="true" ShowSelectRow="true" />
@@ -52,11 +53,10 @@
 
 
 @code {
-    [Parameter] public QuizSettingsViewModel Settings { get; set; }
+    [Parameter] public QuizOptionsViewModel Options { get; set; }
     [Parameter] public List<SymbolViewModel> Symbols { get; set; }
-    //[Parameter] public CourseViewModel ActiveCourse { get; set; }
     [Parameter] public EventCallback<SymbolViewModel[]> OnSymbolQuizExcludedChanged { get; set; }
-    [Parameter] public EventCallback<QuizSettingsViewModel> OnSettingsChanged { get; set; }
+    [Parameter] public EventCallback<QuizOptionsViewModel> OnOptionsChanged { get; set; }
 
     List<ToggleableSymbolViewModel> toggleableSymbols => SymbolConverter.QuizToToggleableSymbol(Symbols);
 
@@ -64,21 +64,21 @@
 
     string GetCardsButtonCss(int count)
     {
-        return Settings?.CardCount == count
-            ? "quiz-settings__button quiz-settings__button--active"
-            : "quiz-settings__button";
+        return Options?.CardCount == count
+            ? "quiz-options__button quiz-options__button--active"
+            : "quiz-options__button";
     }
 
     string GetModeCss(QuizModeEnum mode)
     {
-        return Settings?.QuizMode == mode
-            ? "quiz-settings__checkbox quiz-settings__checkbox--active"
-            : "quiz-settings__checkbox";
+        return Options?.QuizMode == mode
+            ? "quiz-options__checkbox quiz-options__checkbox--active"
+            : "quiz-options__checkbox";
     }
 
     string GetModeIcon(QuizModeEnum mode)
     {
-        return Settings?.QuizMode == mode
+        return Options?.QuizMode == mode
             ? "/assets/radio-checked-ico.svg"
             : "/assets/radio-blank-ico.svg";
     }
@@ -100,7 +100,7 @@
         }
     }
 
-    string iconOnlyLearned => Settings.OnlyLearned
+    string iconOnlyLearned => Options.OnlyLearned
         ? "/assets/check-checked-ico.svg"
         : "/assets/check-blank-ico.svg";
 
@@ -112,20 +112,20 @@
 
     async Task HandleCardCountClick(int count)
     {
-        Settings.CardCount = count;
-        await OnSettingsChanged.InvokeAsync(Settings);
+        Options.CardCount = count;
+        await OnOptionsChanged.InvokeAsync(Options);
     }
 
     async Task HandleModeClick(QuizModeEnum mode)
     {
-        Settings.QuizMode = mode;
-        await OnSettingsChanged.InvokeAsync(Settings);
+        Options.QuizMode = mode;
+        await OnOptionsChanged.InvokeAsync(Options);
     }
 
     async Task HandleOnlyLearnedClick()
     {
-        Settings.OnlyLearned = !Settings.OnlyLearned;
-        await OnSettingsChanged.InvokeAsync(Settings);
+        Options.OnlyLearned = !Options.OnlyLearned;
+        await OnOptionsChanged.InvokeAsync(Options);
     }
 }
 

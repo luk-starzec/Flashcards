@@ -6,6 +6,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 	</PropertyGroup>
+	
+	<PropertyGroup>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="BuildWebCompiler2022" Version="1.14.7" />
@@ -13,6 +17,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />
 
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
+
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.4" />
 		<NativeFileReference Include="Data\e_sqlite3.o" />
 	</ItemGroup>
 

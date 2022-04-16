@@ -1,8 +1,9 @@
 ﻿@page "/quiz"
 @inject IQuizService quizService
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Resource> localizer
 
-<PageTitle>Quiz</PageTitle>
+<PageTitle>@localizer["Res_Quiz"]</PageTitle>
 
 <div class="quiz-page__wrapper">
 
@@ -30,10 +31,14 @@
 </div>
 
 <button class="quiz-page__close-button" @onclick="HandleCloseClick">
-
     <SvgIcon SvgUrl="/assets/close-ico.svg" />
-
 </button>
+
+@if (closeDialogVisible)
+{
+    <ConfirmDialog OnConfirm="HandleCloseConfirm" OnCancel="HandleCloseCancel"
+               Message="@localizer["Res_EndThisQuiz"]" Cancel="@localizer["Res_No"]" Confirm="@localizer["Res_Yes"]" />
+}
 
 @code {
     [CascadingParameter] LoaderHelper loaderHelper { get; set; }
@@ -45,6 +50,7 @@
     QuizCardViewModel card => cards[index];
 
     bool answerVisble;
+    bool closeDialogVisible;
 
     string question => card.QuestionOriginal ? card.Original : card.Translate;
     string answer => card.QuestionOriginal ? card.Translate : card.Original;
@@ -62,12 +68,12 @@
         loaderHelper.HideLoader();
     }
 
-    void HandleCloseClick()
-    {
-        // TODO confirm
-        NavigationManager.NavigateTo($"/");
+    void HandleCloseClick() => closeDialogVisible = true;
 
-    }
+    void HandleCloseCancel() => closeDialogVisible = false;
+
+    void HandleCloseConfirm() => NavigationManager.NavigateTo($"/");
+
 
     void HandleAnswerClick()
     {
