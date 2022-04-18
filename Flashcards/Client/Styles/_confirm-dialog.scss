@@ -18,10 +18,11 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    min-width: 30ch;
+    min-width: min(30ch, 70%);
     padding: 1.5rem 2rem;
     border-radius: .5rem;
     font-family: 'Noto Sans';
+    font-size: 1.5rem;
     background-color: $color-white;
     box-shadow: 0 .25rem .5rem $color-shadow;
 }
@@ -30,12 +31,14 @@
     grid-column: 1/-1;
     text-align: center;
     color: $color-dark;
+    font-size: inherit;
 }
 
 .confirm-dialog__button {
     border: none;
-    padding: .25rem;
+    padding: .5rem;
     border-radius: .25rem;
+    font-size: inherit;
     box-shadow: 0 2px 4px 0px $color-shadow-light;
 
     &--confirm {

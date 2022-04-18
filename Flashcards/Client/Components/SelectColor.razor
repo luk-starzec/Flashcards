@@ -1,0 +1,50 @@
+﻿
+<div class="select-color__wrapper">
+
+    <ul class="select-color__list">
+
+        @foreach (var hue in hueList)
+        {
+            <li class="select-color__list-item">
+
+                <button class="@GetButtonCss(hue)" @onclick="()=>HandleClick(hue)">
+
+                    <SvgIcon SvgUrl="@GetButtonIcon(hue)" />
+
+                    <ColorsPreview Hue="@hue" />
+
+                </button>
+
+            </li>
+        }
+
+    </ul>
+
+</div>
+
+@code {
+    [Parameter] public int Hue { get; set; }
+    [Parameter] public EventCallback<int> OnColorSelected { get; set; }
+
+    List<int> hueList = new List<int>
+    {
+        215,
+        30,
+        80
+    };
+
+    string GetButtonCss(int hue)
+        => hue == Hue
+            ? $"select-color__button select-color__button--active"
+            : "select-color__button";
+
+    string GetButtonIcon(int hue)
+        => hue == Hue
+            ? "/assets/radio-checked-ico.svg"
+            : "/assets/radio-blank-ico.svg";
+
+    async Task HandleClick(int hue)
+    {
+        await OnColorSelected.InvokeAsync(hue);
+    }
+}

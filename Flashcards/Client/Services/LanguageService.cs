@@ -64,7 +64,7 @@ internal class LanguageService : ILanguageService
 
     private async Task<LanguageEnum> GetBrowserCultureAsync()
     {
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts.js");
+        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/language.js");
         var language = await module.InvokeAsync<string>("getBrowserLanguage");
 
         if (language == "pl")

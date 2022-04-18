@@ -6,15 +6,24 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
         "logo theme" "learn learn""quiz quiz" "settings settings";
-    padding: 2rem;
     gap: 4rem;
-    height: 100%;
+    padding: 1rem;
+    height: 95%;
 
     @media (max-height: 400px) {
         grid-template-rows: auto 1fr 1fr;
         grid-template-areas:
             "logo theme" "learn ." "quiz settings";
         row-gap: 2rem;
+
+        .index-page__button--settings {
+            align-self: start;
+        }
+    }
+
+    @media (min-height: 950px), (min-width: 950px) {
+        padding: 2rem;
+        height: 90%;
     }
 }
 
@@ -24,6 +33,18 @@
     svg {
         width: 5rem;
         height: 5rem;
+
+        .dark-card {
+            fill: $color-dark;
+        }
+
+        .mid-card {
+            fill: $color-secondary;
+        }
+
+        .light-card {
+            fill: $color-light;
+        }
     }
 }
 
@@ -52,6 +73,28 @@
 
     &:hover {
         background-color: $color-dark;
+    }
+
+    &--dark {
+        path {
+            fill: $color-dark;
+        }
+
+        ellipse {
+            fill: $color-dark;
+        }
+
+        &:hover {
+            background-color: $color-dark;
+
+            path {
+                fill: $color-black;
+            }
+
+            ellipse {
+                fill: $color-black;
+            }
+        }
     }
 }
 

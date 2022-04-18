@@ -2,6 +2,7 @@
 @inject ICourseService courseService
 @inject IQuizService quizService
 @inject ILanguageService languageService;
+@inject IThemeService themeService;
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<Resource> localizer
 
@@ -71,7 +72,24 @@
             @if (IsSectionVisible(OptionsPageSectionEnum.QuizOptions) && symbols is not null && quizOptions is not null)
             {
                 <QuizOptions Options="@quizOptions" Symbols="@symbols"
-                          OnSymbolQuizExcludedChanged="HandleSymbolQuizExcludedChanged" OnOptionsChanged="HandleQuizOptionsChanged" />
+                         OnSymbolQuizExcludedChanged="HandleSymbolQuizExcludedChanged" OnOptionsChanged="HandleQuizOptionsChanged" />
+            }
+        </li>
+
+        <li class="settings-page__list-item">
+
+            <button class="@GetSectionCss(OptionsPageSectionEnum.ThemeOptions)"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.ThemeOptions)">
+
+                <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+                <span>@localizer["Res_Colors"]</span>
+
+            </button>
+
+            @if (IsSectionVisible(OptionsPageSectionEnum.ThemeOptions) && currentTheme is not null)
+            {
+                <ThemeOptions Theme="@currentTheme" OnThemeChanged="HandleThemeChanged" />
             }
         </li>
 
@@ -104,6 +122,7 @@
     List<SymbolViewModel>? symbols;
     QuizOptionsViewModel? quizOptions;
     List<LanguageEnum>? languages;
+    ThemeViewModel? currentTheme;
 
     OptionsPageSectionEnum currentSection;
 
@@ -149,6 +168,9 @@
                 await LoadSymbols();
                 await LoadQuizSettings();
                 break;
+            case OptionsPageSectionEnum.ThemeOptions:
+                await LoadTheme();
+                break;
             case OptionsPageSectionEnum.Language:
                 await LoadLanguage();
                 break;
@@ -183,6 +205,15 @@
         loaderHelper.ShowLoader();
 
         quizOptions = await quizService.GetOptionsAsync();
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task LoadTheme()
+    {
+        loaderHelper.ShowLoader();
+
+        currentTheme = await themeService.GetThemeAsync();
 
         loaderHelper.HideLoader();
     }
@@ -264,6 +295,16 @@
         loaderHelper.ShowLoader();
 
         await quizService.SetOptionsAsync(quizOptions);
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task HandleThemeChanged(ThemeViewModel theme)
+    {
+        loaderHelper.ShowLoader();
+
+        await themeService.SetThemeAsync(theme);
+        currentTheme = theme;
 
         loaderHelper.HideLoader();
     }

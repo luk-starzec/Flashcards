@@ -1,14 +1,15 @@
-﻿$color-black: hsl(215, 60, 20);
-$color-dark: hsl(215, 60, 30);
-$color-secondary: hsl(215, 60, 80);
-$color-light: hsl(215, 60, 97);
-$color-white: hsl(0, 100, 100);
+﻿$color-black: var(--color-black);
+$color-dark: var(--color-dark);
+$color-secondary: var(--color-secondary);
+$color-light: var(--color-light);
+$color-white: var(--color-white);
 
-$color-shadow: hsla(215, 60, 0, .3);
-$color-shadow-light: hsla(215, 60, 0, .15);
+$color-shadow: var(--color-shadow);
+$color-shadow-light: var(--color-shadow-light);
 
-$color-good: hsl(128, 50, 80);
-$color-good-light: hsl(128, 50, 90);
-$color-bad: hsl(0, 50, 80);
-$color-bad-light: hsl(0, 50, 90);
-$color-bad-dark: hsl(0, 50, 50);
+$color-good: var(--color-good);
+$color-good-light: var(--color-good-light);
+$color-bad: var(--color-bad);
+$color-bad-light: var(--color-bad-light);
+$color-bad-dark: var(--color-bad-dark);
+

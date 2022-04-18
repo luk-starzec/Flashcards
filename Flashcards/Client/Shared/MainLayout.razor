@@ -1,28 +1,36 @@
 ﻿@inherits LayoutComponentBase
 @implements IDisposable
+@inject IThemeService themeService;
 
-<div class="layout__wrapper">
+<div class="@cssWrapper">
 
     <main>
-
         <CascadingValue Value="@loaderHelper">
+
             @Body
 
             @if (loaderHelper.IsLoaderVisible)
             {
                 <Loader />
             }
+
         </CascadingValue>
     </main>
 </div>
 
 @code {
     LoaderHelper loaderHelper;
+    bool themeLoaded;
 
-    protected override void OnInitialized()
+    string cssWrapper => themeLoaded ? "layout__wrapper" : "layout__wrapper layout__wrapper--hidden";
+
+    protected override async Task OnInitializedAsync()
     {
         loaderHelper = new LoaderHelper();
         loaderHelper.VisibilityChanged += LoaderVisibilityChanged;
+
+        await themeService.RestoreThemeAsync();
+        themeLoaded = true;
     }
 
     public void Dispose()

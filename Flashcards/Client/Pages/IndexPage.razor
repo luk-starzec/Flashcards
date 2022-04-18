@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject IStringLocalizer<Resource> localizer
+@inject IThemeService themeService;
 
 <PageTitle>@localizer["Res_MainPage"]</PageTitle>
 
@@ -9,7 +10,7 @@
         <SvgIcon SvgUrl="/assets/logo.svg" />
     </dic>
 
-    <button class="index-page__theme-toggle" @onclick="ThemeToggleClick">
+    <button class="@cssTheme" @onclick="ThemeToggleClick">
         <SvgIcon SvgUrl="@iconTheme" />
     </button>
 
@@ -25,18 +26,25 @@
         @localizer["Res_Settings"]
     </a>
 
-
 </div>
 
 @code {
     [CascadingParameter] LoaderHelper LoaderHelper { get; set; }
 
     bool darkMode;
+
+    string cssTheme => darkMode ? "index-page__theme-toggle index-page__theme-toggle--dark" : "index-page__theme-toggle";
     string iconTheme => darkMode ? "/assets/sun-ico.svg" : "/assets/moon-ico.svg";
 
-    void ThemeToggleClick()
+    protected override async Task OnInitializedAsync()
     {
-        // TODO
+        darkMode = await themeService.IsDarkMode();
+    }
+
+    async Task ThemeToggleClick()
+    {
+        await themeService.SetThemeAsync(!darkMode);
         darkMode = !darkMode;
     }
+
 }

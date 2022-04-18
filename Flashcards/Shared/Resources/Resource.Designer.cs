@@ -61,6 +61,33 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bad.
+        /// </summary>
+        public static string Res_Bad {
+            get {
+                return ResourceManager.GetString("Res_Bad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Colors.
+        /// </summary>
+        public static string Res_Colors {
+            get {
+                return ResourceManager.GetString("Res_Colors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark Mode.
+        /// </summary>
+        public static string Res_DarkMode {
+            get {
+                return ResourceManager.GetString("Res_DarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Res_Details {
@@ -84,6 +111,15 @@ namespace Flashcards.Shared.Resources {
         public static string Res_ExcludeFromQuiz {
             get {
                 return ResourceManager.GetString("Res_ExcludeFromQuiz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Good.
+        /// </summary>
+        public static string Res_Good {
+            get {
+                return ResourceManager.GetString("Res_Good", resourceCulture);
             }
         }
         
@@ -142,11 +178,29 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string Res_Next {
+            get {
+                return ResourceManager.GetString("Res_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         public static string Res_No {
             get {
                 return ResourceManager.GetString("Res_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Res_Previous {
+            get {
+                return ResourceManager.GetString("Res_Previous", resourceCulture);
             }
         }
         

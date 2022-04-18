@@ -18,6 +18,7 @@ builder.Services.AddScoped<DataSynchronizer>();
 builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
+builder.Services.AddScoped<IThemeService, ThemeService>();
 
 builder.Services.AddLocalization();
 

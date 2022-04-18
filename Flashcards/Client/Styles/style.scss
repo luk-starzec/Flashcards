@@ -6,12 +6,34 @@
 @import 'result-page';
 @import 'settings-page';
 @import 'loader';
+@import 'splash-screen';
 @import 'confirm-dialog';
 
+:root {
+    --color-black: hsl(215, 60%, 20%);
+    --color-dark: hsl(215, 60%, 30%);
+    --color-secondary: hsl(215, 60%, 80%);
+    --color-light: hsl(215, 60%, 97%);
+    --color-white: hsl(0, 100%, 100%);
+    --color-shadow: Hsla(215, 60%, 0%, .3);
+    --color-shadow-light: Hsla(215, 60%, 0%, .15);
+    --color-good: hsl(128, 50%, 80%);
+    --color-good-light: hsl(128, 50%, 90%);
+    --color-bad: hsl(0, 50%, 80%);
+    --color-bad-light: hsl(0, 50%, 90%);
+    --color-bad-dark: hsl(0, 50%, 50%);
+}
+
+* {
+    transition: background-color .1s ease, color .1s ease;
+}
+
+html,
 body {
-    background-color: white;
-    font-family: 'Noto Sans JP', sans-serif;
     /*font-family: 'Nunito', sans-serif;*/
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+    background-color: $color-light;
 }
 
 main {
@@ -21,9 +43,24 @@ main {
     width: 100%;
 }
 
+h3 {
+    font-weight: 400;
+}
+
 .layout__wrapper {
     min-height: 100vh;
     display: grid;
+    background-color: $color-white;
+
+    &--hidden {
+        @media (prefers-color-scheme: dark) {
+            background-color: $color-dark;
+        }
+
+        main {
+            visibility: hidden;
+        }
+    }
 }
 
 @media (min-height: 950px), (min-width: 950px) {
@@ -31,6 +68,7 @@ main {
         background-color: $color-light;
         padding-block: min(5%, 5vh);
         padding-inline: min(5%, 5vw);
+        min-height: 90vh;
     }
 
     main {

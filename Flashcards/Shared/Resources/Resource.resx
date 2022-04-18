@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Res_Bad" xml:space="preserve">
+    <value>Bad</value>
+  </data>
+  <data name="Res_Colors" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="Res_DarkMode" xml:space="preserve">
+    <value>Dark Mode</value>
+  </data>
   <data name="Res_Details" xml:space="preserve">
     <value>Details</value>
   </data>
@@ -125,6 +134,9 @@
   </data>
   <data name="Res_ExcludeFromQuiz" xml:space="preserve">
     <value>Exclude from quiz</value>
+  </data>
+  <data name="Res_Good" xml:space="preserve">
+    <value>Good</value>
   </data>
   <data name="Res_HowManyCards" xml:space="preserve">
     <value>How many cards</value>
@@ -144,8 +156,14 @@
   <data name="Res_MainPage" xml:space="preserve">
     <value>Main page</value>
   </data>
+  <data name="Res_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="Res_No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="Res_Previous" xml:space="preserve">
+    <value>Previous</value>
   </data>
   <data name="Res_Quiz" xml:space="preserve">
     <value>Quiz</value>

@@ -1,4 +1,5 @@
-﻿
+﻿@inject IStringLocalizer<Resource> localizer
+
 <button class="@css" title="@title" @onclick="HandleClick">
 
     <SvgIcon SvgUrl="/assets/next-ico.svg" />
@@ -13,7 +14,7 @@
         ? "button-nav__wrapper button-nav__wrapper--next"
         : "button-nav__wrapper button-nav__wrapper--previous";
 
-    string title => IsNext ? "next" : "previous";
+    string title => IsNext ? localizer["Res_Next"] : localizer["Res_Previous"];
 
     async Task HandleClick() => await OnClick.InvokeAsync();
 }

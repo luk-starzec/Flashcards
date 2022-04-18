@@ -1,0 +1,23 @@
+﻿
+<div class="colors-preview__wrapper">
+
+    <div class="colors-preview__color" style="@GetColorStyle(30)">
+    </div>
+
+    <div class="colors-preview__color" style="@GetColorStyle(80)">
+    </div>
+
+    <div class="colors-preview__color colors-preview__color--light" style="@GetColorStyle(97)">
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public int Hue { get; set; }
+
+    int saturation = 60;
+
+    string GetColorStyle(int lightnes) => $"background-color: {GetHsl(lightnes)}; border-color: {GetHsl(80)}";
+
+    string GetHsl(int lightnes) => $"hsl({Hue}, {saturation}%, {lightnes}%)";
+}

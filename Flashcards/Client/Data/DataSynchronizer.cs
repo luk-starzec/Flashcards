@@ -26,7 +26,7 @@ internal class DataSynchronizer
 
     private async Task FirstTimeSetupAsync(IJSRuntime js)
     {
-        var module = await js.InvokeAsync<IJSObjectReference>("import", "./dbstorage.js");
+        var module = await js.InvokeAsync<IJSObjectReference>("import", "./scripts/dbstorage.js");
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("browser")))
         {

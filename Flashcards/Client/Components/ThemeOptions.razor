@@ -1,0 +1,50 @@
+﻿@inject IStringLocalizer<Resource> localizer
+
+<div class="theme-options__wrapper">
+
+    <section class="theme-options__section">
+
+        <SelectColor Hue="@Theme.Hue" OnColorSelected="HandleColorSelected" />
+
+    </section>
+
+    <section class="theme-options__section">
+
+        <button class="theme-options__checkbox" @onclick="HandleDarkModeClick">
+            <SvgIcon SvgUrl="@iconDarkMode" />
+            <span>@localizer["Res_DarkMode"]</span>
+        </button>
+
+    </section>
+</div>
+
+@code {
+    [Parameter] public ThemeViewModel Theme { get; set; }
+    [Parameter] public EventCallback<ThemeViewModel> OnThemeChanged { get; set; }
+
+    string iconDarkMode => Theme.IsDarkMode
+        ? "/assets/check-checked-ico.svg"
+        : "/assets/check-blank-ico.svg";
+
+    async Task HandleDarkModeClick()
+    {
+        var theme = new ThemeViewModel
+            {
+                Hue = Theme.Hue,
+                IsDarkMode = !Theme.IsDarkMode,
+            };
+        await OnThemeChanged.InvokeAsync(theme);
+    }
+
+    async Task HandleColorSelected(int hue)
+    {
+        var theme = new ThemeViewModel
+            {
+                Hue = hue,
+                IsDarkMode = Theme.IsDarkMode,
+            };
+        await OnThemeChanged.InvokeAsync(theme);
+    }
+
+
+}

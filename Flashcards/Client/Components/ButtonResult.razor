@@ -1,4 +1,5 @@
-﻿
+﻿@inject IStringLocalizer<Resource> localizer
+
 
 <button class="@css" title="@title" @onclick="HandleClick">
 
@@ -14,7 +15,7 @@
         ? "button-result__wrapper button-result__wrapper--good"
         : "button-result__wrapper button-result__wrapper--bad";
 
-    string title => Good ? "good" : "bad";
+    string title => Good ? localizer["Res_Good"] : localizer["Res_Bad"];
 
     string icon => Good ? "good-ico.svg" : "bad-ico.svg";
 
