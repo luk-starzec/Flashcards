@@ -4,8 +4,8 @@ namespace Flashcards.Client.Data;
 
 internal class ClientSideDbContext : DbContext
 {
-    public DbSet<Forecast> Forecasts { get; set; } = default!;
     public DbSet<Course> Courses { get; set; } = default!;
+    public DbSet<Title> Titles { get; set; } = default!;
     public DbSet<Symbol> Symbols { get; set; } = default!;
     public DbSet<ApplicationSettings> ApplicationSettings { get; set; } = default!;
 
@@ -29,6 +29,12 @@ internal class ClientSideDbContext : DbContext
             entity.HasKey(e => e.Name);
         });
 
+        modelBuilder.Entity<Title>(entity =>
+        {
+            entity.ToTable("Titles");
+            entity.HasKey(e => new { e.CourseName, e.Language });
+        });
+
         modelBuilder.Entity<Symbol>(entity =>
         {
             entity.ToTable("Symbols");
@@ -41,31 +47,5 @@ internal class ClientSideDbContext : DbContext
             entity.HasKey(e => e.Name);
         });
 
-        modelBuilder.Entity<Forecast>().HasData(InitForecasts());
-    }
-
-    private List<Forecast> InitForecasts()
-    {
-        return new List<Forecast>
-        {
-            new()
-            {
-                Date=new DateTime(2020,5,6),
-                TemperatureC= 1,
-                Summary="Freezing",
-            },
-            new()
-            {
-                Date=new DateTime(2020,5,7),
-                TemperatureC= 14,
-                Summary="Bracing",
-            },
-            new()
-            {
-                Date=new DateTime(2020,5,8),
-                TemperatureC= -3,
-                Summary="Chilly",
-            },
-        };
     }
 }

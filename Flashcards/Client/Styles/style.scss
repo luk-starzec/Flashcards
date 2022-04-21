@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&family=Noto+Sans:wght@100;300;400;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&family=Noto+Sans:wght@100;300;400;700&display=swap');
 
 @import 'index-page';
 @import 'learn-page';
@@ -25,15 +25,16 @@
 }
 
 * {
+    box-sizing: border-box;
     transition: background-color .1s ease, color .1s ease;
 }
 
-html,
-body {
-    /*font-family: 'Nunito', sans-serif;*/
+html {
     font-family: 'Noto Sans JP', sans-serif;
-    margin: 0;
-    background-color: $color-light;
+}
+
+button {
+    font-family: 'Noto Sans JP', sans-serif;
 }
 
 main {
@@ -66,9 +67,8 @@ h3 {
 @media (min-height: 950px), (min-width: 950px) {
     .layout__wrapper {
         background-color: $color-light;
-        padding-block: min(5%, 5vh);
+        padding-block: 5vh;
         padding-inline: min(5%, 5vw);
-        min-height: 90vh;
     }
 
     main {

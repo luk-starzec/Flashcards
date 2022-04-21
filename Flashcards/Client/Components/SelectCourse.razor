@@ -1,11 +1,12 @@
-﻿
+﻿@inject ILanguageService languageService;
+
 <div class="select-course__wrapper">
 
-    @if (Courses is not null)
+    @if (sortedCourses is not null)
     {
         <ul class="select-course__list">
 
-            @foreach (var course in Courses.OrderByDescending(x => x.IsDownloaded).ThenBy(x => x.Title))
+            @foreach (var course in sortedCourses)
             {
                 <li class="select-course__list-item">
 
@@ -13,7 +14,7 @@
 
                         <SvgIcon SvgUrl="@GetButtonIcon(course)" />
 
-                        <span>@course.Title</span>
+                        <span>@GetTitle(course)</span>
 
                     </button>
 
@@ -30,6 +31,11 @@
     [Parameter] public EventCallback<CourseViewModel> OnCourseActivate { get; set; }
     [Parameter] public EventCallback<CourseViewModel> OnCourseDownload { get; set; }
 
+    IEnumerable<CourseViewModel>? sortedCourses => Courses?.OrderByDescending(x => x.IsDownloaded)
+        .ThenBy(x => x.Titles.ContainsKey(language) ? x.Titles[language] : x.Titles[LanguageEnum.English]);
+
+    LanguageEnum language;
+
     string GetButtonCss(CourseViewModel course)
         => course.IsDownloaded
             ? $"select-course__button {(course.IsActive ? "select-course__button--active" : "")}"
@@ -39,6 +45,15 @@
         => course.IsActive
             ? "/assets/radio-checked-ico.svg"
             : course.IsDownloaded ? "/assets/radio-blank-ico.svg" : "/assets/download-ico.svg";
+
+    string GetTitle(CourseViewModel course) => course.Titles.ContainsKey(language)
+        ? course.Titles[language]
+        : course.Titles[LanguageEnum.English];
+
+    protected override async Task OnInitializedAsync()
+    {
+        language = await languageService.GetLanguageAsync();
+    }
 
     async Task HandleCourseClick(CourseViewModel course)
     {

@@ -18,7 +18,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    min-width: min(30ch, 70%);
+    min-width: min(30ch, 80%);
     padding: 1.5rem 2rem;
     border-radius: .5rem;
     font-family: 'Noto Sans';
@@ -29,6 +29,7 @@
 
 .confirm-dialog__message {
     grid-column: 1/-1;
+    padding-block: 1rem;
     text-align: center;
     color: $color-dark;
     font-size: inherit;

@@ -36,177 +36,464 @@
   },
   {
     "translate": "ka",
-    "original": "か",
+    "original": "カ",
     "column": 0,
     "row": 1,
     "subset": "k-"
   },
   {
     "translate": "ki",
-    "original": "き",
+    "original": "キ",
     "column": 1,
     "row": 1,
     "subset": "k-"
   },
   {
     "translate": "ku",
-    "original": "く",
+    "original": "ク",
     "column": 2,
     "row": 1,
     "subset": "k-"
   },
   {
     "translate": "ke",
-    "original": "け",
+    "original": "ケ",
     "column": 3,
     "row": 1,
     "subset": "k-"
   },
   {
     "translate": "ko",
-    "original": "こ",
+    "original": "コ",
     "column": 4,
     "row": 1,
     "subset": "k-"
   },
   {
     "translate": "sa",
-    "original": "さ",
+    "original": "サ",
     "column": 0,
     "row": 2,
     "subset": "s-"
   },
   {
     "translate": "shi",
-    "original": "し",
+    "original": "シ",
     "column": 1,
     "row": 2,
     "subset": "s-"
   },
   {
     "translate": "su",
-    "original": "す",
+    "original": "ス",
     "column": 2,
     "row": 2,
     "subset": "s-"
   },
   {
     "translate": "se",
-    "original": "せ",
+    "original": "セ",
     "column": 3,
     "row": 2,
     "subset": "s-"
   },
   {
     "translate": "so",
-    "original": "そ",
+    "original": "ソ",
     "column": 4,
     "row": 2,
     "subset": "s-"
   },
   {
     "translate": "ta",
-    "original": "た",
+    "original": "タ",
     "column": 0,
     "row": 3,
     "subset": "t-"
   },
   {
     "translate": "chi",
-    "original": "ち",
+    "original": "チ",
     "column": 1,
     "row": 3,
     "subset": "t-"
   },
   {
     "translate": "tsu",
-    "original": "つ",
+    "original": "ツ",
     "column": 2,
     "row": 3,
     "subset": "t-"
   },
   {
     "translate": "te",
-    "original": "て",
+    "original": "テ",
     "column": 3,
     "row": 3,
     "subset": "t-"
   },
   {
     "translate": "to",
-    "original": "と",
+    "original": "ト",
     "column": 4,
     "row": 3,
     "subset": "t-"
   },
   {
     "translate": "na",
-    "original": "な",
+    "original": "ナ",
     "column": 0,
     "row": 4,
     "subset": "n-"
   },
   {
     "translate": "ni",
-    "original": "に",
+    "original": "ニ",
     "column": 1,
     "row": 4,
     "subset": "n-"
   },
   {
     "translate": "nu",
-    "original": "ぬ",
+    "original": "ヌ",
     "column": 2,
     "row": 4,
     "subset": "n-"
   },
   {
     "translate": "ne",
-    "original": "ね",
+    "original": "ネ",
     "column": 3,
     "row": 4,
     "subset": "n-"
   },
   {
     "translate": "no",
-    "original": "の",
+    "original": "ノ",
     "column": 4,
     "row": 4,
     "subset": "n-"
   },
   {
     "translate": "ha",
-    "original": "は",
+    "original": "ハ",
     "column": 0,
     "row": 5,
     "subset": "h-"
   },
   {
     "translate": "hi",
-    "original": "ひ",
+    "original": "ヒ",
     "column": 1,
     "row": 5,
     "subset": "h-"
   },
   {
     "translate": "fu",
-    "original": "ふ",
+    "original": "フ",
     "column": 2,
     "row": 5,
     "subset": "h-"
   },
   {
     "translate": "he",
-    "original": "へ",
+    "original": "ヘ",
     "column": 3,
     "row": 5,
     "subset": "h-"
   },
   {
     "translate": "ho",
-    "original": "ほ",
+    "original": "ホ",
     "column": 4,
     "row": 5,
     "subset": "h-"
+  },
+  {
+    "translate": "ma",
+    "original": "マ",
+    "column": 0,
+    "row": 6,
+    "subset": "m-"
+  },
+  {
+    "translate": "mi",
+    "original": "ミ",
+    "column": 1,
+    "row": 6,
+    "subset": "m-"
+  },
+  {
+    "translate": "mu",
+    "original": "ム",
+    "column": 2,
+    "row": 6,
+    "subset": "m-"
+  },
+  {
+    "translate": "me",
+    "original": "メ",
+    "column": 3,
+    "row": 6,
+    "subset": "m-"
+  },
+  {
+    "translate": "mo",
+    "original": "モ",
+    "column": 4,
+    "row": 6,
+    "subset": "m-"
+  },
+  {
+    "translate": "ya",
+    "original": "ヤ",
+    "column": 0,
+    "row": 7,
+    "subset": "y-"
+  },
+  {
+    "translate": "yu",
+    "original": "ユ",
+    "column": 2,
+    "row": 7,
+    "subset": "y-"
+  },
+  {
+    "translate": "yo",
+    "original": "ヨ",
+    "column": 4,
+    "row": 7,
+    "subset": "y-"
+  },
+  {
+    "translate": "ra",
+    "original": "ラ",
+    "column": 0,
+    "row": 8,
+    "subset": "r-"
+  },
+  {
+    "translate": "ri",
+    "original": "リ",
+    "column": 1,
+    "row": 8,
+    "subset": "r-"
+  },
+  {
+    "translate": "ru",
+    "original": "ル",
+    "column": 2,
+    "row": 8,
+    "subset": "r-"
+  },
+  {
+    "translate": "re",
+    "original": "レ",
+    "column": 3,
+    "row": 8,
+    "subset": "r-"
+  },
+  {
+    "translate": "ro",
+    "original": "ロ",
+    "column": 4,
+    "row": 8,
+    "subset": "r-"
+  },
+  {
+    "translate": "wa",
+    "original": "ワ",
+    "column": 0,
+    "row": 9,
+    "subset": "w-"
+  },
+  {
+    "translate": "wo",
+    "original": "ヲ",
+    "column": 4,
+    "row": 9,
+    "subset": "w-"
+  },
+  {
+    "translate": "n",
+    "original": "ン",
+    "column": 4,
+    "row": 10,
+    "subset": "n-"
+  },
+  {
+    "translate": "ga",
+    "original": "ガ",
+    "column": 0,
+    "row": 11,
+    "subset": "g-"
+  },
+  {
+    "translate": "gi",
+    "original": "ギ",
+    "column": 1,
+    "row": 11,
+    "subset": "g-"
+  },
+  {
+    "translate": "gu",
+    "original": "グ",
+    "column": 2,
+    "row": 11,
+    "subset": "g-"
+  },
+  {
+    "translate": "ge",
+    "original": "ゲ",
+    "column": 3,
+    "row": 11,
+    "subset": "g-"
+  },
+  {
+    "translate": "go",
+    "original": "ゴ",
+    "column": 4,
+    "row": 11,
+    "subset": "z-"
+  },
+  {
+    "translate": "za",
+    "original": "ザ",
+    "column": 0,
+    "row": 12,
+    "subset": "z-"
+  },
+  {
+    "translate": "ji",
+    "original": "ジ",
+    "column": 1,
+    "row": 12,
+    "subset": "z-"
+  },
+  {
+    "translate": "zu",
+    "original": "ズ",
+    "column": 2,
+    "row": 12,
+    "subset": "z-"
+  },
+  {
+    "translate": "ze",
+    "original": "ゼ",
+    "column": 3,
+    "row": 12,
+    "subset": "z-"
+  },
+  {
+    "translate": "zo",
+    "original": "ゾ",
+    "column": 4,
+    "row": 12,
+    "subset": "z-"
+  },
+  {
+    "translate": "da",
+    "original": "ダ",
+    "column": 0,
+    "row": 13,
+    "subset": "d-"
+  },
+  {
+    "translate": "ji",
+    "original": "ヂ",
+    "column": 1,
+    "row": 13,
+    "subset": "d-"
+  },
+  {
+    "translate": "zu",
+    "original": "ヅ",
+    "column": 2,
+    "row": 13,
+    "subset": "d-"
+  },
+  {
+    "translate": "de",
+    "original": "デ",
+    "column": 3,
+    "row": 13,
+    "subset": "d-"
+  },
+  {
+    "translate": "do",
+    "original": "ド",
+    "column": 4,
+    "row": 13,
+    "subset": "d-"
+  },
+  {
+    "translate": "ba",
+    "original": "バ",
+    "column": 0,
+    "row": 14,
+    "subset": "b-"
+  },
+  {
+    "translate": "bi",
+    "original": "ビ",
+    "column": 1,
+    "row": 14,
+    "subset": "b-"
+  },
+  {
+    "translate": "bu",
+    "original": "ブ",
+    "column": 2,
+    "row": 14,
+    "subset": "b-"
+  },
+  {
+    "translate": "be",
+    "original": "ベ",
+    "column": 3,
+    "row": 14,
+    "subset": "b-"
+  },
+  {
+    "translate": "bo",
+    "original": "ボ",
+    "column": 4,
+    "row": 14,
+    "subset": "b-"
+  },
+  {
+    "translate": "pa",
+    "original": "パ",
+    "column": 0,
+    "row": 15,
+    "subset": "p-"
+  },
+  {
+    "translate": "pi",
+    "original": "ピ",
+    "column": 1,
+    "row": 15,
+    "subset": "p-"
+  },
+  {
+    "translate": "pu",
+    "original": "プ",
+    "column": 2,
+    "row": 15,
+    "subset": "p-"
+  },
+  {
+    "translate": "pe",
+    "original": "ペ",
+    "column": 3,
+    "row": 15,
+    "subset": "p-"
+  },
+  {
+    "translate": "po",
+    "original": "ポ",
+    "column": 4,
+    "row": 15,
+    "subset": "p-"
   }
 ]

@@ -1,6 +1,6 @@
 {
-  "name": "Flashcards",
-  "short_name": "Flashcards",
+  "name": "Fiszki",
+  "short_name": "Fiszki",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

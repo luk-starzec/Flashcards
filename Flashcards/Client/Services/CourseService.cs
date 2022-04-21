@@ -33,7 +33,12 @@ internal class CourseService : ICourseService
                 courseRow = new Course
                 {
                     Name = course.Name,
-                    Title = course.Title,
+                    Titles = course.Titles.Select(r => new Title
+                    {
+                        CourseName = course.Name,
+                        Language = r.Key.ToString(),
+                        Text = r.Value
+                    }).ToList(),
                 };
                 db.Courses.Add(courseRow);
             }
@@ -81,16 +86,28 @@ internal class CourseService : ICourseService
     {
         using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
 
-        return await db.Courses
-             .Where(r => r.IsActive)
-             .Select(r => new CourseViewModel
-             {
-                 Name = r.Name,
-                 Title = r.Title,
-                 IsActive = r.IsActive,
-                 Version = r.Version,
-                 IsDownloaded = true,
-             }).SingleOrDefaultAsync();
+        var course = await db.Courses
+            .Include(r => r.Titles)
+            .Where(r => r.IsActive)
+            .SingleOrDefaultAsync();
+
+        return course is not null
+            ? new CourseViewModel
+            {
+                Name = course.Name,
+                Titles = GetTitlesDictionary(course),
+                IsActive = course.IsActive,
+                Version = course.Version,
+                IsDownloaded = true,
+            }
+            : null;
+    }
+
+    private static Dictionary<LanguageEnum, string> GetTitlesDictionary(Course course)
+    {
+        return course.Titles
+            ?.ToDictionary(k => (LanguageEnum)Enum.Parse(typeof(LanguageEnum), k.Language), v => v.Text)
+            ?? new Dictionary<LanguageEnum, string>();
     }
 
     public async Task<List<SymbolViewModel>> GetActiveCourseSymbolsAsync()
@@ -125,22 +142,25 @@ internal class CourseService : ICourseService
         {
             using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
 
-            var localCourses = await db.Courses
+            var fromLocal = await db.Courses
+                .Include(r => r.Titles)
+                .ToListAsync();
+            var localCourses = fromLocal
                 .Select(r => new CourseViewModel
                 {
                     Name = r.Name,
-                    Title = r.Title,
+                    Titles = GetTitlesDictionary(r),
                     IsActive = r.IsActive,
                     Version = r.Version,
                     IsDownloaded = true,
-                }).ToListAsync();
+                }).ToList();
 
             var fromServer = await _httpClient.GetFromJsonAsync<List<CourseModel>>("api/course") ?? new();
             var serverCourses = fromServer
                 .Select(r => new CourseViewModel
                 {
                     Name = r.Name,
-                    Title = r.Title,
+                    Titles = r.Titles.ToDictionary(k => (LanguageEnum)Enum.Parse(typeof(LanguageEnum), k.Language), v => v.Text),
                     Version = r.Version,
                 }).ToList();
 
@@ -156,8 +176,6 @@ internal class CourseService : ICourseService
 
             var result = localCourses
                 .Union(serverCourses)
-                .OrderByDescending(x => x.IsDownloaded)
-                .ThenBy(x => x.Title)
                 .ToList();
 
             st.Stop();

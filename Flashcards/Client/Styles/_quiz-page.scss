@@ -23,7 +23,7 @@
 
     @media (max-height: 450px) {
         grid-template-rows: 1fr 1fr;
-        grid-template-columns: minmax(auto, 15rem) auto minmax(auto, 15rem);
+        grid-template-columns: 1fr auto 1fr;
         grid-template-areas:
             "progress card question" "bad card good";
     }
@@ -45,16 +45,16 @@
     max-width: 25rem;
     align-self: start;
     padding-inline: 1rem;
-    margin-top: .5rem;
+    margin-top: 1.5rem;
 
     @media (orientation: landscape) {
         margin-top: 1rem;
         padding-right: 0rem;
     }
 
-    @media (max-width: 400px) {
-        width: calc(100% - 5rem);
-        margin-right: 1rem;
+    @media (max-width: 450px) {
+        width: calc(100% - 7rem);
+        margin-inline: 1.5rem;
     }
 }
 
@@ -106,7 +106,7 @@
         right: .5rem;
     }
 
-    @media (max-height: 400px), (max-width: 400px) {
+    @media (max-height: 450px), (max-width: 450px) {
         top: .25rem;
         right: .25rem;
 
@@ -168,6 +168,7 @@
 .quiz-progress__bar-wrapper {
     height: 1rem;
     width: 100%;
+    margin-block: .5rem;
     border-radius: .25rem;
     background-color: $color-light;
 }

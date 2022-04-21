@@ -38,8 +38,6 @@ else
         </tbody>
     </table>
 
-    <button @onclick="AddForecast">Add</button>
-
 }
 
 @code {
@@ -65,49 +63,10 @@ else
             Console.WriteLine(ex);
         }
 
-        LoadForecasts();
 
         var x = db.Courses.ToArray();
 
         //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    }
-
-    void LoadForecasts()
-    {
-        forecasts = db.Forecasts
-        .Select(r => new WeatherForecast
-            {
-                Date = r.Date,
-                TemperatureC = r.TemperatureC,
-                Summary = r.Summary,
-            }).ToArray();
-    }
-
-    async Task AddForecast()
-    {
-        var last = db.Forecasts.OrderBy(r => r.Date).Last();
-
-        var forecast = new Forecast
-            {
-                Date = last.Date.AddDays(1),
-                TemperatureC = last.TemperatureC + 1,
-                Summary = "Unknown",
-            };
-        await db.Forecasts.AddAsync(forecast);
-        await db.SaveChangesAsync();
-
-        LoadForecasts();
-    }
-
-    public class WeatherForecast
-    {
-        public DateTime Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 
     public void Dispose()

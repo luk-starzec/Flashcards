@@ -19,6 +19,10 @@
         grid-template-rows: 1fr;
         grid-template-areas:
             "prev card next";
+
+        .learn-card__wrapper {
+            margin-top: 0;
+        }
     }
 }
 
@@ -43,6 +47,7 @@
 
 .learn-card__wrapper {
     grid-area: card;
+    margin-top: 2rem;
 }
 
 .button-nav__wrapper--previous {

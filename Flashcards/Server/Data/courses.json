@@ -1,17 +1,40 @@
 [
   {
     "name": "hiragana",
-    "title": "Hiragana",
+    "titles": [
+      {
+        "language": "English",
+        "text": "Hiragana"
+      },
+      {
+        "language": "Polish",
+        "text": "Hiragana"
+      }
+    ],
     "version": 1
   },
   {
     "name": "katakana",
-    "title": "Katakana",
+    "titles": [
+      {
+        "language": "English",
+        "text": "Katakana"
+      },
+      {
+        "language": "Polish",
+        "text": "Katakana"
+      }
+    ],
     "version": 1
   },
   {
     "name": "hangul",
-    "title": "Hangul",
+    "titles": [
+      {
+        "language": "English",
+        "text": "Hangul"
+      }
+    ],
     "version": 1
   }
 ]
