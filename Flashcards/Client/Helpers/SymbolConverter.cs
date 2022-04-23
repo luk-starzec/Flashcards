@@ -37,10 +37,11 @@ public static class SymbolConverter
             }).ToList();
     }
 
-    public static SymbolViewModel RowToSymbol(Symbol row)
+    public static SymbolViewModel SymbolToSymbolViewModel(Symbol row)
     {
         return new SymbolViewModel
         {
+            CourseName = row.CourseName,
             Original = row.Original,
             Translate = row.Translate,
             Row = row.Row ?? 1,

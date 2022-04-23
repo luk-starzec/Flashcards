@@ -10,12 +10,12 @@ internal class LanguageService : ILanguageService
 {
     private const string LANGUAGE_SETTINGS_NAME = "LanguageSettings";
 
-    private readonly DataSynchronizer _dataSynchronizer;
+    private readonly IDataProvider _dataProvider;
     private readonly IJSRuntime _js;
 
-    public LanguageService(DataSynchronizer dataSynchronizer, IJSRuntime js)
+    public LanguageService(IDataProvider dataProvider, IJSRuntime js)
     {
-        _dataSynchronizer = dataSynchronizer;
+        _dataProvider = dataProvider;
         _js = js;
     }
 
@@ -32,7 +32,7 @@ internal class LanguageService : ILanguageService
 
     public async Task<LanguageEnum> GetLanguageAsync()
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == LANGUAGE_SETTINGS_NAME);
 
@@ -48,7 +48,7 @@ internal class LanguageService : ILanguageService
 
     public async Task SetLanguageAsync(LanguageEnum language)
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == LANGUAGE_SETTINGS_NAME);
         if (row is null)

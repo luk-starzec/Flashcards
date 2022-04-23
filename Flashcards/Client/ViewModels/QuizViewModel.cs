@@ -2,6 +2,6 @@
 
 public class QuizViewModel
 {
-    public string QuizId { get; set; } = default!;
-    public List<QuizCardViewModel> Cards { get; set; } = new();
+    public string Id { get; set; } = default!;
+    public List<QuizItemViewModel> Items { get; set; } = new();
 }

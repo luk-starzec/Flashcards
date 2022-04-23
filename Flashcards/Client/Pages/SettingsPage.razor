@@ -3,6 +3,7 @@
 @inject IQuizService quizService
 @inject ILanguageService languageService;
 @inject IThemeService themeService;
+@inject IDataService dataService;
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<Resource> localizer
 
@@ -110,9 +111,32 @@
             }
         </li>
 
+        <li class="settings-page__list-item">
+
+            <button class="@GetSectionCss(OptionsPageSectionEnum.Data)"
+                    @onclick="()=>SectionClick(OptionsPageSectionEnum.Data)">
+
+                <SvgIcon SvgUrl="/assets/next-ico.svg" />
+
+                <span>@localizer["Res_Data"]</span>
+
+            </button>
+
+            @if (IsSectionVisible(OptionsPageSectionEnum.Data))
+            {
+                <DataOptions OnRestoreDefaults="()=>restoreDafaultsDialogVisible=true" />
+            }
+        </li>
+
     </ul>
 
 </div>
+
+@if (restoreDafaultsDialogVisible)
+{
+    <ConfirmDialog OnConfirm="HandleRestoreDefaults" OnCancel="()=>restoreDafaultsDialogVisible=false"
+               Message="@localizer["Res_RestoreDefaultsMessage"]" Cancel="@localizer["Res_No"]" Confirm="@localizer["Res_Yes"]" />
+}
 
 
 @code {
@@ -123,6 +147,13 @@
     QuizOptionsViewModel? quizOptions;
     List<LanguageEnum>? languages;
     ThemeViewModel? currentTheme;
+    LanguageEnum currentLanguage;
+
+    bool noActiveCourse => ActiveCourse is null;
+
+    CourseViewModel? ActiveCourse => courses?.FirstOrDefault(r => r.IsActive);
+
+    bool restoreDafaultsDialogVisible;
 
     OptionsPageSectionEnum currentSection;
 
@@ -130,12 +161,6 @@
 
     string GetSectionCss(OptionsPageSectionEnum section)
         => $"settings-page__section-header {(currentSection == section ? "settings-page__section-header--active" : "")}";
-
-    bool noActiveCourse => ActiveCourse is null;
-
-    CourseViewModel? ActiveCourse => courses?.FirstOrDefault(r => r.IsActive);
-
-    LanguageEnum currentLanguage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -173,6 +198,8 @@
                 break;
             case OptionsPageSectionEnum.Language:
                 await LoadLanguage();
+                break;
+            case OptionsPageSectionEnum.Data:
                 break;
         }
         currentSection = section;
@@ -316,8 +343,17 @@
         await languageService.SetLanguageAsync(language);
         currentLanguage = language;
 
-        //navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
         loaderHelper.HideLoader();
+    }
+
+    async Task HandleRestoreDefaults()
+    {
+        loaderHelper.ShowLoader();
+
+        await dataService.ClearDatabaseAsync();
+
+        loaderHelper.HideLoader();
+        navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
     }
 
     void HandleCloseClick()

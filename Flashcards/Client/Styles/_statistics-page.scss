@@ -1,0 +1,43 @@
+﻿@import 'shared';
+
+.statistics-page__course-title {
+    text-align: center;
+    color: $color-dark;
+}
+
+.statistics-page__table {
+    margin-inline: auto;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+    color: $color-black;
+
+    th {
+        padding: .25rem .5rem;
+        background-color: $color-light;
+        border: 1px solid $color-secondary;
+    }
+
+    td {
+        text-align: center;
+        border: 1px solid $color-secondary;
+    }
+}
+
+.statistics-page__close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+
+    svg {
+        height: 2rem;
+        width: 2rem;
+        fill: $color-secondary;
+    }
+
+    &:hover {
+        svg {
+            fill: $color-dark;
+        }
+    }
+}

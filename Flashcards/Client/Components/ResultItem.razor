@@ -9,20 +9,17 @@
     </div>
 
     <div class="@cssText">
-        <span>@text1</span>
+        <span>@Card.Question</span>
         <span> 🠖 </span>
-        <span>@text2</span>
+        <span>@Card.Answer</span>
     </div>
 
 </div>
 
 @code {
-    [Parameter] public QuizCardViewModel Card { get; set; }
+    [Parameter] public QuizItemViewModel Card { get; set; }
 
     string cssText => Card.Result == true
         ? "result-item__text"
         : "result-item__text result-item__text--bad";
-
-    string text1 => Card.QuestionOriginal ? Card.Original : Card.Translate;
-    string text2 => Card.QuestionOriginal ? Card.Translate : Card.Original;
 }

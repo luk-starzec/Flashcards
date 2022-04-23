@@ -7,6 +7,8 @@ internal class ClientSideDbContext : DbContext
     public DbSet<Course> Courses { get; set; } = default!;
     public DbSet<Title> Titles { get; set; } = default!;
     public DbSet<Symbol> Symbols { get; set; } = default!;
+    public DbSet<Quiz> Quizzes { get; set; } = default!;
+    public DbSet<QuizItem> QuizItems { get; set; } = default!;
     public DbSet<ApplicationSettings> ApplicationSettings { get; set; } = default!;
 
     public ClientSideDbContext(DbContextOptions<ClientSideDbContext> options)
@@ -16,12 +18,6 @@ internal class ClientSideDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<Forecast>(entity =>
-        {
-            entity.ToTable("Forecasts");
-            entity.HasKey(e => e.Date);
-        });
 
         modelBuilder.Entity<Course>(entity =>
         {
@@ -39,6 +35,18 @@ internal class ClientSideDbContext : DbContext
         {
             entity.ToTable("Symbols");
             entity.HasKey(e => new { e.CourseName, e.Original });
+        });
+
+        modelBuilder.Entity<Quiz>(entity =>
+        {
+            entity.ToTable("Quizzes");
+            entity.HasKey(e => e.Id);
+        });
+
+        modelBuilder.Entity<QuizItem>(entity =>
+        {
+            entity.ToTable("QuizItems");
+            entity.HasKey(e => new { e.QuizId, e.Index });
         });
 
         modelBuilder.Entity<ApplicationSettings>(entity =>

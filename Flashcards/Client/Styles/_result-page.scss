@@ -103,13 +103,17 @@
     color: $color-dark;
 }
 
-.quiz-score__starts {
+.quiz-score__stars {
     display: flex;
-    gap: 1.5rem;
+    gap: .5rem;
+    margin-top: .5rem;
 
     svg {
         height: 2rem;
         width: 2rem;
+    }
+
+    path {
         fill: $color-secondary
     }
 }

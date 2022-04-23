@@ -4,7 +4,10 @@
 
 <div class="result-page__wrapper">
 
-    <QuizScore Total="@totalCards" Good="@goodCards" />
+    @if (cards is not null)
+    {
+        <QuizScore Total="@totalCards" Good="@goodCards" />
+    }
 
     <a href="/quiz" class="result-page__button result-page__button--restart">
         <SvgIcon SvgUrl="/assets/restart-ico.svg" />
@@ -37,9 +40,10 @@
 </div>
 
 @code {
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; } = default!;
     [Parameter] public string QuizId { get; set; }
 
-    List<QuizCardViewModel>? cards;
+    List<QuizItemViewModel>? cards;
 
     int totalCards => cards?.Count ?? 0;
     int goodCards => cards?.Where(r => r.Result == true).Count() ?? 0;
@@ -52,8 +56,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var session = await quizService.GetQuizAsync(QuizId);
-        cards = session.Cards;
+        loaderHelper.ShowLoader();
+
+        var quiz = await quizService.GetQuizAsync(QuizId);
+        cards = quiz?.Items;
+
+        loaderHelper.HideLoader();
     }
 
 }

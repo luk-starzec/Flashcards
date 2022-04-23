@@ -11,7 +11,7 @@ export function setTheme(darkMode, hue) {
     element.style.setProperty('--color-white', darkMode ? getHsl(0, 0, 10) : getHsl(0, 0, 100));
 
     element.style.setProperty('--color-shadow', darkMode ? getHsla(hue, saturation, 75, 0.3) : getHsla(hue, saturation, 0, 0.3));
-    element.style.setProperty('--color-shadow-light', darkMode ? getHsla(hue, saturation, 75, 0.15) : getHsla(hue, saturation, 0, 0.15));
+    element.style.setProperty('--color-shadow-light', darkMode ? getHsla(hue, saturation, 75, 0.3) : getHsla(hue, saturation, 0, 0.15));
 
     element.style.setProperty('--color-good', darkMode ? getHsl(128, 50, 50) : getHsl(128, 50, 80));
     element.style.setProperty('--color-good-light', darkMode ? getHsl(128, 50, 30) : getHsl(128, 50, 90));

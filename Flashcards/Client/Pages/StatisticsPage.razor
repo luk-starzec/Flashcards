@@ -1,0 +1,56 @@
+﻿@page "/statistics"
+@inject IQuizService quizService;
+@inject ICourseService courseService;
+
+@if (statistics is not null)
+{
+    <h3 class="statistics-page__course-title">
+        @activeCourse?.Titles.FirstOrDefault().Value
+    </h3>
+
+    <table class="statistics-page__table">
+        <tr>
+            <th>
+                Symbol
+            </th>
+            <th>
+                Symbol 🠖 Translate
+            </th>
+            <th>
+                Translate 🠖 Symbol
+            </th>
+        </tr>
+        @foreach (var s in statistics)
+        {
+            <tr>
+                <td>
+                    @s.Symbol.Original (@s.Symbol.Translate)
+                </td>
+                <td>
+                    @s.GoodOriginalQuestions / @s.TotalOriginalQuestions
+                </td>
+                <td>
+                    @s.GoodTranslateQuestions / @s.TotalTranslateQuestions
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<a href="/" class="statistics-page__close-button">
+    <SvgIcon SvgUrl="/assets/close-ico.svg" />
+</a>
+
+@code {
+    List<SymbolStatisticsViewModel>? statistics;
+
+    CourseViewModel? activeCourse;
+
+    protected override async Task OnInitializedAsync()
+    {
+        activeCourse = await courseService.GetActiveCourseAsync();
+        if (activeCourse is null)
+            return;
+        statistics = await quizService.GetSybolStatisticsAsync(activeCourse.Name);
+    }
+}

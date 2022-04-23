@@ -2,6 +2,7 @@
 
 public class SymbolViewModel
 {
+    public string CourseName { get; set; } = default!;
     public string Original { get; set; } = default!;
     public string Translate { get; set; } = default!;
     public bool Learned { get; set; }

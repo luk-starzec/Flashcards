@@ -8,5 +8,7 @@ public interface IQuizService
     Task SetOptionsAsync(QuizOptionsViewModel options);
     Task<QuizViewModel> PrepareQuizAsync();
     Task<QuizViewModel?> GetQuizAsync(string quizId);
-    Task SubmitResultAsync(string quizId, QuizCardViewModel card);
+    Task SubmitResultAsync(string quizId, QuizItemViewModel card);
+    Task<string?> GetLastUnfinishedIdAsync();
+    Task<List<SymbolStatisticsViewModel>> GetSybolStatisticsAsync(string courseName);
 }

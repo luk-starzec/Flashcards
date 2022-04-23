@@ -2,10 +2,10 @@
 
 .index-page__wrapper {
     display: grid;
-    grid-template-rows: auto 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto 1fr 1fr;
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
-        "logo theme" "learn learn""quiz quiz" "settings settings";
+        "logo theme" "learn learn" "quiz quiz" "continue continue" "settings settings";
     gap: 4rem;
     padding: 1rem;
     height: 95%;
@@ -13,11 +13,17 @@
     @media (max-height: 400px) {
         grid-template-rows: auto 1fr 1fr;
         grid-template-areas:
-            "logo theme" "learn ." "quiz settings";
+            "logo theme" "learn continue" "quiz settings";
         row-gap: 2rem;
 
-        .index-page__button--settings {
-            align-self: start;
+        .index-page__button {
+            &--continue-quiz {
+                align-self: end;
+            }
+
+            &--settings {
+                align-self: start;
+            }
         }
     }
 
@@ -120,6 +126,12 @@
     &--quiz {
         grid-area: quiz;
         align-self: start;
+    }
+
+    &--continue-quiz {
+        grid-area: continue;
+        align-self: start;
+        color: $color-secondary;
     }
 
     &--settings {

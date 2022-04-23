@@ -120,11 +120,20 @@
   <data name="Res_Bad" xml:space="preserve">
     <value>Bad</value>
   </data>
+  <data name="Res_CardsCount" xml:space="preserve">
+    <value>Cards count</value>
+  </data>
   <data name="Res_Colors" xml:space="preserve">
     <value>Colors</value>
   </data>
+  <data name="Res_ContinueQuiz" xml:space="preserve">
+    <value>Continue quiz</value>
+  </data>
   <data name="Res_DarkMode" xml:space="preserve">
     <value>Dark Mode</value>
+  </data>
+  <data name="Res_Data" xml:space="preserve">
+    <value>Data</value>
   </data>
   <data name="Res_Details" xml:space="preserve">
     <value>Details</value>
@@ -135,11 +144,14 @@
   <data name="Res_ExcludeFromQuiz" xml:space="preserve">
     <value>Exclude from quiz</value>
   </data>
+  <data name="Res_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
   <data name="Res_Good" xml:space="preserve">
     <value>Good</value>
   </data>
-  <data name="Res_HowManyCards" xml:space="preserve">
-    <value>How many cards</value>
+  <data name="Res_Import" xml:space="preserve">
+    <value>Import</value>
   </data>
   <data name="Res_Language" xml:space="preserve">
     <value>Language</value>
@@ -154,7 +166,7 @@
     <value>Learn options</value>
   </data>
   <data name="Res_MainPage" xml:space="preserve">
-    <value>Main page</value>
+    <value>Flashcards - Main page</value>
   </data>
   <data name="Res_Next" xml:space="preserve">
     <value>Next</value>
@@ -170,6 +182,12 @@
   </data>
   <data name="Res_QuizOptions" xml:space="preserve">
     <value>Quiz options</value>
+  </data>
+  <data name="Res_RestoreDefaults" xml:space="preserve">
+    <value>Restore defaults</value>
+  </data>
+  <data name="Res_RestoreDefaultsMessage" xml:space="preserve">
+    <value>Do you want to delete your courses with progress data and restore the app's default settings?</value>
   </data>
   <data name="Res_SelectCourse" xml:space="preserve">
     <value>Select course</value>

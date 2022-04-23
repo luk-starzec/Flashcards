@@ -4,18 +4,25 @@
 
 <div class="@cssWrapper">
 
-    <main>
-        <CascadingValue Value="@loaderHelper">
+    @if (themeLoaded)
+    {
+        <main>
+            <CascadingValue Value="@loaderHelper">
 
-            @Body
+                @Body
 
-            @if (loaderHelper.IsLoaderVisible)
-            {
-                <Loader />
-            }
+                @if (loaderHelper.IsLoaderVisible)
+                {
+                    <Loader />
+                }
+            </CascadingValue>
+        </main>
+    }
+    else
+    {
+        <SplashScreen />
+    }
 
-        </CascadingValue>
-    </main>
 </div>
 
 @code {

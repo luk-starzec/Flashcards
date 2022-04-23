@@ -9,29 +9,34 @@ namespace Flashcards.Client.Services;
 internal class QuizService : IQuizService
 {
     private const string QUIZ_SETTINGS_NAME = "QuizSettings";
-    private readonly DataSynchronizer _dataSynchronizer;
+    private readonly IDataProvider _dataProvider;
     private readonly ICourseService _courseService;
     private readonly Random rnd = new Random();
 
-    Dictionary<string, QuizViewModel> sessions = new();
-
-    public QuizService(DataSynchronizer dataSynchronizer, ICourseService courseService)
+    public QuizService(IDataProvider dataProvider, ICourseService courseService)
     {
-        _dataSynchronizer = dataSynchronizer;
+        _dataProvider = dataProvider;
         _courseService = courseService;
     }
 
-    public Task<QuizViewModel?> GetQuizAsync(string sessionId)
+    public async Task<QuizViewModel?> GetQuizAsync(string quizId)
     {
-        var session = sessions.ContainsKey(sessionId) ? sessions[sessionId] : null;
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
-        return Task.FromResult(session);
+        var row = await db.Quizzes
+            .Include(r => r.Items)
+            .SingleOrDefaultAsync(r => r.Id == quizId);
+
+        return row is not null ? QuizToQuizViewModel(row) : null;
     }
-
     public async Task<QuizOptionsViewModel> GetOptionsAsync()
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
+        return await GetOptionsAsync(db);
+    }
 
+    private async Task<QuizOptionsViewModel> GetOptionsAsync(ClientSideDbContext db)
+    {
         var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == QUIZ_SETTINGS_NAME);
 
         if (row?.Data is null)
@@ -43,7 +48,7 @@ internal class QuizService : IQuizService
 
     public async Task SetOptionsAsync(QuizOptionsViewModel options)
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == QUIZ_SETTINGS_NAME);
         if (row is null)
@@ -51,55 +56,159 @@ internal class QuizService : IQuizService
             row = new() { Name = QUIZ_SETTINGS_NAME };
             db.ApplicationSettings.Add(row);
         }
-        var json = JsonSerializer.Serialize(options);
-        row.Data = json;
+        row.Data = JsonSerializer.Serialize(options);
 
         await db.SaveChangesAsync();
     }
 
     public async Task<QuizViewModel> PrepareQuizAsync()
     {
-        var settings = await GetOptionsAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+        var previousUnfinished = await db.Quizzes.Where(r => r.AllowContinue).ToListAsync();
+        foreach (var q in previousUnfinished)
+        {
+            q.AllowContinue = false;
+        }
+
+        var quiz = new Quiz
+        {
+            Id = GuidEncoder.Encode(Guid.NewGuid()),
+            Created = DateTime.Now,
+            AllowContinue = true,
+        };
+        db.Quizzes.Add(quiz);
+
+        var settings = await GetOptionsAsync(db);
 
         var symbols = await _courseService.GetActiveCourseSymbolsAsync();
-        var availableSymbols = symbols.Where(r => !r.QuizExcluded).ToList();
-        availableSymbols = settings.OnlyLearned
-           ? availableSymbols.Where(r => r.Learned).ToList()
-           : availableSymbols;
+        var availableSymbols = symbols
+            .Where(r => !r.QuizExcluded)
+            .Where(r => r.Learned || !settings.OnlyLearned)
+            .ToList();
 
         int cardsCount = Math.Min(settings.CardCount, availableSymbols.Count);
-
-        var cards = new List<QuizCardViewModel>();
-        while (cards.Count < cardsCount)
+        int index = 0;
+        while (quiz.Items.Count < cardsCount)
         {
             var i = rnd.Next(availableSymbols.Count);
             var symbol = availableSymbols[i];
+
             bool questionOriginal = settings.QuizMode == QuizModeEnum.Both
                 ? rnd.Next(2) < 1
                 : settings.QuizMode == QuizModeEnum.OriginalToTranslate;
-            var exists = cards.Any(r => r.Original == symbol.Original && r.QuestionOriginal == questionOriginal);
+            string question = questionOriginal ? symbol.Original : symbol.Translate;
+            string answer = questionOriginal ? symbol.Translate : symbol.Original;
+
+            var exists = quiz.Items.Any(r => r.Question == question);
             if (!exists)
-                cards.Add(new QuizCardViewModel(symbol.Original, symbol.Translate, questionOriginal));
+            {
+                quiz.Items.Add(new QuizItem
+                {
+                    Index = index++,
+                    Question = question,
+                    Anwser = answer,
+                    QuestionOriginal = questionOriginal,
+                    SymbolCourseName = symbol.CourseName,
+                    SymbolOriginal = symbol.Original,
+                });
+            }
         }
 
-        var session = new QuizViewModel
-        {
-            QuizId = GuidEncoder.Encode(Guid.NewGuid()),
-            Cards = cards,
-        };
-        sessions.Add(session.QuizId, session);
-        return session;
+        await db.SaveChangesAsync();
+
+        return QuizToQuizViewModel(quiz);
     }
 
-    public async Task SubmitResultAsync(string sessionId, QuizCardViewModel card)
+    public async Task SubmitResultAsync(string quizId, QuizItemViewModel card)
     {
-        if (!sessions.ContainsKey(sessionId))
-            return;
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
-        var c = sessions[sessionId].Cards.FirstOrDefault(r => r.Original == card.Original);
-        if (c is not null)
-            c.Result = card.Result;
+        var cardRow = await db.QuizItems
+            .Include(r => r.Quiz)
+            .Where(r => r.QuizId == quizId)
+            .SingleAsync(r => r.Index == card.Index);
 
-        await Task.CompletedTask;
+        cardRow.Result = card.Result;
+
+        var quizRow = cardRow.Quiz;
+        if (quizRow.Items.All(r => r.Result is not null))
+        {
+            quizRow.AllowContinue = false;
+        }
+
+        await db.SaveChangesAsync();
+    }
+
+    public async Task<string?> GetLastUnfinishedIdAsync()
+    {
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+        var lastUnfinished = await db.Quizzes
+            .OrderByDescending(r => r.Created)
+            .FirstOrDefaultAsync(r => r.AllowContinue);
+
+        return lastUnfinished?.Id;
+    }
+
+    private QuizViewModel QuizToQuizViewModel(Quiz quiz)
+    {
+        return new QuizViewModel
+        {
+            Id = quiz.Id,
+            Items = quiz.Items
+                .Select(r => QuizItemToQuizItemViewModel(r))
+                .OrderBy(r => r.Index)
+                .ToList()
+        };
+    }
+
+    private QuizItemViewModel QuizItemToQuizItemViewModel(QuizItem card)
+    {
+        return new QuizItemViewModel
+        {
+            Index = card.Index,
+            Question = card.Question,
+            Answer = card.Anwser,
+            QuestionOriginal = card.QuestionOriginal,
+            Result = card.Result,
+        };
+    }
+
+    public async Task<List<SymbolStatisticsViewModel>> GetSybolStatisticsAsync(string courseName)
+    {
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+        var symbols = await db.Symbols
+            .Where(r => r.CourseName == courseName)
+            .OrderBy(r => r.Row)
+            .ThenBy(r => r.Column)
+            .ToArrayAsync();
+
+        var results = await db.QuizItems
+            .Where(r => r.SymbolCourseName == courseName)
+            .ToArrayAsync();
+
+        var statistics = new List<SymbolStatisticsViewModel>();
+        foreach (var symbol in symbols)
+        {
+            var resultsOriginal = results
+                .Where(r => r.QuestionOriginal)
+                .Where(r => r.Question == symbol.Original)
+                .ToArray();
+            var resultsTranslate = results
+                .Where(r => !r.QuestionOriginal)
+                .Where(r => r.Question == symbol.Translate)
+                .ToArray();
+            statistics.Add(new SymbolStatisticsViewModel
+            {
+                Symbol = SymbolConverter.SymbolToSymbolViewModel( symbol),
+                GoodOriginalQuestions = resultsOriginal.Where(r => r.Result == true).Count(),
+                TotalOriginalQuestions = resultsOriginal.Where(r => r.Result is not null).Count(),
+                GoodTranslateQuestions = resultsTranslate.Where(r => r.Result == true).Count(),
+                TotalTranslateQuestions = resultsTranslate.Where(r => r.Result is not null).Count(),
+            });
+        }
+        return statistics;
     }
 }

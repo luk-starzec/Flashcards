@@ -120,11 +120,20 @@
   <data name="Res_Bad" xml:space="preserve">
     <value>Źle</value>
   </data>
+  <data name="Res_CardsCount" xml:space="preserve">
+    <value>Liczba kart</value>
+  </data>
   <data name="Res_Colors" xml:space="preserve">
     <value>Kolory</value>
   </data>
+  <data name="Res_ContinueQuiz" xml:space="preserve">
+    <value>Kontynuuj quiz</value>
+  </data>
   <data name="Res_DarkMode" xml:space="preserve">
     <value>Tryb ciemny</value>
+  </data>
+  <data name="Res_Data" xml:space="preserve">
+    <value>Dane</value>
   </data>
   <data name="Res_Details" xml:space="preserve">
     <value>Szczegóły</value>
@@ -135,11 +144,14 @@
   <data name="Res_ExcludeFromQuiz" xml:space="preserve">
     <value>Wyklucz z quizu</value>
   </data>
+  <data name="Res_Export" xml:space="preserve">
+    <value>Exportuj</value>
+  </data>
   <data name="Res_Good" xml:space="preserve">
     <value>Dobrze</value>
   </data>
-  <data name="Res_HowManyCards" xml:space="preserve">
-    <value>Ile kart</value>
+  <data name="Res_Import" xml:space="preserve">
+    <value>Importuj</value>
   </data>
   <data name="Res_Language" xml:space="preserve">
     <value>Język</value>
@@ -154,7 +166,7 @@
     <value>Opcje nauki</value>
   </data>
   <data name="Res_MainPage" xml:space="preserve">
-    <value>Strona główna</value>
+    <value>Fiszki - Strona główna</value>
   </data>
   <data name="Res_Next" xml:space="preserve">
     <value>Następny</value>
@@ -170,6 +182,12 @@
   </data>
   <data name="Res_QuizOptions" xml:space="preserve">
     <value>Opcje quizu</value>
+  </data>
+  <data name="Res_RestoreDefaults" xml:space="preserve">
+    <value>Przywróć domyślne</value>
+  </data>
+  <data name="Res_RestoreDefaultsMessage" xml:space="preserve">
+    <value>Czy chcesz usunąć swoje kursy z informacjami o postępie i przywrócić domyślne ustawienia aplikacji?</value>
   </data>
   <data name="Res_SelectCourse" xml:space="preserve">
     <value>Wybierz kurs</value>

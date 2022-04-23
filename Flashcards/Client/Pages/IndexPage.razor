@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IStringLocalizer<Resource> localizer
 @inject IThemeService themeService;
+@inject IQuizService quizService;
 
 <PageTitle>@localizer["Res_MainPage"]</PageTitle>
 
@@ -22,6 +23,13 @@
         @localizer["Res_Quiz"]
     </a>
 
+    @if (lastUnfinishedQuizId is not null)
+    {
+        <a href=@($"/quiz/{lastUnfinishedQuizId}") class="index-page__button index-page__button--continue-quiz">
+            @localizer["Res_ContinueQuiz"]
+        </a>
+    }
+
     <a href="/settings" class="index-page__button index-page__button--settings">
         @localizer["Res_Settings"]
     </a>
@@ -31,6 +39,8 @@
 @code {
     [CascadingParameter] LoaderHelper LoaderHelper { get; set; }
 
+    string? lastUnfinishedQuizId;
+
     bool darkMode;
 
     string cssTheme => darkMode ? "index-page__theme-toggle index-page__theme-toggle--dark" : "index-page__theme-toggle";
@@ -39,6 +49,7 @@
     protected override async Task OnInitializedAsync()
     {
         darkMode = await themeService.IsDarkMode();
+        lastUnfinishedQuizId = await quizService.GetLastUnfinishedIdAsync();
     }
 
     async Task ThemeToggleClick()

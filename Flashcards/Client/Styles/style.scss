@@ -8,6 +8,7 @@
 @import 'loader';
 @import 'splash-screen';
 @import 'confirm-dialog';
+@import 'statistics-page';
 
 :root {
     --color-black: hsl(215, 60%, 20%);
@@ -53,7 +54,20 @@ h3 {
     display: grid;
     background-color: $color-white;
 
+    @media (min-height: 950px), (min-width: 950px) {
+        background-color: $color-light;
+        padding-block: 5vh;
+        padding-inline: min(5%, 5vw);
+
+        main {
+            border-radius: .5rem;
+            box-shadow: 0rem 0rem 1rem .1rem $color-shadow-light;
+        }
+    }
+
     &--hidden {
+        background-color: $color-secondary;
+
         @media (prefers-color-scheme: dark) {
             background-color: $color-dark;
         }
@@ -61,18 +75,5 @@ h3 {
         main {
             visibility: hidden;
         }
-    }
-}
-
-@media (min-height: 950px), (min-width: 950px) {
-    .layout__wrapper {
-        background-color: $color-light;
-        padding-block: 5vh;
-        padding-inline: min(5%, 5vw);
-    }
-
-    main {
-        border-radius: .5rem;
-        box-shadow: 0rem 0rem 1rem .1rem $color-shadow-light;
     }
 }

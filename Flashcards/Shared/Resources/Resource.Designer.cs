@@ -70,6 +70,15 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cards count.
+        /// </summary>
+        public static string Res_CardsCount {
+            get {
+                return ResourceManager.GetString("Res_CardsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Colors.
         /// </summary>
         public static string Res_Colors {
@@ -79,11 +88,29 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Continue quiz.
+        /// </summary>
+        public static string Res_ContinueQuiz {
+            get {
+                return ResourceManager.GetString("Res_ContinueQuiz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark Mode.
         /// </summary>
         public static string Res_DarkMode {
             get {
                 return ResourceManager.GetString("Res_DarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data.
+        /// </summary>
+        public static string Res_Data {
+            get {
+                return ResourceManager.GetString("Res_Data", resourceCulture);
             }
         }
         
@@ -115,6 +142,15 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Res_Export {
+            get {
+                return ResourceManager.GetString("Res_Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Good.
         /// </summary>
         public static string Res_Good {
@@ -124,11 +160,11 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How many cards.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
-        public static string Res_HowManyCards {
+        public static string Res_Import {
             get {
-                return ResourceManager.GetString("Res_HowManyCards", resourceCulture);
+                return ResourceManager.GetString("Res_Import", resourceCulture);
             }
         }
         
@@ -169,7 +205,7 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main page.
+        ///   Looks up a localized string similar to Flashcards - Main page.
         /// </summary>
         public static string Res_MainPage {
             get {
@@ -219,6 +255,24 @@ namespace Flashcards.Shared.Resources {
         public static string Res_QuizOptions {
             get {
                 return ResourceManager.GetString("Res_QuizOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore defaults.
+        /// </summary>
+        public static string Res_RestoreDefaults {
+            get {
+                return ResourceManager.GetString("Res_RestoreDefaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to delete your courses with progress data and restore the app&apos;s default settings?.
+        /// </summary>
+        public static string Res_RestoreDefaultsMessage {
+            get {
+                return ResourceManager.GetString("Res_RestoreDefaultsMessage", resourceCulture);
             }
         }
         

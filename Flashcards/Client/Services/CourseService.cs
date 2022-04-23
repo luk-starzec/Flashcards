@@ -11,12 +11,12 @@ namespace Flashcards.Client.Services;
 internal class CourseService : ICourseService
 {
     private readonly HttpClient _httpClient;
-    private readonly DataSynchronizer _dataSynchronizer;
+    private readonly IDataProvider _dataProvider;
 
-    public CourseService(HttpClient httpClient, DataSynchronizer dataSynchronizer)
+    public CourseService(HttpClient httpClient, IDataProvider dataProvider)
     {
         _httpClient = httpClient;
-        _dataSynchronizer = dataSynchronizer;
+        _dataProvider = dataProvider;
     }
 
     public async Task DownloadCourseAsync(CourseViewModel course)
@@ -25,7 +25,7 @@ internal class CourseService : ICourseService
         {
             var symbols = await _httpClient.GetFromJsonAsync<List<SymbolOptionsModel>>($"api/course/{course.Name}/symbols") ?? new();
 
-            using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+            using var db = await _dataProvider.GetPreparedDbContextAsync();
 
             var courseRow = await db.Courses.SingleOrDefaultAsync(r => r.Name == course.Name);
             if (courseRow is null)
@@ -84,7 +84,7 @@ internal class CourseService : ICourseService
 
     public async Task<CourseViewModel?> GetActiveCourseAsync()
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var course = await db.Courses
             .Include(r => r.Titles)
@@ -114,11 +114,12 @@ internal class CourseService : ICourseService
     {
         try
         {
-            using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+            using var db = await _dataProvider.GetPreparedDbContextAsync();
 
             var symbols = await db.Symbols
                 .Include(r => r.Course)
-                .Select(r => SymbolConverter.RowToSymbol(r))
+                .Where(r => r.Course.IsActive)
+                .Select(r => SymbolConverter.SymbolToSymbolViewModel(r))
                 .ToListAsync();
 
             var sorted = symbols
@@ -140,7 +141,7 @@ internal class CourseService : ICourseService
         st.Start();
         try
         {
-            using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+            using var db = await _dataProvider.GetPreparedDbContextAsync();
 
             var fromLocal = await db.Courses
                 .Include(r => r.Titles)
@@ -193,7 +194,7 @@ internal class CourseService : ICourseService
     {
         try
         {
-            using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+            using var db = await _dataProvider.GetPreparedDbContextAsync();
 
             var symbols = await db.Symbols.Where(r => r.CourseName == courseName).ToArrayAsync();
 
@@ -211,7 +212,7 @@ internal class CourseService : ICourseService
                 s.Column = lastColumn + 1;
             }
 
-            return symbols.Select(r => SymbolConverter.RowToSymbol(r)).ToList();
+            return symbols.Select(r => SymbolConverter.SymbolToSymbolViewModel(r)).ToList();
         }
         catch (Exception)
         {
@@ -223,7 +224,7 @@ internal class CourseService : ICourseService
     {
         try
         {
-            using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+            using var db = await _dataProvider.GetPreparedDbContextAsync();
 
             var currentActive = await db.Courses.SingleOrDefaultAsync(r => r.IsActive);
             if (currentActive is not null)
@@ -242,7 +243,7 @@ internal class CourseService : ICourseService
 
     public async Task SetSymbolLeadnedAsync(string courseName, string[] original, bool learned = true)
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var symbols = await db.Symbols
             .Where(r => r.CourseName == courseName)
@@ -262,7 +263,7 @@ internal class CourseService : ICourseService
 
     public async Task SetSymbolQuizExcludedAsync(string courseName, string[] original, bool excluded)
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var symbols = await db.Symbols
             .Where(r => r.CourseName == courseName)

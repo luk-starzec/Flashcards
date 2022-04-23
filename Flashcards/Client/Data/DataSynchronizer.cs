@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Flashcards.Client.Data;
 
-internal class DataSynchronizer
+internal class DataSynchronizer : IDataProvider
 {
     public const string SqliteDbFilename = "app.db";
 
@@ -19,12 +19,24 @@ internal class DataSynchronizer
 
     public async Task<ClientSideDbContext> GetPreparedDbContextAsync()
     {
-        await FirstTimeSetupAsync(js);
+        await FirstTimeSetupAsync();
         return await dbContextFactory.CreateDbContextAsync();
     }
 
+    public async Task DeleteDatabase()
+    {
+        using var db = await GetPreparedDbContextAsync();
+        await db.Database.EnsureDeletedAsync();
 
-    private async Task FirstTimeSetupAsync(IJSRuntime js)
+        var module = await js.InvokeAsync<IJSObjectReference>("import", "./scripts/dbstorage.js");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("browser")))
+        {
+            await module.InvokeVoidAsync("deleteIndexedDb");
+        }
+    }
+
+    private async Task FirstTimeSetupAsync()
     {
         var module = await js.InvokeAsync<IJSObjectReference>("import", "./scripts/dbstorage.js");
 

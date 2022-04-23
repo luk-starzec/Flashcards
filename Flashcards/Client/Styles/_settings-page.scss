@@ -316,6 +316,7 @@
 
 .quiz-options__button {
     margin: .5rem 2rem 1rem 2rem;
+    padding: .25rem;
     border: none;
     border-radius: .5rem;
     color: $color-dark;
@@ -509,5 +510,33 @@
 
     &:hover {
         background-color: $color-light;
+    }
+}
+
+.data-options__wrapper {
+    display: grid;
+}
+
+.data-options__button {
+    margin: 1rem 2rem;
+    padding: .75rem 2rem;
+    border: none;
+    border-radius: .5rem;
+    background-color: $color-dark;
+    color: $color-white;
+    font-family: 'Noto Sans';
+    font-size: 2rem;
+    cursor: pointer;
+
+    &--restore {
+        background-color: $color-secondary;
+        color: $color-black;
+        margin-top: 2rem;
+    }
+
+    &:disabled {
+        background-color: $color-light;
+        color: $color-white;
+        cursor: not-allowed;
     }
 }

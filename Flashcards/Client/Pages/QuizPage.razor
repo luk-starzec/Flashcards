@@ -1,4 +1,5 @@
 ﻿@page "/quiz"
+@page "/quiz/{quizId}"
 @inject IQuizService quizService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Resource> localizer
@@ -16,10 +17,10 @@
         </div>
 
         <div class="@cssQuestion">
-            @question
+            @card.Question
         </div>
 
-        <QuizCard Answer="@answer" AnswerOriginal="@(!card.QuestionOriginal)" @bind-AnswerVisible="answerVisble" />
+        <QuizCard Answer="@card.Answer" AnswerOriginal="@(!card.QuestionOriginal)" @bind-AnswerVisible="answerVisble" />
 
         @if (answerVisble)
         {
@@ -41,19 +42,17 @@
 }
 
 @code {
-    [CascadingParameter] LoaderHelper loaderHelper { get; set; }
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; } = default!;
+    [Parameter] public string? QuizId { get; set; }
 
     QuizViewModel? quiz;
 
-    List<QuizCardViewModel> cards => quiz?.Cards ?? new();
+    List<QuizItemViewModel> cards => quiz?.Items ?? new();
     int index = 0;
-    QuizCardViewModel card => cards[index];
+    QuizItemViewModel card => cards[index];
 
     bool answerVisble;
     bool closeDialogVisible;
-
-    string question => card.QuestionOriginal ? card.Original : card.Translate;
-    string answer => card.QuestionOriginal ? card.Translate : card.Original;
 
     string cssQuestion => card?.QuestionOriginal == true
         ? "quiz-page__question quiz-page__question--original"
@@ -63,7 +62,15 @@
     {
         loaderHelper.ShowLoader(true);
 
-        quiz = await quizService.PrepareQuizAsync();
+        if (QuizId is null)
+        {
+            quiz = await quizService.PrepareQuizAsync();
+        }
+        else
+        {
+            quiz = await quizService.GetQuizAsync(QuizId);
+            index = quiz?.Items.Where(r => r.Result is not null).Count() ?? 0;
+        }
 
         loaderHelper.HideLoader();
     }
@@ -94,7 +101,7 @@
 
     async Task ShowNext()
     {
-        await quizService.SubmitResultAsync(quiz.QuizId, card);
+        await quizService.SubmitResultAsync(quiz.Id, card);
         if (index < cards.Count - 1)
         {
             answerVisble = false;
@@ -102,7 +109,7 @@
         }
         else
         {
-            NavigationManager.NavigateTo($"/result/{quiz.QuizId}");
+            NavigationManager.NavigateTo($"/result/{quiz.Id}");
         }
     }
 }

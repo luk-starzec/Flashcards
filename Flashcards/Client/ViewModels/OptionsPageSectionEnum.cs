@@ -6,5 +6,6 @@ public enum OptionsPageSectionEnum
     LearnOptions,
     QuizOptions,
     ThemeOptions,
-    Language
+    Language,
+    Data
 }

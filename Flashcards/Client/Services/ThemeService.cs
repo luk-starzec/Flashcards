@@ -11,12 +11,12 @@ internal class ThemeService : IThemeService
     private const string THEME_SETTINGS_NAME = "ThemeSettings";
     private const int DEFAULT_HUE = 215;
 
-    private readonly DataSynchronizer _dataSynchronizer;
+    private readonly IDataProvider _dataProvider;
     private readonly IJSRuntime _js;
 
-    public ThemeService(DataSynchronizer dataSynchronizer, IJSRuntime js)
+    public ThemeService(IDataProvider dataProvider, IJSRuntime js)
     {
-        _dataSynchronizer = dataSynchronizer;
+        _dataProvider = dataProvider;
         _js = js;
     }
 
@@ -54,7 +54,7 @@ internal class ThemeService : IThemeService
 
     private async Task<ThemeViewModel> LoadThemeAsync()
     {
-        using var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == THEME_SETTINGS_NAME);
 
@@ -67,7 +67,7 @@ internal class ThemeService : IThemeService
 
     private async Task SaveThemeAsync(ThemeViewModel theme)
     {
-        var db = await _dataSynchronizer.GetPreparedDbContextAsync();
+        var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == THEME_SETTINGS_NAME);
         if (row is null)

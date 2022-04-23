@@ -29,7 +29,7 @@
 </a>
 
 @code {
-    [CascadingParameter] LoaderHelper loaderHelper { get; set; }
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; } = default!;
 
     List<SymbolViewModel>? symbols;
     CourseViewModel? activeCourse;
