@@ -38,7 +38,8 @@
 
             @if (IsSectionVisible(OptionsPageSectionEnum.SelectCourse))
             {
-                <SelectCourse Courses="@courses" OnCourseActivate="HandleCourseActivate" OnCourseDownload="HandleCourseDownload" />
+                <SelectCourse Courses="@courses" OnCourseActivate="HandleCourseActivate" OnCourseDownload="HandleCourseDownload"
+                          OnCourseUpdate="HandleCourseUpdate" />
             }
         </li>
 
@@ -259,12 +260,23 @@
     {
         loaderHelper.ShowLoader();
 
-        await courseService.DownloadCourseAsync(course);
+        await courseService.DownloadCourseAsync(course.Name);
 
         course.IsDownloaded = true;
 
         if (ActiveCourse is null)
             await HandleCourseActivate(course);
+
+        loaderHelper.HideLoader();
+    }
+
+    async Task HandleCourseUpdate(CourseViewModel course)
+    {
+        loaderHelper.ShowLoader();
+
+        var updated = await courseService.UpdateCourseAsync(course.Name);
+        courses.Remove(course);
+        courses.Add(updated);
 
         loaderHelper.HideLoader();
 

@@ -51,6 +51,6 @@
         activeCourse = await courseService.GetActiveCourseAsync();
         if (activeCourse is null)
             return;
-        statistics = await quizService.GetSybolStatisticsAsync(activeCourse.Name);
+        statistics = await quizService.GetSymbolStatisticsAsync(activeCourse.Name);
     }
 }

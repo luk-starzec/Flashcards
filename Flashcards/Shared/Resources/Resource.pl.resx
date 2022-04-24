@@ -165,6 +165,9 @@
   <data name="Res_LearnOptions" xml:space="preserve">
     <value>Opcje nauki</value>
   </data>
+  <data name="Res_LearnUnavailableInfo" xml:space="preserve">
+    <value>Aby aktywować opcją Nauka, wybierz kurs w sekcji Ustawienia</value>
+  </data>
   <data name="Res_MainPage" xml:space="preserve">
     <value>Fiszki - Strona główna</value>
   </data>
@@ -183,6 +186,9 @@
   <data name="Res_QuizOptions" xml:space="preserve">
     <value>Opcje quizu</value>
   </data>
+  <data name="Res_QuizUnavailableInfo" xml:space="preserve">
+    <value>Aby aktywować Quiz, skorzystaj najpierw z funkcji Nauka lub zmień opcje w sekcji Ustawienia</value>
+  </data>
   <data name="Res_RestoreDefaults" xml:space="preserve">
     <value>Przywróć domyślne</value>
   </data>
@@ -194,6 +200,9 @@
   </data>
   <data name="Res_Settings" xml:space="preserve">
     <value>Ustawienia</value>
+  </data>
+  <data name="Res_UpdateAvailable" xml:space="preserve">
+    <value>Dostępna aktualizacja</value>
   </data>
   <data name="Res_UseOnlyLearned" xml:space="preserve">
     <value>Używaj tylko poznane</value>

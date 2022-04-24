@@ -130,12 +130,18 @@
 .result-item__icon {
     justify-self: end;
     width: 2rem;
-    margin-inline: 1.5rem;
+    margin-inline: .5rem;
 
     svg {
         height: 2rem;
         width: 2rem;
-        fill: $color-bad-dark;
+        fill: $color-secondary;
+    }
+
+    &--bad {
+        svg {
+            fill: $color-bad-dark;
+        }
     }
 }
 

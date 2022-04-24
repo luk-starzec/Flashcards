@@ -1,4 +1,5 @@
 ﻿@inject ILanguageService languageService;
+@inject IStringLocalizer<Resource> localizer
 
 <div class="select-course__wrapper">
 
@@ -18,6 +19,16 @@
 
                     </button>
 
+                    @if (course.UpdateAvailable)
+                    {
+                        <button class="select-course__button select-course__button--update" @onclick="()=>HandleUpdateClick(course)"
+                    title="@localizer["Res_UpdateAvailable"]">
+
+                            <SvgIcon SvgUrl="/assets/update-ico.svg" />
+
+                        </button>
+                    }
+
                 </li>
             }
 
@@ -30,9 +41,10 @@
     [Parameter] public List<CourseViewModel>? Courses { get; set; }
     [Parameter] public EventCallback<CourseViewModel> OnCourseActivate { get; set; }
     [Parameter] public EventCallback<CourseViewModel> OnCourseDownload { get; set; }
+    [Parameter] public EventCallback<CourseViewModel> OnCourseUpdate { get; set; }
 
     IEnumerable<CourseViewModel>? sortedCourses => Courses?.OrderByDescending(x => x.IsDownloaded)
-        .ThenBy(x => x.Titles.ContainsKey(language) ? x.Titles[language] : x.Titles[LanguageEnum.English]);
+        .ThenBy(x => GetTitle(x));
 
     LanguageEnum language;
 
@@ -48,7 +60,7 @@
 
     string GetTitle(CourseViewModel course) => course.Titles.ContainsKey(language)
         ? course.Titles[language]
-        : course.Titles[LanguageEnum.English];
+        : course.Titles.ContainsKey(LanguageEnum.English) ? course.Titles[LanguageEnum.English] : course.Titles.First().Value;
 
     protected override async Task OnInitializedAsync()
     {
@@ -72,5 +84,10 @@
     async Task DownloadCourse(CourseViewModel course)
     {
         await OnCourseDownload.InvokeAsync(course);
+    }
+
+    async Task HandleUpdateClick(CourseViewModel course)
+    {
+        await OnCourseUpdate.InvokeAsync(course);
     }
 }

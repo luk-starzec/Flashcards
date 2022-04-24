@@ -10,7 +10,8 @@ public interface ICourseService
     Task<List<SymbolViewModel>> GetSymbolsAsync(string courseName);
     Task<List<SymbolViewModel>> GetActiveCourseSymbolsAsync();
     Task SetActiveCourseAsync(string courseName);
-    Task DownloadCourseAsync(CourseViewModel course);
+    Task DownloadCourseAsync(string courseName);
+    Task<CourseViewModel> UpdateCourseAsync(string courseName);
     Task SetSymbolLeadnedAsync(string courseName, string[] original, bool learned = true);
     Task SetSymbolQuizExcludedAsync(string courseName, string[] original, bool excluded);
 }

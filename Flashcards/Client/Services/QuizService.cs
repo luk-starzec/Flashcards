@@ -27,8 +27,9 @@ internal class QuizService : IQuizService
             .Include(r => r.Items)
             .SingleOrDefaultAsync(r => r.Id == quizId);
 
-        return row is not null ? QuizToQuizViewModel(row) : null;
+        return row is not null ? QuizConverter.QuizToQuizViewModel(row) : null;
     }
+
     public async Task<QuizOptionsViewModel> GetOptionsAsync()
     {
         using var db = await _dataProvider.GetPreparedDbContextAsync();
@@ -61,9 +62,15 @@ internal class QuizService : IQuizService
         await db.SaveChangesAsync();
     }
 
-    public async Task<QuizViewModel> PrepareQuizAsync()
+    public async Task<QuizViewModel?> PrepareQuizAsync()
     {
         using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+        var settings = await GetOptionsAsync(db);
+        var availableSymbols = await GetSymbolViewModelsAsync(settings);
+
+        if (!availableSymbols.Any())
+            return null;
 
         var previousUnfinished = await db.Quizzes.Where(r => r.AllowContinue).ToListAsync();
         foreach (var q in previousUnfinished)
@@ -78,14 +85,6 @@ internal class QuizService : IQuizService
             AllowContinue = true,
         };
         db.Quizzes.Add(quiz);
-
-        var settings = await GetOptionsAsync(db);
-
-        var symbols = await _courseService.GetActiveCourseSymbolsAsync();
-        var availableSymbols = symbols
-            .Where(r => !r.QuizExcluded)
-            .Where(r => r.Learned || !settings.OnlyLearned)
-            .ToList();
 
         int cardsCount = Math.Min(settings.CardCount, availableSymbols.Count);
         int index = 0;
@@ -117,7 +116,17 @@ internal class QuizService : IQuizService
 
         await db.SaveChangesAsync();
 
-        return QuizToQuizViewModel(quiz);
+        return QuizConverter.QuizToQuizViewModel(quiz);
+    }
+
+    private async Task<List<SymbolViewModel>> GetSymbolViewModelsAsync(QuizOptionsViewModel settings)
+    {
+        var symbols = await _courseService.GetActiveCourseSymbolsAsync();
+
+        return symbols
+            .Where(r => !r.QuizExcluded)
+            .Where(r => r.Learned || !settings.OnlyLearned)
+            .ToList();
     }
 
     public async Task SubmitResultAsync(string quizId, QuizItemViewModel card)
@@ -140,42 +149,19 @@ internal class QuizService : IQuizService
         await db.SaveChangesAsync();
     }
 
-    public async Task<string?> GetLastUnfinishedIdAsync()
+    public async Task<string?> GetLastUnfinishedIdAsync(string courseName)
     {
         using var db = await _dataProvider.GetPreparedDbContextAsync();
 
         var lastUnfinished = await db.Quizzes
+            .Where(r => r.Items.First().SymbolCourseName == courseName)
             .OrderByDescending(r => r.Created)
             .FirstOrDefaultAsync(r => r.AllowContinue);
 
         return lastUnfinished?.Id;
     }
 
-    private QuizViewModel QuizToQuizViewModel(Quiz quiz)
-    {
-        return new QuizViewModel
-        {
-            Id = quiz.Id,
-            Items = quiz.Items
-                .Select(r => QuizItemToQuizItemViewModel(r))
-                .OrderBy(r => r.Index)
-                .ToList()
-        };
-    }
-
-    private QuizItemViewModel QuizItemToQuizItemViewModel(QuizItem card)
-    {
-        return new QuizItemViewModel
-        {
-            Index = card.Index,
-            Question = card.Question,
-            Answer = card.Anwser,
-            QuestionOriginal = card.QuestionOriginal,
-            Result = card.Result,
-        };
-    }
-
-    public async Task<List<SymbolStatisticsViewModel>> GetSybolStatisticsAsync(string courseName)
+    public async Task<List<SymbolStatisticsViewModel>> GetSymbolStatisticsAsync(string courseName)
     {
         using var db = await _dataProvider.GetPreparedDbContextAsync();
 
@@ -202,7 +188,7 @@ internal class QuizService : IQuizService
                 .ToArray();
             statistics.Add(new SymbolStatisticsViewModel
             {
-                Symbol = SymbolConverter.SymbolToSymbolViewModel( symbol),
+                Symbol = SymbolConverter.SymbolToSymbolViewModel(symbol),
                 GoodOriginalQuestions = resultsOriginal.Where(r => r.Result == true).Count(),
                 TotalOriginalQuestions = resultsOriginal.Where(r => r.Result is not null).Count(),
                 GoodTranslateQuestions = resultsTranslate.Where(r => r.Result == true).Count(),
@@ -210,5 +196,15 @@ internal class QuizService : IQuizService
             });
         }
         return statistics;
+    }
+
+    public async Task<bool> IsQuizAvailableAsync()
+    {
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+        var settings = await GetOptionsAsync(db);
+        var availableSymbols = await GetSymbolViewModelsAsync(settings);
+
+        return availableSymbols.Any();
     }
 }

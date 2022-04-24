@@ -205,6 +205,15 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To activate the Learn option, select course in the Settings section.
+        /// </summary>
+        public static string Res_LearnUnavailableInfo {
+            get {
+                return ResourceManager.GetString("Res_LearnUnavailableInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flashcards - Main page.
         /// </summary>
         public static string Res_MainPage {
@@ -259,6 +268,15 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To activate Quiz, please use the Learn feature first or change the options in the Settings section.
+        /// </summary>
+        public static string Res_QuizUnavailableInfo {
+            get {
+                return ResourceManager.GetString("Res_QuizUnavailableInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restore defaults.
         /// </summary>
         public static string Res_RestoreDefaults {
@@ -291,6 +309,15 @@ namespace Flashcards.Shared.Resources {
         public static string Res_Settings {
             get {
                 return ResourceManager.GetString("Res_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available.
+        /// </summary>
+        public static string Res_UpdateAvailable {
+            get {
+                return ResourceManager.GetString("Res_UpdateAvailable", resourceCulture);
             }
         }
         

@@ -1,11 +1,8 @@
 ﻿
 <div class="result-item__wrapper">
 
-    <div class="result-item__icon">
-        @if (Card.Result == false)
-        {
-            <SvgIcon SvgUrl="/assets/bad-ico.svg" />
-        }
+    <div class="@cssIcon">
+        <SvgIcon SvgUrl="@imgIcon" />
     </div>
 
     <div class="@cssText">
@@ -18,6 +15,14 @@
 
 @code {
     [Parameter] public QuizItemViewModel Card { get; set; }
+
+    string imgIcon => Card.Result == false
+        ? "/assets/bad-ico.svg"
+        : "/assets/good-ico.svg";
+
+    string cssIcon => Card.Result == false
+        ? "result-item__icon result-item__icon--bad"
+        : "result-item__icon";
 
     string cssText => Card.Result == true
         ? "result-item__text"

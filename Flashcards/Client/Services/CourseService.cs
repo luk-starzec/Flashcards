@@ -19,65 +19,34 @@ internal class CourseService : ICourseService
         _dataProvider = dataProvider;
     }
 
-    public async Task DownloadCourseAsync(CourseViewModel course)
+    public async Task DownloadCourseAsync(string courseName)
     {
         try
         {
-            var symbols = await _httpClient.GetFromJsonAsync<List<SymbolOptionsModel>>($"api/course/{course.Name}/symbols") ?? new();
+            var course = await _httpClient.GetFromJsonAsync<CourseModel>($"api/course/{courseName}") ?? new();
+            var symbols = await _httpClient.GetFromJsonAsync<List<SymbolOptionsModel>>($"api/course/{courseName}/symbols") ?? new();
 
             using var db = await _dataProvider.GetPreparedDbContextAsync();
 
-            var courseRow = await db.Courses.SingleOrDefaultAsync(r => r.Name == course.Name);
-            if (courseRow is null)
-            {
-                courseRow = new Course
-                {
-                    Name = course.Name,
-                    Titles = course.Titles.Select(r => new Title
-                    {
-                        CourseName = course.Name,
-                        Language = r.Key.ToString(),
-                        Text = r.Value
-                    }).ToList(),
-                };
-                db.Courses.Add(courseRow);
-            }
-            courseRow.Version = course.Version;
+            Course courseRow = CourseConverter.CourseModelToCourse(course);
+            db.Courses.Add(courseRow);
 
-            var currentSymbols = await db.Symbols.Where(r => r.CourseName == course.Name).ToArrayAsync();
-
-            var deleted = currentSymbols.Where(r => !symbols.Any(rr => rr.Original == r.Original)).ToArray();
-            var added = symbols.Where(r => !currentSymbols.Any(rr => rr.Original == r.Original)).ToArray();
-            var changed = currentSymbols.Where(r => symbols.Any(rr => rr.Original == r.Original)).ToArray();
-
-            foreach (var d in deleted)
-            {
-                db.Symbols.Remove(d);
-            }
-            foreach (var a in added)
+            foreach (var symbol in symbols)
             {
                 db.Add(new Symbol
                 {
-                    CourseName = course.Name,
-                    Original = a.Original,
-                    Translate = a.Translate,
-                    Row = a.Row,
-                    Column = a.Column,
+                    CourseName = courseName,
+                    Original = symbol.Original,
+                    Translate = symbol.Translate,
+                    Row = symbol.Row,
+                    Column = symbol.Column,
                 });
-            }
-            foreach (var c in changed)
-            {
-                var symbol = symbols.Single(r => r.Original == c.Original);
-                c.Translate = symbol.Translate;
-                c.Row = symbol.Row;
-                c.Column = symbol.Column;
             }
 
             await db.SaveChangesAsync();
         }
         catch (Exception)
         {
-
             throw;
         }
     }
@@ -91,23 +60,7 @@ internal class CourseService : ICourseService
             .Where(r => r.IsActive)
             .SingleOrDefaultAsync();
 
-        return course is not null
-            ? new CourseViewModel
-            {
-                Name = course.Name,
-                Titles = GetTitlesDictionary(course),
-                IsActive = course.IsActive,
-                Version = course.Version,
-                IsDownloaded = true,
-            }
-            : null;
-    }
-
-    private static Dictionary<LanguageEnum, string> GetTitlesDictionary(Course course)
-    {
-        return course.Titles
-            ?.ToDictionary(k => (LanguageEnum)Enum.Parse(typeof(LanguageEnum), k.Language), v => v.Text)
-            ?? new Dictionary<LanguageEnum, string>();
+        return course is not null ? CourseConverter.CourseToCourseViewModel(course) : null;
     }
 
     public async Task<List<SymbolViewModel>> GetActiveCourseSymbolsAsync()
@@ -137,8 +90,6 @@ internal class CourseService : ICourseService
 
     public async Task<List<CourseViewModel>> GetCoursesAsync()
     {
-        var st = new Stopwatch();
-        st.Start();
         try
         {
             using var db = await _dataProvider.GetPreparedDbContextAsync();
@@ -147,23 +98,13 @@ internal class CourseService : ICourseService
                 .Include(r => r.Titles)
                 .ToListAsync();
             var localCourses = fromLocal
-                .Select(r => new CourseViewModel
-                {
-                    Name = r.Name,
-                    Titles = GetTitlesDictionary(r),
-                    IsActive = r.IsActive,
-                    Version = r.Version,
-                    IsDownloaded = true,
-                }).ToList();
+                .Select(r => CourseConverter.CourseToCourseViewModel(r))
+                .ToList();
 
             var fromServer = await _httpClient.GetFromJsonAsync<List<CourseModel>>("api/course") ?? new();
             var serverCourses = fromServer
-                .Select(r => new CourseViewModel
-                {
-                    Name = r.Name,
-                    Titles = r.Titles.ToDictionary(k => (LanguageEnum)Enum.Parse(typeof(LanguageEnum), k.Language), v => v.Text),
-                    Version = r.Version,
-                }).ToList();
+                .Select(r => CourseConverter.CourseModelToCourseViewModel(r))
+                .ToList();
 
             foreach (var c in localCourses)
             {
@@ -178,9 +119,6 @@ internal class CourseService : ICourseService
             var result = localCourses
                 .Union(serverCourses)
                 .ToList();
-
-            st.Stop();
-            Console.WriteLine(st.ElapsedMilliseconds);
 
             return result;
         }
@@ -274,5 +212,67 @@ internal class CourseService : ICourseService
             symbol.QuizExcluded = excluded;
 
         await db.SaveChangesAsync();
+    }
+
+    public async Task<CourseViewModel> UpdateCourseAsync(string courseName)
+    {
+        try
+        {
+            var course = await _httpClient.GetFromJsonAsync<CourseModel>($"api/course/{courseName}") ?? new();
+            var symbols = await _httpClient.GetFromJsonAsync<List<SymbolOptionsModel>>($"api/course/{courseName}/symbols") ?? new();
+
+            using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+            var courseRow = await db.Courses
+                .Include(r => r.Titles)
+                .SingleAsync(r => r.Name == courseName);
+
+            courseRow.Version = course.Version;
+            courseRow.Titles = course.Titles
+                .Select(r => new Title
+                {
+                    CourseName = courseName,
+                    Language = r.Language,
+                    Text = r.Text
+                }).ToList();
+
+            var currentSymbols = await db.Symbols.Where(r => r.CourseName == courseName).ToArrayAsync();
+
+            var deleted = currentSymbols.Where(r => !symbols.Any(rr => rr.Original == r.Original)).ToArray();
+            var added = symbols.Where(r => !currentSymbols.Any(rr => rr.Original == r.Original)).ToArray();
+            var changed = currentSymbols.Where(r => symbols.Any(rr => rr.Original == r.Original)).ToArray();
+
+            foreach (var d in deleted)
+            {
+                db.Symbols.Remove(d);
+            }
+            foreach (var a in added)
+            {
+                db.Add(new Symbol
+                {
+                    CourseName = courseName,
+                    Original = a.Original,
+                    Translate = a.Translate,
+                    Row = a.Row,
+                    Column = a.Column,
+                });
+            }
+            foreach (var c in changed)
+            {
+                var symbol = symbols.Single(r => r.Original == c.Original);
+                c.Translate = symbol.Translate;
+                c.Row = symbol.Row;
+                c.Column = symbol.Column;
+            }
+
+            await db.SaveChangesAsync();
+
+            var updatedCourse = CourseConverter.CourseToCourseViewModel(courseRow);
+            return updatedCourse;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

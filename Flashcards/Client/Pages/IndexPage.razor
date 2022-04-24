@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IStringLocalizer<Resource> localizer
 @inject IThemeService themeService;
+@inject ICourseService courseService;
 @inject IQuizService quizService;
 
 <PageTitle>@localizer["Res_MainPage"]</PageTitle>
@@ -15,15 +16,41 @@
         <SvgIcon SvgUrl="@iconTheme" />
     </button>
 
-    <a href="/learn" class="index-page__button index-page__button--learn">
-        @localizer["Res_Learn"]
-    </a>
+    @if (learnAvailable)
+    {
+        <a href="/learn" class="index-page__button index-page__button--learn">
+            @localizer["Res_Learn"]
+        </a>
+    }
+    else
+    {
+        <button class="index-page__button index-page__button--unavailable index-page__button--learn"
+            @onclick="()=>learnInfoVisible=true">
 
-    <a href="/quiz" class="index-page__button index-page__button--quiz">
-        @localizer["Res_Quiz"]
-    </a>
+            <SvgIcon SvgUrl="/assets/info-ico.svg" />
+            @localizer["Res_Learn"]
 
-    @if (lastUnfinishedQuizId is not null)
+        </button>
+    }
+
+    @if (quizAvailable)
+    {
+        <a href="/quiz" class="index-page__button index-page__button--quiz">
+            @localizer["Res_Quiz"]
+        </a>
+    }
+    else
+    {
+        <button class="index-page__button index-page__button--unavailable index-page__button--quiz"
+            @onclick="()=>quizInfoVisible=true">
+
+            <SvgIcon SvgUrl="/assets/info-ico.svg" />
+            @localizer["Res_Quiz"]
+
+        </button>
+    }
+
+    @if (continueQuizAvailable)
     {
         <a href=@($"/quiz/{lastUnfinishedQuizId}") class="index-page__button index-page__button--continue-quiz">
             @localizer["Res_ContinueQuiz"]
@@ -36,8 +63,25 @@
 
 </div>
 
+@if (learnInfoVisible)
+{
+    <InfoDialog Message="@localizer["Res_LearnUnavailableInfo"]" OnClose="()=>learnInfoVisible=false" />
+}
+
+@if (quizInfoVisible)
+{
+    <InfoDialog Message="@localizer["Res_QuizUnavailableInfo"]" OnClose="()=>quizInfoVisible=false" />
+}
+
 @code {
-    [CascadingParameter] LoaderHelper LoaderHelper { get; set; }
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; }
+
+    bool learnAvailable = true;
+    bool quizAvailable = true;
+    bool continueQuizAvailable => lastUnfinishedQuizId is not null && quizAvailable;
+
+    bool learnInfoVisible;
+    bool quizInfoVisible;
 
     string? lastUnfinishedQuizId;
 
@@ -48,8 +92,18 @@
 
     protected override async Task OnInitializedAsync()
     {
+        loaderHelper.ShowLoader();
+
         darkMode = await themeService.IsDarkMode();
-        lastUnfinishedQuizId = await quizService.GetLastUnfinishedIdAsync();
+
+        var activeCourse = await courseService.GetActiveCourseAsync();
+        learnAvailable = activeCourse is not null;
+
+        quizAvailable = await quizService.IsQuizAvailableAsync();
+
+        lastUnfinishedQuizId = activeCourse is not null ? await quizService.GetLastUnfinishedIdAsync(activeCourse.Name) : null;
+
+        loaderHelper.HideLoader();
     }
 
     async Task ThemeToggleClick()
@@ -57,5 +111,4 @@
         await themeService.SetThemeAsync(!darkMode);
         darkMode = !darkMode;
     }
-
 }

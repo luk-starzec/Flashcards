@@ -48,8 +48,9 @@
     QuizViewModel? quiz;
 
     List<QuizItemViewModel> cards => quiz?.Items ?? new();
+
     int index = 0;
-    QuizItemViewModel card => cards[index];
+    QuizItemViewModel? card => cards.Count > index ? cards[index] : null;
 
     bool answerVisble;
     bool closeDialogVisible;
@@ -75,17 +76,19 @@
         loaderHelper.HideLoader();
     }
 
-    void HandleCloseClick() => closeDialogVisible = true;
+    void HandleCloseClick()
+    {
+        if (quiz is not null)
+            closeDialogVisible = true;
+        else
+            HandleCloseConfirm();
+    }
 
     void HandleCloseCancel() => closeDialogVisible = false;
 
     void HandleCloseConfirm() => NavigationManager.NavigateTo($"/");
 
-
-    void HandleAnswerClick()
-    {
-        answerVisble = true;
-    }
+    void HandleAnswerClick() => answerVisble = true;
 
     async Task HandleGoodClick()
     {

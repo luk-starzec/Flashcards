@@ -4,7 +4,7 @@
   grid-template-rows: auto 1fr auto 1fr 1fr;
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas: "logo theme" "learn learn" "quiz quiz" "continue continue" "settings settings";
-  gap: 4rem;
+  gap: 3rem;
   padding: 1rem;
   height: 95%;
 }
@@ -12,7 +12,7 @@
   .index-page__wrapper {
     grid-template-rows: auto 1fr 1fr;
     grid-template-areas: "logo theme" "learn continue" "quiz settings";
-    row-gap: 2rem;
+    gap: 2rem;
   }
   .index-page__wrapper .index-page__button--continue-quiz {
     align-self: end;
@@ -91,12 +91,40 @@
   color: var(--color-white);
   width: clamp(7ch, 80%, 30rem);
   padding: 1rem 2rem;
+  border: none;
   border-radius: 0.5rem;
   font-size: 2rem;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   box-shadow: 0 0.25rem 0.5rem var(--color-shadow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.index-page__button svg {
+  height: 2rem;
+  aspect-ratio: 1/1;
+  margin-inline: -3rem 2rem;
+}
+.index-page__button path {
+  fill: var(--color-dark);
+}
+.index-page__button:hover {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+.index-page__button--unavailable {
+  background-color: var(--color-light);
+  color: var(--color-secondary);
+  box-shadow: none;
+}
+.index-page__button--unavailable:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-light);
+}
+.index-page__button--unavailable:hover path {
+  fill: var(--color-white);
 }
 .index-page__button--learn {
   grid-area: learn;
@@ -114,10 +142,6 @@
 .index-page__button--settings {
   grid-area: settings;
   align-self: end;
-}
-.index-page__button:hover {
-  background-color: var(--color-secondary);
-  color: var(--color-black);
 }
 
 .button-nav__wrapper, .button-result__wrapper {
@@ -773,11 +797,14 @@
 .result-item__icon {
   justify-self: end;
   width: 2rem;
-  margin-inline: 1.5rem;
+  margin-inline: 0.5rem;
 }
 .result-item__icon svg {
   height: 2rem;
   width: 2rem;
+  fill: var(--color-secondary);
+}
+.result-item__icon--bad svg {
   fill: var(--color-bad-dark);
 }
 
@@ -971,6 +998,7 @@
   list-style: none;
   border-bottom: 1px solid var(--color-secondary);
   cursor: pointer;
+  display: flex;
 }
 .select-course__list-item:last-child {
   border-bottom: none;
@@ -999,6 +1027,9 @@
 .select-course__button path {
   fill: var(--color-dark);
 }
+.select-course__button:hover {
+  background-color: var(--color-light);
+}
 .select-course__button--active {
   font-weight: bold;
 }
@@ -1012,8 +1043,18 @@
 .select-course__button--download path {
   fill: var(--color-secondary);
 }
-.select-course__button:hover {
-  background-color: var(--color-light);
+.select-course__button--update {
+  grid-template-columns: auto;
+  width: 4rem;
+  margin-left: -4rem;
+  padding-inline: 0.5rem;
+  background-color: var(--color-secondary);
+}
+.select-course__button--update path {
+  fill: var(--color-white);
+}
+.select-course__button--update:hover {
+  background-color: var(--color-dark);
 }
 
 .quiz-options__wrapper {
@@ -1349,7 +1390,8 @@
     transform: rotate(360deg);
   }
 }
-.confirm-dialog__mask {
+.confirm-dialog__mask,
+.info-dialog__mask {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1358,7 +1400,8 @@
   opacity: 0.95;
 }
 
-.confirm-dialog__wrapper {
+.confirm-dialog__wrapper,
+.info-dialog__wrapper {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1376,7 +1419,8 @@
   box-shadow: 0 0.25rem 0.5rem var(--color-shadow);
 }
 
-.confirm-dialog__message {
+.confirm-dialog__message,
+.info-dialog__message {
   grid-column: 1/-1;
   padding-block: 1rem;
   text-align: center;
@@ -1384,7 +1428,8 @@
   font-size: inherit;
 }
 
-.confirm-dialog__button {
+.confirm-dialog__button,
+.info-dialog__button {
   border: none;
   padding: 0.5rem;
   border-radius: 0.25rem;
@@ -1392,19 +1437,35 @@
   cursor: pointer;
   box-shadow: 0 2px 4px 0px var(--color-shadow-light);
 }
-.confirm-dialog__button--confirm {
+.confirm-dialog__button:hover,
+.info-dialog__button:hover {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+.confirm-dialog__button--confirm,
+.info-dialog__button--confirm {
   grid-column: 1;
   background-color: var(--color-dark);
   color: var(--color-white);
 }
-.confirm-dialog__button--cancel {
+.confirm-dialog__button--cancel,
+.info-dialog__button--cancel {
   grid-column: 2;
   background-color: var(--color-secondary);
   color: var(--color-dark);
 }
-.confirm-dialog__button:hover {
-  background-color: var(--color-black);
-  color: var(--color-white);
+
+.info-dialog__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.info-dialog__button {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  padding-inline: 2rem;
 }
 
 .statistics-page__course-title {

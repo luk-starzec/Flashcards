@@ -1,0 +1,23 @@
+﻿
+<div class="info-dialog__wrapper">
+
+    <div class="info-dialog__message">
+        @Message
+    </div>
+
+    <button class="info-dialog__button" @onclick="CloseClick">
+        OK
+    </button>
+
+</div>
+
+<div class="info-dialog__mask">
+</div>
+
+
+@code {
+    [Parameter] public string Message { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    async Task CloseClick() => await OnClose.InvokeAsync();
+}

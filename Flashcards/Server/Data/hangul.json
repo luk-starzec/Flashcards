@@ -1,23 +1,149 @@
 ﻿[
   {
     "translate": "a",
-    "original": "あ",
+    "original": "ㅏ",
     "column": 0,
     "row": 0,
-    "subset": "basic"
+    "subset": ""
   },
   {
-    "translate": "i",
-    "original": "い",
+    "translate": "ya",
+    "original": "ㅑ",
     "column": 1,
     "row": 0,
-    "subset": "basic"
+    "subset": ""
+  },
+  {
+    "translate": "eo",
+    "original": "ㅓ",
+    "column": 2,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "yeo",
+    "original": "ㅕ",
+    "column": 3,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "o",
+    "original": "ㅗ",
+    "column": 4,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "yo",
+    "original": "ㅛ",
+    "column": 0,
+    "row": 1,
+    "subset": ""
   },
   {
     "translate": "u",
-    "original": "う",
+    "original": "ㅜ",
+    "column": 1,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "yu",
+    "original": "ㅠ",
     "column": 2,
-    "row": 0,
-    "subset": "basic"
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "eu",
+    "original": "ㅡ",
+    "column": 3,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "i",
+    "original": "ㅣ",
+    "column": 4,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "ae",
+    "original": "ㅐ",
+    "column": 0,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "yae",
+    "original": "ㅒ",
+    "column": 1,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "e",
+    "original": "ㅔ",
+    "column": 2,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "ye",
+    "original": "ㅖ",
+    "column": 3,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "wa",
+    "original": "ㅘ",
+    "column": 4,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "wae",
+    "original": "ㅙ",
+    "column": 5,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "oe",
+    "original": "ㅚ",
+    "column": 0,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "wo",
+    "original": "ㅝ",
+    "column": 1,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "we",
+    "original": "ㅞ",
+    "column": 2,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "wi",
+    "original": "ㅟ",
+    "column": 3,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "ui",
+    "original": "ㅢ",
+    "column": 4,
+    "row": 3,
+    "subset": ""
   }
 ]

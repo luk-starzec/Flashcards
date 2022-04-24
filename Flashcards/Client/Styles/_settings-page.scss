@@ -200,6 +200,7 @@
     list-style: none;
     border-bottom: 1px solid $color-secondary;
     cursor: pointer;
+    display: flex;
 
     &:last-child {
         border-bottom: none;
@@ -233,6 +234,10 @@
         fill: $color-dark;
     }
 
+    &:hover {
+        background-color: $color-light;
+    }
+
     &--active {
         font-weight: bold;
     }
@@ -250,8 +255,20 @@
         }
     }
 
-    &:hover {
-        background-color: $color-light;
+    &--update {
+        grid-template-columns: auto;
+        width: 4rem;
+        margin-left: -4rem;
+        padding-inline: .5rem;
+        background-color: $color-secondary;
+
+        path {
+            fill: $color-white;
+        }
+
+        &:hover {
+            background-color: $color-dark;
+        }
     }
 }
 

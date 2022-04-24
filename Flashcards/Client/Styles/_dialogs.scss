@@ -1,6 +1,7 @@
 ﻿@import 'shared';
 
-.confirm-dialog__mask {
+.confirm-dialog__mask,
+.info-dialog__mask {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -9,7 +10,8 @@
     opacity: .95;
 }
 
-.confirm-dialog__wrapper {
+.confirm-dialog__wrapper,
+.info-dialog__wrapper {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -27,7 +29,8 @@
     box-shadow: 0 .25rem .5rem $color-shadow;
 }
 
-.confirm-dialog__message {
+.confirm-dialog__message,
+.info-dialog__message {
     grid-column: 1/-1;
     padding-block: 1rem;
     text-align: center;
@@ -35,13 +38,19 @@
     font-size: inherit;
 }
 
-.confirm-dialog__button {
+.confirm-dialog__button,
+.info-dialog__button {
     border: none;
     padding: .5rem;
     border-radius: .25rem;
     font-size: inherit;
     cursor: pointer;
     box-shadow: 0 2px 4px 0px $color-shadow-light;
+
+    &:hover {
+        background-color: $color-black;
+        color: $color-white;
+    }
 
     &--confirm {
         grid-column: 1;
@@ -54,9 +63,21 @@
         background-color: $color-secondary;
         color: $color-dark;
     }
+}
 
-    &:hover {
-        background-color: $color-black;
-        color: $color-white;
-    }
+
+.info-dialog__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.info-dialog__message {
+}
+
+.info-dialog__button {
+    background-color: $color-light;
+    color: $color-dark;
+    padding-inline: 2rem;
 }
