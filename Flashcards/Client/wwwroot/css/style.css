@@ -830,6 +830,10 @@
   justify-self: start;
 }
 
+.settings-page__wrapper {
+  max-width: 100vw;
+}
+
 .settings-page__header {
   padding: 1rem;
   color: var(--color-secondary);
@@ -1106,6 +1110,11 @@
 }
 .quiz-options__checkbox--active {
   font-weight: bold;
+}
+@media (max-width: 400px) {
+  .quiz-options__checkbox {
+    grid-template-columns: auto 1fr;
+  }
 }
 
 .quiz-options__button {

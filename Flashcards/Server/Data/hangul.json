@@ -100,50 +100,148 @@
   {
     "translate": "wa",
     "original": "ㅘ",
-    "column": 4,
-    "row": 2,
+    "column": 0,
+    "row": 3,
     "subset": ""
   },
   {
     "translate": "wae",
     "original": "ㅙ",
-    "column": 5,
-    "row": 2,
+    "column": 1,
+    "row": 3,
     "subset": ""
   },
   {
     "translate": "oe",
     "original": "ㅚ",
-    "column": 0,
+    "column": 2,
     "row": 3,
     "subset": ""
   },
   {
     "translate": "wo",
     "original": "ㅝ",
-    "column": 1,
-    "row": 3,
+    "column": 0,
+    "row": 4,
     "subset": ""
   },
   {
     "translate": "we",
     "original": "ㅞ",
-    "column": 2,
-    "row": 3,
+    "column": 1,
+    "row": 4,
     "subset": ""
   },
   {
     "translate": "wi",
     "original": "ㅟ",
-    "column": 3,
-    "row": 3,
+    "column": 2,
+    "row": 4,
     "subset": ""
   },
   {
     "translate": "ui",
     "original": "ㅢ",
+    "column": 3,
+    "row": 4,
+    "subset": ""
+  },
+  {
+    "translate": "g/k",
+    "original": "ㄱ",
+    "column": 0,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "n",
+    "original": "ㄴ",
+    "column": 1,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "d/t",
+    "original": "ㄷ",
+    "column": 2,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "r/l",
+    "original": "ㄹ",
+    "column": 3,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "m",
+    "original": "ㅁ",
     "column": 4,
-    "row": 3,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "b/p",
+    "original": "ㅂ",
+    "column": 0,
+    "row": 6,
+    "subset": ""
+  },
+  {
+    "translate": "s",
+    "original": "ㅅ",
+    "column": 1,
+    "row": 6,
+    "subset": ""
+  },
+  {
+    "translate": "ng",
+    "original": "ㅇ",
+    "column": 2,
+    "row": 6,
+    "subset": ""
+  },
+  {
+    "translate": "j",
+    "original": "ㅈ",
+    "column": 3,
+    "row": 6,
+    "subset": ""
+  },
+  {
+    "translate": "ch",
+    "original": "ㅊ",
+    "column": 4,
+    "row": 6,
+    "subset": ""
+  },
+  {
+    "translate": "kh",
+    "original": "ㅋ",
+    "column": 0,
+    "row": 7,
+    "subset": ""
+  },
+  {
+    "translate": "th",
+    "original": "ㅌ",
+    "column": 1,
+    "row": 7,
+    "subset": ""
+  },
+  {
+    "translate": "ph",
+    "original": "ㅍ",
+    "column": 2,
+    "row": 7,
+    "subset": ""
+  },
+  {
+    "translate": "h",
+    "original": "ㅎ",
+    "column": 3,
+    "row": 7,
     "subset": ""
   }
 ]

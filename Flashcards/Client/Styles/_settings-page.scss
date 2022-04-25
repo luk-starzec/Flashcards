@@ -1,6 +1,7 @@
 ﻿@import 'shared';
 
 .settings-page__wrapper {
+    max-width: 100vw;
 }
 
 .settings-page__header {
@@ -328,6 +329,10 @@
 
     &--active {
         font-weight: bold;
+    }
+
+    @media (max-width: 400px) {
+        grid-template-columns: auto 1fr;
     }
 }
 
