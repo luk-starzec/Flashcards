@@ -11,8 +11,9 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.AddDbContextFactory<ClientSideDbContext>(
-    options => options.UseSqlite($"Filename={DataSynchronizer.SqliteDbFilename}"));
+builder.Services.AddDbContextFactory<ClientSideDbContext>(options => options
+    .UseSqlite($"Filename={DataSynchronizer.SqliteDbFilename}")
+);
 builder.Services.AddScoped<DataSynchronizer>();
 
 builder.Services.AddScoped<IDataProvider, DataSynchronizer>();
@@ -24,6 +25,8 @@ builder.Services.AddScoped<IDataService, DataService>();
 
 builder.Services.AddLocalization();
 
+builder.Logging.AddConfiguration(
+    builder.Configuration.GetSection("Logging"));
 
 var host = builder.Build();
 
