@@ -353,9 +353,7 @@
         loaderHelper.ShowLoader();
 
         await languageService.SetLanguageAsync(language);
-        currentLanguage = language;
-
-        loaderHelper.HideLoader();
+        navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
     }
 
     async Task HandleRestoreDefaults()

@@ -1,6 +1,4 @@
-﻿using Flashcards.Client.Data;
-using Flashcards.Client.ViewModels;
-using Microsoft.EntityFrameworkCore;
+﻿using Flashcards.Client.ViewModels;
 using Microsoft.JSInterop;
 using System.Text.Json;
 
@@ -11,12 +9,10 @@ internal class ThemeService : IThemeService
     private const string THEME_SETTINGS_NAME = "ThemeSettings";
     private const int DEFAULT_HUE = 215;
 
-    private readonly IDataProvider _dataProvider;
     private readonly IJSRuntime _js;
 
-    public ThemeService(IDataProvider dataProvider, IJSRuntime js)
+    public ThemeService(IJSRuntime js)
     {
-        _dataProvider = dataProvider;
         _js = js;
     }
 
@@ -25,6 +21,7 @@ internal class ThemeService : IThemeService
         await SaveThemeAsync(theme);
 
         var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/theme.js");
+
         await module.InvokeVoidAsync("setTheme", theme.IsDarkMode, theme.Hue);
     }
 
@@ -54,30 +51,22 @@ internal class ThemeService : IThemeService
 
     private async Task<ThemeViewModel> LoadThemeAsync()
     {
-        using var db = await _dataProvider.GetPreparedDbContextAsync();
+        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
 
-        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == THEME_SETTINGS_NAME);
+        var json = await module.InvokeAsync<string>("getLocalValue", THEME_SETTINGS_NAME);
 
-        if (row?.Data is null)
+        if (string.IsNullOrEmpty(json) || json == "undefined")
             return await GetDafaultTheme();
 
-        var viewMmodel = JsonSerializer.Deserialize<ThemeViewModel>(row.Data) ?? await GetDafaultTheme();
-        return viewMmodel;
+        return JsonSerializer.Deserialize<ThemeViewModel>(json) ?? await GetDafaultTheme();
     }
 
     private async Task SaveThemeAsync(ThemeViewModel theme)
     {
-        var db = await _dataProvider.GetPreparedDbContextAsync();
+        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
 
-        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == THEME_SETTINGS_NAME);
-        if (row is null)
-        {
-            row = new() { Name = THEME_SETTINGS_NAME };
-            db.ApplicationSettings.Add(row);
-        }
-        row.Data = JsonSerializer.Serialize(theme);
-
-        await db.SaveChangesAsync();
+        var json = JsonSerializer.Serialize(theme);
+        await module.InvokeVoidAsync("setLocalValue", THEME_SETTINGS_NAME, json);
     }
 
     private async Task<ThemeViewModel> GetDafaultTheme()

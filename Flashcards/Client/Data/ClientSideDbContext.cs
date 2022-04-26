@@ -9,7 +9,6 @@ internal class ClientSideDbContext : DbContext
     public DbSet<Symbol> Symbols { get; set; } = default!;
     public DbSet<Quiz> Quizzes { get; set; } = default!;
     public DbSet<QuizItem> QuizItems { get; set; } = default!;
-    public DbSet<ApplicationSettings> ApplicationSettings { get; set; } = default!;
 
     public ClientSideDbContext(DbContextOptions<ClientSideDbContext> options)
         : base(options)
@@ -48,12 +47,5 @@ internal class ClientSideDbContext : DbContext
             entity.ToTable("QuizItems");
             entity.HasKey(e => new { e.QuizId, e.Index });
         });
-
-        modelBuilder.Entity<ApplicationSettings>(entity =>
-        {
-            entity.ToTable("ApplicationSettings");
-            entity.HasKey(e => e.Name);
-        });
-
     }
 }

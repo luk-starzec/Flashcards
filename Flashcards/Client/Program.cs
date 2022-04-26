@@ -4,6 +4,7 @@ using Flashcards.Client.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -14,7 +15,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddDbContextFactory<ClientSideDbContext>(options => options
     .UseSqlite($"Filename={DataSynchronizer.SqliteDbFilename}")
 );
-builder.Services.AddScoped<DataSynchronizer>();
 
 builder.Services.AddScoped<IDataProvider, DataSynchronizer>();
 builder.Services.AddScoped<IQuizService, QuizService>();
@@ -25,8 +25,7 @@ builder.Services.AddScoped<IDataService, DataService>();
 
 builder.Services.AddLocalization();
 
-builder.Logging.AddConfiguration(
-    builder.Configuration.GetSection("Logging"));
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 
 var host = builder.Build();
 

@@ -1,7 +1,6 @@
-﻿using Flashcards.Client.Data;
-using Flashcards.Client.ViewModels;
-using Microsoft.EntityFrameworkCore;
+﻿using Flashcards.Client.ViewModels;
 using Microsoft.JSInterop;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace Flashcards.Client.Services;
@@ -10,12 +9,10 @@ internal class LanguageService : ILanguageService
 {
     private const string LANGUAGE_SETTINGS_NAME = "LanguageSettings";
 
-    private readonly IDataProvider _dataProvider;
     private readonly IJSRuntime _js;
 
-    public LanguageService(IDataProvider dataProvider, IJSRuntime js)
+    public LanguageService(IJSRuntime js)
     {
-        _dataProvider = dataProvider;
         _js = js;
     }
 
@@ -32,45 +29,35 @@ internal class LanguageService : ILanguageService
 
     public async Task<LanguageEnum> GetLanguageAsync()
     {
-        using var db = await _dataProvider.GetPreparedDbContextAsync();
+        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
 
-        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == LANGUAGE_SETTINGS_NAME);
+        var stringLanguageId = await module.InvokeAsync<string>("getLocalValue", LANGUAGE_SETTINGS_NAME);
 
-        if (!int.TryParse(row?.Data, out int languageId))
-        {
-            var language = await GetBrowserCultureAsync();
-            languageId = (int)language;
-            await SetLanguageAsync(language);
-        }
+        if (int.TryParse(stringLanguageId, out int languageId))
+            return (LanguageEnum)languageId;
 
-        return (LanguageEnum)languageId;
+        var language = await GetBrowserCultureAsync();
+        await SetLanguageAsync(language);
+
+        return language;
     }
 
     public async Task SetLanguageAsync(LanguageEnum language)
     {
-        using var db = await _dataProvider.GetPreparedDbContextAsync();
+        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
 
-        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == LANGUAGE_SETTINGS_NAME);
-        if (row is null)
-        {
-            row = new() { Name = LANGUAGE_SETTINGS_NAME };
-            db.ApplicationSettings.Add(row);
-        }
-        row.Data = ((int)language).ToString();
+        await module.InvokeVoidAsync("setLocalValue", LANGUAGE_SETTINGS_NAME, (int)language);
 
-        await db.SaveChangesAsync();
         SetAppCulture(language);
     }
 
     private async Task<LanguageEnum> GetBrowserCultureAsync()
     {
         var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/language.js");
+
         var language = await module.InvokeAsync<string>("getBrowserLanguage");
 
-        if (language == "pl")
-            return LanguageEnum.Polish;
-
-        return LanguageEnum.English;
+        return language == "pl" ? LanguageEnum.Polish : LanguageEnum.English;
     }
 
     private void SetAppCulture(LanguageEnum language)

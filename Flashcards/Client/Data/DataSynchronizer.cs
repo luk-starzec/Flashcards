@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Flashcards.Client.Data;

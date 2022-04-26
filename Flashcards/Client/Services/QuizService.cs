@@ -2,6 +2,7 @@
 using Flashcards.Client.Helpers;
 using Flashcards.Client.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
 using System.Text.Json;
 
 namespace Flashcards.Client.Services;
@@ -11,12 +12,15 @@ internal class QuizService : IQuizService
     private const string QUIZ_SETTINGS_NAME = "QuizSettings";
     private readonly IDataProvider _dataProvider;
     private readonly ICourseService _courseService;
-    private readonly Random rnd = new Random();
+    private readonly IJSRuntime _js;
 
-    public QuizService(IDataProvider dataProvider, ICourseService courseService)
+    private readonly Random rnd = new();
+
+    public QuizService(IDataProvider dataProvider, ICourseService courseService, IJSRuntime js)
     {
         _dataProvider = dataProvider;
         _courseService = courseService;
+        _js = js;
     }
 
     public async Task<QuizViewModel?> GetQuizAsync(string quizId)
@@ -32,41 +36,29 @@ internal class QuizService : IQuizService
 
     public async Task<QuizOptionsViewModel> GetOptionsAsync()
     {
-        using var db = await _dataProvider.GetPreparedDbContextAsync();
-        return await GetOptionsAsync(db);
-    }
+        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
 
-    private async Task<QuizOptionsViewModel> GetOptionsAsync(ClientSideDbContext db)
-    {
-        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == QUIZ_SETTINGS_NAME);
+        var json = await module.InvokeAsync<string>("getLocalValue", QUIZ_SETTINGS_NAME);
 
-        if (row?.Data is null)
+        if (string.IsNullOrEmpty(json) || json == "undefined")
             return new();
 
-        var options = JsonSerializer.Deserialize<QuizOptionsViewModel>(row.Data) ?? new();
-        return options;
+        return JsonSerializer.Deserialize<QuizOptionsViewModel>(json) ?? new();
     }
 
     public async Task SetOptionsAsync(QuizOptionsViewModel options)
     {
-        using var db = await _dataProvider.GetPreparedDbContextAsync();
+        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
 
-        var row = await db.ApplicationSettings.SingleOrDefaultAsync(r => r.Name == QUIZ_SETTINGS_NAME);
-        if (row is null)
-        {
-            row = new() { Name = QUIZ_SETTINGS_NAME };
-            db.ApplicationSettings.Add(row);
-        }
-        row.Data = JsonSerializer.Serialize(options);
-
-        await db.SaveChangesAsync();
+        var json = JsonSerializer.Serialize(options);
+        await module.InvokeVoidAsync("setLocalValue", QUIZ_SETTINGS_NAME, json);
     }
 
     public async Task<QuizViewModel?> PrepareQuizAsync()
     {
         using var db = await _dataProvider.GetPreparedDbContextAsync();
 
-        var settings = await GetOptionsAsync(db);
+        var settings = await GetOptionsAsync();
         var availableSymbols = await GetSymbolViewModelsAsync(settings);
 
         if (!availableSymbols.Any())
@@ -200,9 +192,7 @@ internal class QuizService : IQuizService
 
     public async Task<bool> IsQuizAvailableAsync()
     {
-        using var db = await _dataProvider.GetPreparedDbContextAsync();
-
-        var settings = await GetOptionsAsync(db);
+        var settings = await GetOptionsAsync();
         var availableSymbols = await GetSymbolViewModelsAsync(settings);
 
         return availableSymbols.Any();

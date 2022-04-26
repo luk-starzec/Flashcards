@@ -92,7 +92,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        loaderHelper.ShowLoader();
+        loaderHelper?.ShowLoader();
 
         darkMode = await themeService.IsDarkMode();
 
@@ -103,7 +103,7 @@
 
         lastUnfinishedQuizId = activeCourse is not null ? await quizService.GetLastUnfinishedIdAsync(activeCourse.Name) : null;
 
-        loaderHelper.HideLoader();
+        loaderHelper?.HideLoader();
     }
 
     async Task ThemeToggleClick()

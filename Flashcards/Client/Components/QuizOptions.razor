@@ -90,11 +90,11 @@
         switch (mode)
         {
             case QuizModeEnum.Both:
-                return $"{symbol.Translate} 🠖 {symbol.Original}, {symbol.Original} 🠖 {symbol.Translate}";
+                return $"{symbol.Translate} → {symbol.Original}, {symbol.Original} → {symbol.Translate}";
             case QuizModeEnum.TranslateToOriginal:
-                return $"{symbol.Translate} 🠖 {symbol.Original}";
+                return $"{symbol.Translate} → {symbol.Original}";
             case QuizModeEnum.OriginalToTranslate:
-                return $"{symbol.Original} 🠖 {symbol.Translate}";
+                return $"{symbol.Original} → {symbol.Translate}";
             default:
                 return string.Empty;
         }

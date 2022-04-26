@@ -13,7 +13,6 @@
     align-items: center;
     height: 100%;
 
-
     @media (orientation: landscape) {
         grid-template-rows: minmax(auto, 25%) auto minmax(auto, 25%);
         grid-template-columns: minmax(auto, 10rem) auto minmax(auto, 10rem);

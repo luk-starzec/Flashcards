@@ -12,11 +12,11 @@
                 @Body
 
                 @if (loaderHelper.IsLoaderVisible)
-                {
-                    <Loader />
-                }
-            </CascadingValue>
-        </main>
+            {
+                <Loader />
+            }
+        </CascadingValue>
+    </main>
     }
     else
     {
@@ -42,7 +42,8 @@
 
     public void Dispose()
     {
-        loaderHelper.VisibilityChanged -= LoaderVisibilityChanged;
+        if (loaderHelper is not null)
+            loaderHelper.VisibilityChanged -= LoaderVisibilityChanged;
     }
 
     void LoaderVisibilityChanged()
