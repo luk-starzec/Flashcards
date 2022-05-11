@@ -1,5 +1,6 @@
 ﻿using Flashcards.Client.Data;
 using Flashcards.Client.Helpers;
+using Flashcards.Client.ExportModels;
 using Flashcards.Client.ViewModels;
 using Flashcards.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ internal class CourseService : ICourseService
         try
         {
             var course = await _httpClient.GetFromJsonAsync<CourseModel>($"api/course/{courseName}") ?? new();
-            var symbols = await _httpClient.GetFromJsonAsync<List<SymbolOptionsModel>>($"api/course/{courseName}/symbols") ?? new();
+            var symbols = await _httpClient.GetFromJsonAsync<List<SymbolModel>>($"api/course/{courseName}/symbols") ?? new();
 
             using var db = await _dataProvider.GetPreparedDbContextAsync();
 
@@ -128,6 +129,19 @@ internal class CourseService : ICourseService
         }
     }
 
+    public async Task<List<CourseViewModel>> GetDownloadedCoursesAsync()
+    {
+        using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+        var courses = await db.Courses
+            .Include(r => r.Titles)
+            .ToListAsync();
+
+        return courses
+            .Select(r => CourseConverter.CourseToCourseViewModel(r))
+            .ToList();
+    }
+
     public async Task<List<SymbolViewModel>> GetSymbolsAsync(string courseName)
     {
         try
@@ -151,6 +165,34 @@ internal class CourseService : ICourseService
             }
 
             return symbols.Select(r => SymbolConverter.SymbolToSymbolViewModel(r)).ToList();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task ReplaceCoursesAsync(List<CourseExportModel> courses)
+    {
+        try
+        {
+            using var db = await _dataProvider.GetPreparedDbContextAsync();
+
+            db.Courses.RemoveRange(db.Courses);
+            db.Titles.RemoveRange(db.Titles);
+            db.Symbols.RemoveRange(db.Symbols);
+
+            foreach (var course in courses)
+            {
+                db.Courses.Add(CourseConverter.CourseExportModelToCourse(course));
+
+                foreach (var symbol in course.Symbols)
+                {
+                    db.Symbols.Add(SymbolConverter.SymbolExportModelToSymbol(symbol, course.Name));
+                }
+            }
+
+            await db.SaveChangesAsync();
         }
         catch (Exception)
         {
@@ -219,7 +261,7 @@ internal class CourseService : ICourseService
         try
         {
             var course = await _httpClient.GetFromJsonAsync<CourseModel>($"api/course/{courseName}") ?? new();
-            var symbols = await _httpClient.GetFromJsonAsync<List<SymbolOptionsModel>>($"api/course/{courseName}/symbols") ?? new();
+            var symbols = await _httpClient.GetFromJsonAsync<List<SymbolModel>>($"api/course/{courseName}/symbols") ?? new();
 
             using var db = await _dataProvider.GetPreparedDbContextAsync();
 

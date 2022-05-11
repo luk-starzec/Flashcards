@@ -4,6 +4,7 @@
 @inject ILanguageService languageService;
 @inject IThemeService themeService;
 @inject IDataService dataService;
+@inject IExportService exportService;
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<Resource> localizer
 
@@ -125,7 +126,8 @@
 
             @if (IsSectionVisible(OptionsPageSectionEnum.Data))
             {
-                <DataOptions OnRestoreDefaults="()=>restoreDafaultsDialogVisible=true" />
+                <DataOptions OnRestoreDefaults="()=>restoreDafaultsDialogVisible=true" 
+                    OnExport="HandleExportData" OnImport="ShowImportDataDialog" />
             }
         </li>
 
@@ -137,6 +139,13 @@
 {
     <ConfirmDialog OnConfirm="HandleRestoreDefaults" OnCancel="()=>restoreDafaultsDialogVisible=false"
                Message="@localizer["Res_RestoreDefaultsMessage"]" Cancel="@localizer["Res_No"]" Confirm="@localizer["Res_Yes"]" />
+}
+
+
+@if (importDataDialogVisible)
+{
+    <ConfirmDialog OnConfirm="HandleImportData" OnCancel="HideImportDataDialog"
+               Message="@localizer["Res_ImportDataMessage"]" Cancel="@localizer["Res_No"]" Confirm="@localizer["Res_Yes"]" />
 }
 
 
@@ -154,7 +163,10 @@
 
     CourseViewModel? ActiveCourse => courses?.FirstOrDefault(r => r.IsActive);
 
+    bool importDataDialogVisible;
     bool restoreDafaultsDialogVisible;
+
+    string? importDataContent;
 
     OptionsPageSectionEnum currentSection;
 
@@ -364,6 +376,37 @@
 
         loaderHelper.HideLoader();
         navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
+    }
+
+    async Task HandleExportData()
+    {
+        loaderHelper.ShowLoader();
+
+        await exportService.ExportDataAsync();
+
+        loaderHelper.HideLoader();
+    }
+
+    void ShowImportDataDialog(string fileContent)
+    {
+        importDataContent = fileContent;
+        importDataDialogVisible = true;
+    }
+
+    void HideImportDataDialog()
+    {
+        importDataContent = null;
+        importDataDialogVisible = false;
+    }
+
+    async Task HandleImportData()
+    {
+        loaderHelper.ShowLoader();
+
+        await exportService.ImportDataAsync(importDataContent);
+        HideImportDataDialog();
+
+        loaderHelper.HideLoader();
     }
 
     void HandleCloseClick()

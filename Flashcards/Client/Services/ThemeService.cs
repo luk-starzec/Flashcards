@@ -1,6 +1,6 @@
-﻿using Flashcards.Client.ViewModels;
+﻿using Flashcards.Client.Data;
+using Flashcards.Client.ViewModels;
 using Microsoft.JSInterop;
-using System.Text.Json;
 
 namespace Flashcards.Client.Services;
 
@@ -10,10 +10,13 @@ internal class ThemeService : IThemeService
     private const int DEFAULT_HUE = 215;
 
     private readonly IJSRuntime _js;
+    private readonly ISettingsProvider _settingsProvider;
 
-    public ThemeService(IJSRuntime js)
+
+    public ThemeService(IJSRuntime js, ISettingsProvider settingsProvider)
     {
         _js = js;
+        _settingsProvider = settingsProvider;
     }
 
     public async Task SetThemeAsync(ThemeViewModel theme)
@@ -21,7 +24,6 @@ internal class ThemeService : IThemeService
         await SaveThemeAsync(theme);
 
         var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/theme.js");
-
         await module.InvokeVoidAsync("setTheme", theme.IsDarkMode, theme.Hue);
     }
 
@@ -51,22 +53,13 @@ internal class ThemeService : IThemeService
 
     private async Task<ThemeViewModel> LoadThemeAsync()
     {
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
-
-        var json = await module.InvokeAsync<string>("getLocalValue", THEME_SETTINGS_NAME);
-
-        if (string.IsNullOrEmpty(json) || json == "undefined")
-            return await GetDafaultTheme();
-
-        return JsonSerializer.Deserialize<ThemeViewModel>(json) ?? await GetDafaultTheme();
+        var theme = await _settingsProvider.GetValueAsync<ThemeViewModel>(THEME_SETTINGS_NAME);
+        return theme ?? await GetDafaultTheme();
     }
 
     private async Task SaveThemeAsync(ThemeViewModel theme)
     {
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
-
-        var json = JsonSerializer.Serialize(theme);
-        await module.InvokeVoidAsync("setLocalValue", THEME_SETTINGS_NAME, json);
+        await _settingsProvider.SetValueAsync(THEME_SETTINGS_NAME, theme);
     }
 
     private async Task<ThemeViewModel> GetDafaultTheme()

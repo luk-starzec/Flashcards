@@ -10,17 +10,18 @@ namespace Flashcards.Client.Services;
 internal class QuizService : IQuizService
 {
     private const string QUIZ_SETTINGS_NAME = "QuizSettings";
+
     private readonly IDataProvider _dataProvider;
+    private readonly ISettingsProvider _settingsProvider;
     private readonly ICourseService _courseService;
-    private readonly IJSRuntime _js;
 
     private readonly Random rnd = new();
 
-    public QuizService(IDataProvider dataProvider, ICourseService courseService, IJSRuntime js)
+    public QuizService(IDataProvider dataProvider, ISettingsProvider settingsProvider, ICourseService courseService)
     {
         _dataProvider = dataProvider;
+        _settingsProvider = settingsProvider;
         _courseService = courseService;
-        _js = js;
     }
 
     public async Task<QuizViewModel?> GetQuizAsync(string quizId)
@@ -36,22 +37,13 @@ internal class QuizService : IQuizService
 
     public async Task<QuizOptionsViewModel> GetOptionsAsync()
     {
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
-
-        var json = await module.InvokeAsync<string>("getLocalValue", QUIZ_SETTINGS_NAME);
-
-        if (string.IsNullOrEmpty(json) || json == "undefined")
-            return new();
-
-        return JsonSerializer.Deserialize<QuizOptionsViewModel>(json) ?? new();
+        var options = await _settingsProvider.GetValueAsync<QuizOptionsViewModel>(QUIZ_SETTINGS_NAME);
+        return options is not null ? options : new();
     }
 
     public async Task SetOptionsAsync(QuizOptionsViewModel options)
     {
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/settingsStorage.js");
-
-        var json = JsonSerializer.Serialize(options);
-        await module.InvokeVoidAsync("setLocalValue", QUIZ_SETTINGS_NAME, json);
+        await _settingsProvider.SetValueAsync(QUIZ_SETTINGS_NAME, options);
     }
 
     public async Task<QuizViewModel?> PrepareQuizAsync()

@@ -16,6 +16,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Include="ExportModels\CourseExportModel.cs" />
+	  <Content Include="ExportModels\FlashcardsExportModel.cs" />
+	  <Content Include="ExportModels\SettingsExportModel.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="BuildWebCompiler2022" Version="1.14.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />
@@ -42,12 +48,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="wwwroot\appsettings.Development.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\appsettings.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
+		<Content Update="wwwroot\appsettings.Development.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="ClientTests" />
 	</ItemGroup>
 
 </Project>

@@ -153,6 +153,9 @@
   <data name="Res_Import" xml:space="preserve">
     <value>Importuj</value>
   </data>
+  <data name="Res_ImportDataMessage" xml:space="preserve">
+    <value>Czy chcesz nadpisać aktualne ustawienia oraz kursy wraz z informacjami o postępie?</value>
+  </data>
   <data name="Res_Language" xml:space="preserve">
     <value>Język</value>
   </data>

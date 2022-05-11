@@ -2,13 +2,14 @@
 
 <div class="data-options__wrapper">
 
-    <button class="data-options__button" @onclick="HandleExportClick" disabled>
+    <button class="data-options__button" @onclick="HandleExportClick">
         @localizer["Res_Export"]
     </button>
 
-    <button class="data-options__button" @onclick="HandleImportClick" disabled>
+    <label class="data-options__button">
         @localizer["Res_Import"]
-    </button>
+        <InputFile class="data-options__file-input" OnChange="OpenFile" accept=".fcd" />
+    </label>
 
     <button class="data-options__button data-options__button--restore" @onclick="HandleRestoreDefaultsClick">
         @localizer["Res_RestoreDefaults"]
@@ -18,10 +19,21 @@
 
 @code {
     [Parameter] public EventCallback OnExport { get; set; }
-    [Parameter] public EventCallback OnImport { get; set; }
+    [Parameter] public EventCallback<string> OnImport { get; set; }
     [Parameter] public EventCallback OnRestoreDefaults { get; set; }
 
     async Task HandleExportClick() => await OnExport.InvokeAsync();
     async Task HandleImportClick() => await OnImport.InvokeAsync();
     async Task HandleRestoreDefaultsClick() => await OnRestoreDefaults.InvokeAsync();
+
+    async Task OpenFile(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var buffers = new byte[file.Size];
+        await file.OpenReadStream().ReadAsync(buffers);
+        var stringData = System.Text.Encoding.UTF8.GetString(buffers);
+
+        await OnImport.InvokeAsync(stringData);
+    }
+
 }

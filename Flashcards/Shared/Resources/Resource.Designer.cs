@@ -169,6 +169,15 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to overwrite current settings and courses with progress information?.
+        /// </summary>
+        public static string Res_ImportDataMessage {
+            get {
+                return ResourceManager.GetString("Res_ImportDataMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Res_Language {

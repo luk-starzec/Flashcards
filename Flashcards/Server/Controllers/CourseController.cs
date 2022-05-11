@@ -1,6 +1,5 @@
 ﻿using Flashcards.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Flashcards.Server.Controllers;
@@ -60,7 +59,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet("api/course/{courseName}/symbols")]
-    public ActionResult<IEnumerable<SymbolOptionsModel>> GetCourseSymbols(string courseName)
+    public ActionResult<IEnumerable<SymbolModel>> GetCourseSymbols(string courseName)
     {
         try
         {
@@ -69,7 +68,7 @@ public class CourseController : ControllerBase
             using StreamReader reader = new(path);
             string json = reader.ReadToEnd();
 
-            return JsonSerializer.Deserialize<List<SymbolOptionsModel>>(json, _jsonOptions) ?? new();
+            return JsonSerializer.Deserialize<List<SymbolModel>>(json, _jsonOptions) ?? new();
         }
         catch (Exception ex)
         {

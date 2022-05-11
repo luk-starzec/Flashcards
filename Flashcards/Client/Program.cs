@@ -17,11 +17,13 @@ builder.Services.AddDbContextFactory<ClientSideDbContext>(options => options
 );
 
 builder.Services.AddScoped<IDataProvider, DataSynchronizer>();
+builder.Services.AddScoped<ISettingsProvider, SettingsProvider>();
 builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IThemeService, ThemeService>();
 builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddScoped<IExportService, ExportService>();
 
 builder.Services.AddLocalization();
 

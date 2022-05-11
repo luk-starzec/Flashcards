@@ -149,7 +149,7 @@
   border-radius: 50%;
   width: min(6rem, 25vmin);
   height: min(6rem, 25vmin);
-  box-shadow: 0 2px 4px 2px var(--color-shadow-light);
+  box-shadow: 0 0 8px 1px var(--color-shadow-light);
 }
 
 .button-nav__wrapper {
@@ -357,7 +357,7 @@
   border-radius: 50%;
   width: min(6rem, 25vmin);
   height: min(6rem, 25vmin);
-  box-shadow: 0 2px 4px 2px var(--color-shadow-light);
+  box-shadow: 0 0 8px 1px var(--color-shadow-light);
 }
 
 .button-nav__wrapper {
@@ -1302,14 +1302,19 @@
   padding: 0.75rem 2rem;
   border: none;
   border-radius: 0.5rem;
-  background-color: var(--color-dark);
-  color: var(--color-white);
+  background-color: var(--color-secondary);
+  color: var(--color-black);
+  text-align: center;
   font-family: "Noto Sans";
   font-size: 2rem;
   cursor: pointer;
 }
+.data-options__button:hover {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}
 .data-options__button--restore {
-  background-color: var(--color-secondary);
+  background-color: var(--color-light);
   color: var(--color-black);
   margin-top: 2rem;
 }
@@ -1317,6 +1322,13 @@
   background-color: var(--color-light);
   color: var(--color-white);
   cursor: not-allowed;
+}
+
+.data-options__file-input {
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
 }
 
 .loader__wrapper {

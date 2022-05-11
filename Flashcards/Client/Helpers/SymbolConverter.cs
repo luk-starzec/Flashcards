@@ -1,4 +1,5 @@
 ﻿using Flashcards.Client.Data;
+using Flashcards.Client.ExportModels;
 using Flashcards.Client.ViewModels;
 
 namespace Flashcards.Client.Helpers;
@@ -48,6 +49,20 @@ public static class SymbolConverter
             Column = row.Column ?? 1,
             Learned = row.Learned,
             QuizExcluded = row.QuizExcluded,
+        };
+    }
+
+    public static Symbol SymbolExportModelToSymbol(SymbolExportModel symbol, string courseName)
+    {
+        return new Symbol
+        {
+            CourseName = courseName,
+            Original = symbol.Original,
+            Translate = symbol.Translate,
+            Row = symbol.Row,
+            Column = symbol.Column,
+            Learned = symbol.Learned,
+            QuizExcluded = symbol.QuizExcluded,
         };
     }
 }

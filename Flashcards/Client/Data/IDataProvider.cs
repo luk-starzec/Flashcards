@@ -1,9 +1,7 @@
-﻿
-namespace Flashcards.Client.Data
+﻿namespace Flashcards.Client.Data;
+
+internal interface IDataProvider
 {
-    internal interface IDataProvider
-    {
-        Task DeleteDatabase();
-        Task<ClientSideDbContext> GetPreparedDbContextAsync();
-    }
+    Task DeleteDatabase();
+    Task<ClientSideDbContext> GetPreparedDbContextAsync();
 }

@@ -1,4 +1,5 @@
 ﻿using Flashcards.Client.Data;
+using Flashcards.Client.ExportModels;
 using Flashcards.Client.ViewModels;
 using Flashcards.Shared;
 
@@ -31,6 +32,24 @@ public class CourseConverter
                     Text = r.Text
                 }).ToList(),
             Version = courseModel.Version,
+        };
+    }
+
+
+    public static Course CourseExportModelToCourse(CourseExportModel courseExportModel)
+    {
+        return new Course
+        {
+            Name = courseExportModel.Name,
+            Titles = courseExportModel.Titles
+                .Select(r => new Title
+                {
+                    CourseName = courseExportModel.Name,
+                    Language = ((LanguageEnum)r.Key).ToString(),
+                    Text = r.Value
+                }).ToList(),
+            IsActive = courseExportModel.IsActive,
+            Version = courseExportModel.Version,
         };
     }
 

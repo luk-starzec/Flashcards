@@ -153,6 +153,9 @@
   <data name="Res_Import" xml:space="preserve">
     <value>Import</value>
   </data>
+  <data name="Res_ImportDataMessage" xml:space="preserve">
+    <value>Do you want to overwrite current settings and courses with progress information?</value>
+  </data>
   <data name="Res_Language" xml:space="preserve">
     <value>Language</value>
   </data>

@@ -1,6 +1,6 @@
 ﻿namespace Flashcards.Shared;
 
-public class SymbolOptionsModel
+public class SymbolModel
 {
     public string Original { get; set; } = default!;
     public string Translate { get; set; } = default!;

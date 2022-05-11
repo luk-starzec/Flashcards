@@ -1,0 +1,219 @@
+﻿[
+  {
+    "translate": "a",
+    "original": "а",
+    "column": 0,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "be",
+    "original": "б",
+    "column": 1,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "ve",
+    "original": "в",
+    "column": 2,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "ge",
+    "original": "г",
+    "column": 3,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "de",
+    "original": "д",
+    "column": 4,
+    "row": 0,
+    "subset": ""
+  },
+  {
+    "translate": "je",
+    "original": "е",
+    "column": 0,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "jo",
+    "original": "ё",
+    "column": 1,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "zhe",
+    "original": "ж",
+    "column": 2,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "ze",
+    "original": "з",
+    "column": 3,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "i",
+    "original": "и",
+    "column": 4,
+    "row": 1,
+    "subset": ""
+  },
+  {
+    "translate": "j",
+    "original": "й",
+    "column": 0,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "ka",
+    "original": "к",
+    "column": 1,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "el",
+    "original": "л",
+    "column": 2,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "em",
+    "original": "м",
+    "column": 3,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "en",
+    "original": "н",
+    "column": 4,
+    "row": 2,
+    "subset": ""
+  },
+  {
+    "translate": "o",
+    "original": "о",
+    "column": 0,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "pe",
+    "original": "п",
+    "column": 1,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "er",
+    "original": "р",
+    "column": 2,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "es",
+    "original": "с",
+    "column": 3,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "te",
+    "original": "т",
+    "column": 4,
+    "row": 3,
+    "subset": ""
+  },
+  {
+    "translate": "u",
+    "original": "у",
+    "column": 0,
+    "row": 4,
+    "subset": ""
+  },
+  {
+    "translate": "ef",
+    "original": "ф",
+    "column": 1,
+    "row": 4,
+    "subset": ""
+  },
+  {
+    "translate": "ha",
+    "original": "х",
+    "column": 2,
+    "row": 4,
+    "subset": ""
+  },
+  {
+    "translate": "ce",
+    "original": "ц",
+    "column": 3,
+    "row": 4,
+    "subset": ""
+  },
+  {
+    "translate": "cie",
+    "original": "ч",
+    "column": 4,
+    "row": 4,
+    "subset": ""
+  },
+  {
+    "translate": "sza",
+    "original": "ш",
+    "column": 0,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "sia",
+    "original": "щ",
+    "column": 1,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "y",
+    "original": "ы",
+    "column": 2,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "e",
+    "original": "э",
+    "column": 3,
+    "row": 5,
+    "subset": ""
+  },
+  {
+    "translate": "ju",
+    "original": "ю",
+    "column": 0,
+    "row": 6,
+    "subset": ""
+  },
+  {
+    "translate": "ja",
+    "original": "я",
+    "column": 1,
+    "row": 6,
+    "subset": ""
+  }
+]
