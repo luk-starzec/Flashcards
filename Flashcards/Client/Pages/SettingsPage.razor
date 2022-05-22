@@ -126,8 +126,8 @@
 
             @if (IsSectionVisible(OptionsPageSectionEnum.Data))
             {
-                <DataOptions OnRestoreDefaults="()=>restoreDafaultsDialogVisible=true" 
-                    OnExport="HandleExportData" OnImport="ShowImportDataDialog" />
+                <DataOptions OnRestoreDefaults="()=>restoreDafaultsDialogVisible=true"
+                         OnExport="HandleExportData" OnImport="ShowImportDataDialog" />
             }
         </li>
 
@@ -373,6 +373,7 @@
         loaderHelper.ShowLoader();
 
         await dataService.ClearDatabaseAsync();
+        await dataService.ClearSettingsAsync();
 
         loaderHelper.HideLoader();
         navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);

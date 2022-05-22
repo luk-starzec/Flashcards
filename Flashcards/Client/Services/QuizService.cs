@@ -9,7 +9,7 @@ namespace Flashcards.Client.Services;
 
 internal class QuizService : IQuizService
 {
-    private const string QUIZ_SETTINGS_NAME = "QuizSettings";
+    public const string QUIZ_SETTINGS_NAME = "QuizSettings";
 
     private readonly IDataProvider _dataProvider;
     private readonly ISettingsProvider _settingsProvider;
@@ -117,14 +117,16 @@ internal class QuizService : IQuizService
     {
         using var db = await _dataProvider.GetPreparedDbContextAsync();
 
-        var cardRow = await db.QuizItems
-            .Include(r => r.Quiz)
+        var itemRow = await db.QuizItems
             .Where(r => r.QuizId == quizId)
             .SingleAsync(r => r.Index == card.Index);
 
-        cardRow.Result = card.Result;
+        itemRow.Result = card.Result;
 
-        var quizRow = cardRow.Quiz;
+        var quizRow = await db.Quizzes
+            .Include(r=>r.Items)
+            .SingleAsync(r => r.Id == quizId);
+
         if (quizRow.Items.All(r => r.Result is not null))
         {
             quizRow.AllowContinue = false;

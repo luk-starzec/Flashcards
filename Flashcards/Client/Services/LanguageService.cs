@@ -8,14 +8,14 @@ namespace Flashcards.Client.Services;
 
 internal class LanguageService : ILanguageService
 {
-    private const string LANGUAGE_SETTINGS_NAME = "LanguageSettings";
+    public const string LANGUAGE_SETTINGS_NAME = "LanguageSettings";
 
-    private readonly IJSRuntime _js;
+    private readonly IJsService _jsService;
     private readonly ISettingsProvider _settingsProvider;
 
-    public LanguageService(IJSRuntime js, ISettingsProvider settingsProvider)
+    public LanguageService(IJsService jsService, ISettingsProvider settingsProvider)
     {
-        _js = js;
+        _jsService = jsService;
         _settingsProvider = settingsProvider;
     }
 
@@ -52,9 +52,7 @@ internal class LanguageService : ILanguageService
 
     private async Task<LanguageEnum> GetBrowserCultureAsync()
     {
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/language.js");
-        var language = await module.InvokeAsync<string>("getBrowserLanguage");
-
+        var language = await _jsService.GetBrowserLanguageAsync();
         return language == "pl" ? LanguageEnum.Polish : LanguageEnum.English;
     }
 

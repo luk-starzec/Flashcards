@@ -6,25 +6,23 @@ namespace Flashcards.Client.Services;
 
 internal class ThemeService : IThemeService
 {
-    private const string THEME_SETTINGS_NAME = "ThemeSettings";
+    public const string THEME_SETTINGS_NAME = "ThemeSettings";
     private const int DEFAULT_HUE = 215;
 
-    private readonly IJSRuntime _js;
+    private readonly IJsService _jsService;
     private readonly ISettingsProvider _settingsProvider;
 
 
-    public ThemeService(IJSRuntime js, ISettingsProvider settingsProvider)
+    public ThemeService(IJsService jsService, ISettingsProvider settingsProvider)
     {
-        _js = js;
+        _jsService = jsService;
         _settingsProvider = settingsProvider;
     }
 
     public async Task SetThemeAsync(ThemeViewModel theme)
     {
         await SaveThemeAsync(theme);
-
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/theme.js");
-        await module.InvokeVoidAsync("setTheme", theme.IsDarkMode, theme.Hue);
+        await _jsService.SetThemeAsync(theme.IsDarkMode, theme.Hue);
     }
 
     public async Task SetThemeAsync(bool darkMode)
@@ -73,7 +71,6 @@ internal class ThemeService : IThemeService
 
     private async Task<bool> GetPreferesDarkModeAsync()
     {
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/theme.js");
-        return await module.InvokeAsync<bool>("preferesDarkMode");
+        return await _jsService.GetPreferesDarkModeAsync();
     }
 }

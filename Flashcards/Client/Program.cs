@@ -24,6 +24,7 @@ builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IThemeService, ThemeService>();
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddScoped<IExportService, ExportService>();
+builder.Services.AddScoped<IJsService, JsService>();
 
 builder.Services.AddLocalization();
 

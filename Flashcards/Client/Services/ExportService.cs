@@ -1,21 +1,20 @@
 ﻿using Flashcards.Client.ExportModels;
 using Flashcards.Client.ViewModels;
-using Microsoft.JSInterop;
 using System.Text.Json;
 
 namespace Flashcards.Client.Services;
 
 public class ExportService : IExportService
 {
-    private readonly IJSRuntime _js;
+    private readonly IJsService _jsService;
     private readonly IThemeService _themeService;
     private readonly ILanguageService _languageService;
     private readonly ICourseService _courseService;
     private readonly IQuizService _quizService;
 
-    public ExportService(IJSRuntime js, IThemeService themeService, ILanguageService languageService, ICourseService courseService, IQuizService quizService)
+    public ExportService(IJsService jsService, IThemeService themeService, ILanguageService languageService, ICourseService courseService, IQuizService quizService)
     {
-        _js = js;
+        _jsService = jsService;
         _themeService = themeService;
         _languageService = languageService;
         _courseService = courseService;
@@ -29,7 +28,6 @@ public class ExportService : IExportService
         var language = await _languageService.GetLanguageAsync();
         var theme = await _themeService.GetThemeAsync();
         var quizOptions = await _quizService.GetOptionsAsync();
-
 
         var model = new FlashcardsExportModel
         {
@@ -70,8 +68,7 @@ public class ExportService : IExportService
 
         var content = JsonSerializer.Serialize(model);
 
-        var module = await _js.InvokeAsync<IJSObjectReference>("import", "./scripts/download.js");
-        await module.InvokeVoidAsync("DownloadFile", $"{fileName}.fcd", "application/json;charset=utf-8", content);
+        await _jsService.DownloadFileAsync($"{fileName}.fcd", content);
     }
 
     public async Task ImportDataAsync(string fileContent)

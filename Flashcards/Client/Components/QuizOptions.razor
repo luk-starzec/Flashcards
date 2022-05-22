@@ -85,7 +85,11 @@
 
     string GetModeText(QuizModeEnum mode)
     {
-        var symbol = Symbols.OrderBy(r => r.Row).ThenBy(r => r.Column).First();
+        var symbol = Symbols
+            .Where(r => r.Original != r.Translate)
+            .OrderBy(r => r.Row)
+            .ThenBy(r => r.Column)
+            .First();
 
         switch (mode)
         {

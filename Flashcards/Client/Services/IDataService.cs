@@ -3,4 +3,5 @@
 public interface IDataService
 {
     Task ClearDatabaseAsync();
+    Task ClearSettingsAsync();
 }
