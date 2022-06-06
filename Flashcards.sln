@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flashcards.Client", "Flashc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flashcards.Shared", "Flashcards\Shared\Flashcards.Shared.csproj", "{BC313C1F-4624-4748-80C4-0DA1E1FC7AFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTests", "Tests\ClientTests\ClientTests.csproj", "{875C2C6D-7A56-46C1-8320-FD70C27F554B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientTests", "Tests\ClientTests\ClientTests.csproj", "{875C2C6D-7A56-46C1-8320-FD70C27F554B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C46E9227-BA0B-4977-8F56-1085B2BBE443}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTests", "Tests\ServerTests\ServerTests.csproj", "{74286DA1-506E-4A78-8620-4100EE951442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTests", "Tests\ServerTests\ServerTests.csproj", "{74286DA1-506E-4A78-8620-4100EE951442}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

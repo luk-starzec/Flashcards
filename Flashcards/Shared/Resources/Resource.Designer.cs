@@ -214,11 +214,29 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To activate the Learn option, select course in the Settings section.
+        ///   Looks up a localized string similar to To activate the Learn option, select a course in the Settings section.
         /// </summary>
         public static string Res_LearnUnavailableInfo {
             get {
                 return ResourceManager.GetString("Res_LearnUnavailableInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List.
+        /// </summary>
+        public static string Res_List {
+            get {
+                return ResourceManager.GetString("Res_List", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To view symbol list, select a course in the Settings section.
+        /// </summary>
+        public static string Res_ListUnavailableInfo {
+            get {
+                return ResourceManager.GetString("Res_ListUnavailableInfo", resourceCulture);
             }
         }
         
@@ -277,7 +295,7 @@ namespace Flashcards.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To activate Quiz, please use the Learn feature first or change the options in the Settings section.
+        ///   Looks up a localized string similar to To activate Quiz, please use the Learn feature first or change options in the Settings section.
         /// </summary>
         public static string Res_QuizUnavailableInfo {
             get {

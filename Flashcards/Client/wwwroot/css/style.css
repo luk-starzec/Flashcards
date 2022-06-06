@@ -1,20 +1,23 @@
 ﻿@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&family=Noto+Sans:wght@100;300;400;700&display=swap");
 .index-page__wrapper {
   display: grid;
-  grid-template-rows: auto 1fr auto 1fr 1fr;
+  grid-template-rows: auto 1fr auto auto auto 1fr;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas: "logo theme" "learn learn" "quiz quiz" "continue continue" "settings settings";
-  gap: 3rem;
-  padding: 1rem;
+  grid-template-areas: "logo theme" "learn learn" "quiz quiz" "continue continue" "list list" "settings settings";
+  gap: 1rem;
+  padding: 1rem 1rem 2rem 1rem;
   height: 100%;
 }
-@media (max-height: 400px) {
+@media (max-height: 420px) {
   .index-page__wrapper {
-    grid-template-rows: auto 1fr 1fr;
-    grid-template-areas: "logo theme" "learn continue" "quiz settings";
-    gap: 2rem;
+    grid-template-rows: auto 1fr 1fr auto;
+    grid-template-areas: "logo theme" "learn list" "quiz settings" "continue continue";
+    gap: 0rem;
   }
   .index-page__wrapper .index-page__button--continue-quiz {
+    width: 90%;
+  }
+  .index-page__wrapper .index-page__button--list {
     align-self: end;
   }
   .index-page__wrapper .index-page__button--settings {
@@ -34,6 +37,7 @@
 .index-page__logo svg {
   width: 5rem;
   height: 5rem;
+  max-height: 18vh;
 }
 .index-page__logo svg .dark-card {
   fill: var(--color-dark);
@@ -91,6 +95,7 @@
   color: var(--color-white);
   width: clamp(7ch, 80%, 30rem);
   padding: 1rem 2rem;
+  margin-block: 1rem;
   border: none;
   border-radius: 0.5rem;
   font-size: 2rem;
@@ -139,9 +144,14 @@
   align-self: start;
   color: var(--color-secondary);
 }
+.index-page__button--list {
+  grid-area: list;
+  align-self: start;
+}
 .index-page__button--settings {
   grid-area: settings;
   align-self: end;
+  color: var(--color-secondary);
 }
 
 .button-nav__wrapper, .button-result__wrapper {
@@ -680,6 +690,38 @@
   height: 100%;
   border-radius: 0.25rem;
   background-color: var(--color-secondary);
+}
+
+.list-page__header {
+  font-size: 2rem;
+  text-align: center;
+  margin: 0;
+  padding: 1rem;
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+
+.list-page__symbols-wrapper {
+  padding: 0.75rem 0.5rem;
+}
+
+.list-page__close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+.list-page__close-button svg {
+  height: 2rem;
+  width: 2rem;
+  fill: var(--color-secondary);
+}
+.list-page__close-button:hover svg {
+  fill: var(--color-dark);
+}
+
+.symbol-toggle__original {
+  cursor: default !important;
 }
 
 .result-page__wrapper {

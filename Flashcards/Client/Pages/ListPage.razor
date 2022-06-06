@@ -1,0 +1,50 @@
+﻿@page "/list"
+@inject ICourseService courseService
+@inject IStringLocalizer<Resource> localizer
+
+<PageTitle>@localizer["Res_List"]</PageTitle>
+
+<div class="list-page__wrapper">
+
+    <h3 class="list-page__header">
+        @localizer["Res_List"]
+    </h3>
+
+    <a href="/" class="list-page__close-button">
+        <SvgIcon SvgUrl="/assets/close-ico.svg" />
+    </a>
+
+    <div class="list-page__symbols-wrapper">
+        @if (items is not null)
+        {
+            <SymbolsList Symbols="@items" />
+        }
+    </div>
+
+</div>
+
+@code {
+    [CascadingParameter] LoaderHelper loaderHelper { get; set; }
+
+    List<ToggleableSymbolViewModel>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSymbols();
+    }
+
+    async Task LoadSymbols()
+    {
+        loaderHelper.ShowLoader();
+
+        var course = await courseService.GetActiveCourseAsync();
+        if (course is null)
+            return;
+
+        var symbols = await courseService.GetSymbolsAsync(course.Name);
+        items = SymbolConverter.LearnToToggleableSymbol(symbols);
+
+        loaderHelper.HideLoader();
+    }
+
+}

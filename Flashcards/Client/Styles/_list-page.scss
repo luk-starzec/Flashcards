@@ -1,0 +1,41 @@
+﻿@import 'shared';
+
+.list-page__wrapper {
+}
+
+.list-page__header {
+    font-size: 2rem;
+    text-align: center;
+    margin: 0;
+    padding: 1rem;
+    color: $color-dark;
+    background-color: $color-light;
+}
+
+.list-page__symbols-wrapper {
+    padding: .75rem .5rem;
+}
+
+
+.list-page__close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+
+    svg {
+        height: 2rem;
+        width: 2rem;
+        fill: $color-secondary;
+    }
+
+    &:hover {
+        svg {
+            fill: $color-dark;
+        }
+    }
+}
+
+.symbol-toggle__original {
+    cursor: default !important;
+}

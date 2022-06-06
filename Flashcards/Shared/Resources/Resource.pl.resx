@@ -169,7 +169,13 @@
     <value>Opcje nauki</value>
   </data>
   <data name="Res_LearnUnavailableInfo" xml:space="preserve">
-    <value>Aby aktywować opcją Nauka, wybierz kurs w sekcji Ustawienia</value>
+    <value>Aby aktywować opcję Nauka, wybierz kurs w sekcji Ustawienia</value>
+  </data>
+  <data name="Res_List" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="Res_ListUnavailableInfo" xml:space="preserve">
+    <value>Aby wyświetlić listę symboli, wybierz kurs w sekcji Ustawienia</value>
   </data>
   <data name="Res_MainPage" xml:space="preserve">
     <value>Fiszki - Strona główna</value>
