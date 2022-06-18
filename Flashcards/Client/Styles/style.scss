@@ -55,6 +55,7 @@ h3 {
     min-height: calc(var(--vh, 1vh) * 100);
     display: grid;
     background-color: $color-white;
+    overflow: auto;
 
     @media (min-height: 950px), (min-width: 950px) {
         background-color: $color-light;

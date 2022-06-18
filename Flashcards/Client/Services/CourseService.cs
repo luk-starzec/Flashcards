@@ -221,7 +221,7 @@ internal class CourseService : ICourseService
         }
     }
 
-    public async Task SetSymbolLeadnedAsync(string courseName, string[] original, bool learned = true)
+    public async Task SetSymbolLearnedAsync(string courseName, string[] original, bool learned = true)
     {
         using var db = await _dataProvider.GetPreparedDbContextAsync();
 

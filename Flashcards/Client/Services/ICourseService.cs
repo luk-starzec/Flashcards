@@ -14,6 +14,6 @@ public interface ICourseService
     Task SetActiveCourseAsync(string courseName);
     Task DownloadCourseAsync(string courseName);
     Task<CourseViewModel> UpdateCourseAsync(string courseName);
-    Task SetSymbolLeadnedAsync(string courseName, string[] original, bool learned = true);
+    Task SetSymbolLearnedAsync(string courseName, string[] original, bool learned = true);
     Task SetSymbolQuizExcludedAsync(string courseName, string[] original, bool excluded);
 }

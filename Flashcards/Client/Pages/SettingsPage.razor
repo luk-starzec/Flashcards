@@ -333,7 +333,7 @@
         var learned = !symbols.First().Learned;
         var originals = symbols.Select(r => r.Original).ToArray();
 
-        await courseService.SetSymbolLeadnedAsync(courseName, originals, learned);
+        await courseService.SetSymbolLearnedAsync(courseName, originals, learned);
 
         foreach (var symbol in symbols)
             symbol.Learned = learned;

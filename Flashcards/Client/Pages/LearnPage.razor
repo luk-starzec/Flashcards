@@ -61,10 +61,18 @@
         if (!symbol.Learned)
         {
             loaderHelper.ShowLoader();
-            await courseService.SetSymbolLeadnedAsync(activeCourse.Name, new string[] { symbol.Original });
-            loaderHelper.HideLoader();
+            await courseService.SetSymbolLearnedAsync(activeCourse.Name, new string[] { symbol.Original });
         }
+
         index++;
+
+        symbol = symbols[index];
+        if (!nextVisible)
+        {
+            loaderHelper.ShowLoader();
+            await courseService.SetSymbolLearnedAsync(activeCourse.Name, new string[] { symbol.Original });
+        }
+        loaderHelper.HideLoader();
     }
 
     void PrevClick()
