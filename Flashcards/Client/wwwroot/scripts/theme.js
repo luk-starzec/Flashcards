@@ -1,8 +1,12 @@
 ﻿
 export function setTheme(darkMode, hue) {
+    const saturation = 60;
+
+    const body = document.getElementsByTagName('body')[0];
     const element = document.getElementById('app');
 
-    const saturation = 60;
+    body.style.setProperty('--color-white', darkMode ? getHsl(0, 0, 10) : getHsl(0, 0, 100));
+    body.style.setProperty('--color-black', darkMode ? getHsl(hue, saturation, 97) : getHsl(hue, saturation, 20));
 
     element.style.setProperty('--color-black', darkMode ? getHsl(hue, saturation, 97) : getHsl(hue, saturation, 20));
     element.style.setProperty('--color-dark', darkMode ? getHsl(hue, saturation, 80) : getHsl(hue, saturation, 30));

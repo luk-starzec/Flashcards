@@ -1595,6 +1595,11 @@ html {
   font-family: "Noto Sans JP", sans-serif;
 }
 
+body {
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
 button {
   font-family: "Noto Sans JP", sans-serif;
 }
